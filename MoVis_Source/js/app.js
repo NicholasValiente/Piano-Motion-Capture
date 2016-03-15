@@ -3,7 +3,9 @@ var camera;
 var renderer;
 var controls;
 
+//array of possible upper body label flags +NV
 var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_Top', 'R_Shoulder_Back', 'R_Bicep', 'R_Elbow', 'R_Wrist_Upper', 'R_Wrist_Lower', 'R_Pinky', 'R_Thumb', 'L_Shoulder_Top', 'L_Shoulder_Back', 'L_Bicep', 'L_Elbow', 'L_Wrist_Upper', 'L_Wrist_Lower', 'L_Pinky', 'L_Thumb', 'Topspine', 'Sternum', 'Midback', 'Lowback_Center', 'Lowback_Right', 'Lowback_Left', 'Root']
+//array of possible lower body label flags +NV
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
 
 var SCALE = 0.05;
@@ -12,21 +14,25 @@ var isPlaying = true;
 var currentFrame = 0;
 var startTime;
 var previousTime;
-var interval;
-var dynObjs = [];
+var interval; //time between frames +NV
+var dynObjs = []; //points +NV
 var mkrParams;
 var gui;
 var trailLength = 50;
 
-var gridHelper;
-var isGridHelperVisible = true;
+var gridHelper; //3D grid +NV
+var isGridHelperVisible = true; //whether grid is visible +NV
 var isPtcVisible = true;
 var isLoading = false;
 
-function load_data_index(url, callback) {
-    $.getJSON(url, function(data) {
+
+//most likely needs to be moved to server to load the file to be streamed (canned only) +NV
+//file selection menu, if we add a button for live feed we should be able to keep mostly as is. +NV
+function load_data_index(url, callback) { //take the trc.json file and a ??callback
+    $.getJSON(url, function(data) { //get the .json file and open it. ??function(data)
 
         for (var folder in data) {
+			//a bunch of HTML editing below
             var innerHeader = $(document.createElement('div'))
                 .attr({id: folder, role: 'tab'})
                 .addClass('panel-heading').append(
@@ -46,6 +52,7 @@ function load_data_index(url, callback) {
             var body = $(document.createElement('div'))
                 .addClass("panel-body");
 
+				//display all folders available as buttons, repeat with sub-folders/files on click
             for (var i=0; i<data[folder].length; i++) {
                 var name = data[folder][i].name;
                 var url = data[folder][i].url;
@@ -56,6 +63,7 @@ function load_data_index(url, callback) {
                 body.append(btn);
             }
 
+			//able to hide/re-open file selection pane
             var bodyWrapper = $(document.createElement('div'))
                 .attr({ id:"collapse"+folder,
                         role:"tabpanel",
@@ -77,15 +85,20 @@ function load_data_index(url, callback) {
     });
 }
 
+
+//should not have to touch this part either, all it does is set up the canvas +NV
 function init() {
 
-    renderer = new THREE.WebGLRenderer();
+//set up for the 3D webGL renderer, does all the work for displaying the points for us +NV
+    renderer = new THREE.WebGLRenderer(); 
     renderer.setClearColor( 0x212538 );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
+	
+//adding event listener to look for resize operations
     window.addEventListener('resize', function() {
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
         renderer.setSize(WIDTH, HEIGHT);
@@ -94,6 +107,7 @@ function init() {
     });
     camera.position.z = 120;
 
+//toggle showing keyboard controls
     $('#shortcutModal').modal({
         keyboard: true,
         show: false
@@ -103,10 +117,14 @@ function init() {
     })
 }
 
+
+//should not have to touch this part, all it does is set up the openGL scene +NV
 function new_scene() {
+	//if there is already a scene, clear it
     if (scene != undefined) {
         scene = {};
     }
+	//make a new 3d scene and do required set up (lighting, controls, camera, grid, marker points, .etc)
     scene = new THREE.Scene();
     var ambient = new THREE.AmbientLight( 0x101030 );
     scene.add( ambient );
@@ -128,6 +146,7 @@ function new_scene() {
     isPtcVisible = true;
 }
 
+//initialisation of GUI, should not need touching either +NV
 function initGui() {
     if (gui != undefined) {
         gui = {};
@@ -155,23 +174,28 @@ function initGui() {
     animate();
 }
 
+//function to select all markers +NV
 function selectAll() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = true;
     }
 }
 
+//function to select no markers +NV
 function selectNone() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = false;
     }
 }
 
+//function to swap marker selection +NV
 function toggleSelection() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = !mkrParams[trc.data.groups[i]];
     }
 }
+
+
 
 function load_trc(url, callback) {
     console.log("Reading ", url);
@@ -243,30 +267,33 @@ function open_trc(url) {
     load_trc(url, initGui);
 }
 
+
+//playback part, may rip some of this out and move it to the server +NV
 function animate() {
-    if (isLoading) return;
-    var currentTime=Date.now();
+    if (isLoading) return; // if is still loading, do nothing 
+    var currentTime=Date.now(); //set date/time
+	//if is not paused
     if (isPlaying) {
-        var frameNumber = Math.floor(((currentTime - startTime)/interval) % trc.data.NumFrames);
-        if (currentFrame != frameNumber) {
-            currentFrame = frameNumber;
+        var frameNumber = Math.floor(((currentTime - startTime)/interval) % trc.data.NumFrames); //grab current frame number
+        if (currentFrame != frameNumber) { //if current frame does not match selected frame
+            currentFrame = frameNumber; //set current frame to match selected frame
             trc.ptc.geometry.vertices = trc.data.vertSamples[currentFrame];
             trc.ptc.geometry.verticesNeedUpdate = true;
             //
             for (var i=0; i<dynObjs.length; i++) {
-                dynObjs[i].updateFunc(dynObjs[i]);
+                dynObjs[i].updateFunc(dynObjs[i]); //move all marker points to current frame
             }
         }
 
-    } else {
+    } else { // if it does match, get current marker point locations 
         trc.ptc.geometry.vertices = trc.data.vertSamples[currentFrame];
         trc.ptc.geometry.verticesNeedUpdate = true;
         for (var i=0; i<dynObjs.length; i++) {
-            dynObjs[i].updateFunc(dynObjs[i]);
+            dynObjs[i].updateFunc(dynObjs[i]); //display current marker points locations
         }
     }
-    requestAnimationFrame(animate);
-    render();
+    requestAnimationFrame(animate); //request next frame
+    render(); //draw current frame to screen
 }
 
 function render() {
@@ -274,6 +301,7 @@ function render() {
     controls.update();
 }
 
+//keyboard IO, should not need to be touched +NV
 var keyPressed = function(event) {
     console.log(event);
     switch (event.keyCode) {
@@ -345,6 +373,7 @@ var keyPressed = function(event) {
 }
 document.addEventListener("keydown", keyPressed, false);
 
+//return selected marker(s index(/indices in array)
 function get_selected_marker_indices() {
     var indices = [];
     for (var i=0; i<trc.data.groups.length; i++) {
@@ -357,6 +386,7 @@ function get_selected_marker_indices() {
     return indices;
 }
 
+//create new marker from data.
 function create_mkr_path() {
     var indices = get_selected_marker_indices();
     console.log(indices);

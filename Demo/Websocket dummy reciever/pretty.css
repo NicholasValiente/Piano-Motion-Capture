@@ -1,0 +1,135 @@
+#body{
+background:#999999;
+}
+
+#midi{
+	margin:auto;
+	width:50%;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#midiBox {
+ height:100px; 
+ width:600px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+ 
+  
+}
+
+#head{
+	float:center;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#headBox {
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+  
+}#shoulder{
+	float:bottom;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#shoulderBox {
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+}
+
+#handL{
+	float:left;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#leftHandBox {
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+}
+
+#handR{
+	float:right;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#rightHandBox {
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+ }
+ 
+ 
+ #elbowL{
+	float:left;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#leftElbowBox{
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+}
+
+#elbowR{
+	float:right;
+	padding-right: 100px;
+	padding-left: 100px;
+	padding-top: 10px
+}
+#rightElbowBox {
+ height:100px; 
+ width:300px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+}
+
+#kinectHead {
+float:center;
+}
+
+#leapHead {
+float:center;
+}
+
+
+
+#playbackBox{
+ height:100px; 
+ width:400px; 
+ border:1px solid #ccc;
+ background: #ffffff;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+}

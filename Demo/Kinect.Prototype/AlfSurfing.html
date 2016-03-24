@@ -1,0 +1,63 @@
+﻿<html>
+<head>
+    <title>Google Earth Surfer</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi?"></script>
+
+    <style type="text/css">
+        body
+        {
+            overflow: hidden;
+            margin-top: 0px;
+            margin-left: 0px;
+        }
+        #map3d
+        {
+            height: 800px; width: 1280px; /*wonderama rig resolution 
+			/*             height: 2200px; width: 1200px; // wonderama rig resolution 
+           /*height: 1200px; width: 1920px; /* For single 24 inch widescreen monitor at 1920x1200 Resolution (dev purposes) */
+		   /*height: 1920px; width: 1080px;*/
+        }
+    </style>
+</head>
+<body>
+    <div id="map3d">
+    </div>
+    Timer:
+	<input id="minutes" type="text" style="width: 14px; border: none; background-color:none;"> 
+	minutes and 
+	<input id="seconds" type="text" style="width: 26px; border: none; background-color:none;"> seconds
+	<br>
+    Score:
+    <label id="lbldebug">
+        0</label><br />
+    <input id="btnClose" type="button" value="Close Connection" onclick="closeSocket(); stopAllSounds();" />
+
+	<!--Game Sounds-->
+	<audio id="multiaudio1" src="Sounds/(SUBCAT) Music/In_Game_Theme.wav" preload="auto"></audio>
+	<audio id="multiaudio2" src="Sounds/(SUBCAT) Music/Start_Game_Theme.wav" preload="auto"></audio>
+	<audio id="multiaudio3" src="Sounds/(SUBCAT) Music/End_Game_Theme.wav" preload="auto"></audio>
+	<audio id="transitionaudio1" src="Sounds/(SUBCAT) Transition/Transition.wav" preload="auto"></audio>
+	<audio id="targetaudio1" src="Sounds/(SUBCAT) Target/Wonderama_Target_01.wav" preload="auto"></audio>
+	<audio id="targetaudio2" src="Sounds/(SUBCAT) Target/Wonderama_Target_02.wav" preload="auto"></audio>
+	<audio id="targetaudio3" src="Sounds/(SUBCAT) Target/Wonderama_Target_03.wav" preload="auto"></audio>
+	<audio id="targetaudio4" src="Sounds/(SUBCAT) Target/Wonderama_Target_04.wav" preload="auto"></audio>
+	<audio id="targetaudio5" src="Sounds/(SUBCAT) Target/Wonderama_Target_05.wav" preload="auto"></audio>	
+	<audio id="flightaudio1" src="Sounds/(SUBCAT) Flight_Drone/read_tina_17242426_flightdrone.wav" preload="auto"></audio>
+	<audio id="flightaudio2" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_01.wav" preload="auto"></audio>
+	<audio id="flightaudio3" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_02.wav" preload="auto"></audio>
+	<audio id="flightaudio4" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_03.wav" preload="auto"></audio>
+	<audio id="flightaudio5" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_04.wav" preload="auto"></audio>
+	<audio id="flightaudio6" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_05.wav" preload="auto"></audio>
+	<audio id="flightaudio7" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_06.wav" preload="auto"></audio>
+	<audio id="flightaudio8" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_08.wav" preload="auto"></audio>
+	<audio id="flightaudio9" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_09.wav" preload="auto"></audio>
+	<audio id="flightaudio10" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_10.wav" preload="auto"></audio>
+	<audio id="flightaudio11" src="Sounds/(SUBCAT) Flight_Short/Wonderama_Flight_11.wav" preload="auto"></audio>
+	
+<!--<script type="text/javascript"> var models_included = true;</script>-->
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="math3d.js"></script>
+
+    
+</body>
+</html>

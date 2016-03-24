@@ -1,0 +1,53 @@
+﻿<html>
+<head>
+    <title>Google Earth Surfer</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi?"> </script>
+
+    <script type="text/javascript"> var models_included = false; var kinectMan_included = false; </script>
+    <!-- allows exclusion of kinectMan.js and models.js without having to remove function calls -->
+
+    <!-- <script type="text/javascript" src="kinectMan.js"></script> uncomment to include kinectMan demo! -->
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="kinect.js"></script>
+    <script type="text/javascript" src="math3d.js"></script>
+
+    <!--<script type="text/javascript" src="models.js"></script> uncomment models.js and queue.js to use models-->
+    <!--<script type="text/javascript" src="queue.js"></script>-->
+
+    <script type="text/javascript">
+        (function () {
+
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+
+            po.src = 'https://apis.google.com/js/plusone.js';
+
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+
+        })();
+    </script>
+    <style type="text/css">
+        body
+        {
+            overflow: hidden;
+            margin-top: 0px;
+            margin-left: 0px;
+        }
+        #map3d
+        {
+           /* height: 1920px; width: 1080px; /*wonderama rig resolution */
+           height: 1200px; width: 1920px; /* For single 24 inch widescreen monitor at 1920x1200 Resolution (dev purposes) */
+        }
+    </style>
+</head>
+<body>
+    <div id="map3d">
+    </div>
+    Status:
+    <label id="status">
+        None</label><br />
+    Debug:
+    <label id="lbldebug">
+        None</label><br />
+    <input id="btnClose" type="button" value="Close Connection" onclick="closeSocket()" />
+</body>
+</html>

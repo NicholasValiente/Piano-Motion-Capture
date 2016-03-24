@@ -1,0 +1,102 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Kinect Web page demo</title>
+    <script type="text/javascript" src="dotman.js"></script>
+    <style type="text/css">
+        html
+        {
+            height: 100%;
+        }
+        body
+        {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        .right
+        {
+            position: absolute;
+            right: 0px;
+        }
+        #dotman_canvas
+        {
+            margin: 0px 0px;
+            background:url(canvas.png);
+        }
+        .crush
+        {
+            line-height: 0.5;
+        }
+        smallBr
+        {
+            font-size: 150%;
+            line-height: 1;
+        }
+        table
+        {
+            border-style: none;
+            border-color: inherit;
+            border-width: 0px;
+            width: 100%;
+            height: 82%;
+            margin-bottom: 0px;
+        }
+        #inbound
+        {
+            min-width: 720px;
+            min-height: 170px;
+        }
+        #outbound
+        {
+            min-width: 720px;
+            min-height: 170px;
+        }
+        .style2
+        {
+            width: 750px;
+            height: 678px;
+        }
+        input[type="range"]
+        {
+          -webkit-transform: rotate(270deg);
+       top:100px;
+            width: 114px;
+        }
+        .style3
+        {
+            width: 148px;
+            height: 678px;
+        }
+        .style4
+        {
+            height: 678px;
+        }
+    </style>
+</head>
+<body>
+
+    <table border="1">
+            <tr>
+                <td>Head data</td>
+                <td>Left hand data</td>
+                <td>Right hand data</td>
+            </tr>
+            <tr>
+                <td id="headdata">No data</td>
+                <td id="lefthanddata">No data</td>
+                <td id="righthanddata">No data</td>
+            </tr>
+    </table>
+
+<!--
+    <script>
+        document.getElementById("lefthanddata").innerHTML = "the left hand";
+    </script>
+-->
+</body>
+</html>

@@ -1,0 +1,160 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Kinect Piano Player Prototype</title>
+    <script type="text/javascript" src="dotman.js">//background-repeat:no-repeat; background-position: 100% 100%; background-attachment: fixed;</script>
+    <style type="text/css">
+        html
+        {
+            height: 100%;
+        }
+        body
+        {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        .right
+        {
+            position: absolute;
+            right: 0px;
+        }
+        #dotman_canvas
+        {
+            margin: 0px 0px;
+            background:url(canvas.png);
+        }
+        .crush
+        {
+            line-height: 0.5;
+        }
+        smallBr
+        {
+            font-size: 150%;
+            line-height: 1;
+        }
+        table
+        {
+            border-style: none;
+            border-color: inherit;
+            border-width: 0px;
+            width: 100%;
+            height: 82%;
+            margin-bottom: 0px;
+        }
+        #inbound
+        {
+            min-width: 720px;
+            min-height: 170px;
+        }
+        #outbound
+        {
+            min-width: 720px;
+            min-height: 170px;
+        }
+        .style2
+        {
+            width: 750px;
+            height: 678px;
+        }
+        input[type="range"]
+        {
+          -webkit-transform: rotate(270deg);
+       top:100px;
+            width: 114px;
+        }
+        .style3
+        {
+            width: 148px;
+            height: 678px;
+        }
+        .style4
+        {
+            height: 678px;
+        }
+    </style>
+</head>
+<body>
+<form name="myWebForm" action="" method="post">
+    <table cellpadding="5px" cellspacing="0px">
+         <tr>
+            <td valign="top" align="left" class="style2">
+                <canvas id="dotman_canvas" width="800" height="650"></canvas>
+                <p style="font-family: monospace; color: #000; width: 750px;">
+                    <label id="logwindow" Style="word-wrap: normal; word-break: break-all; width: 750px;"></label>
+                </p>
+            </td>
+            <td valign="top" class="style3"
+                 style="border-right-style: ridge; border-left-style: ridge;">
+                <b>Joint Selection</b><br /><br />
+
+				<script language="javaScript">
+				function toggle(source) {
+					checkboxes = document.getElementsByName("joints");
+					for(var i=0, n=checkboxes.length;i<n;i++) {
+		                checkboxes[i].checked =source.checked;
+					}
+				}
+				</script>
+
+				<input type="checkbox" name="joints" onchange="toggle(this); newRequest(this.form)"; checked="checked"/> Toggle All<br />
+
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="0" checked="checked"/> Hip Center<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="1" checked="checked"/> Spine<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="2" checked="checked"/> Shoulder Center<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="3" checked="checked"/> Head<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="4" checked="checked"/> Shoulder Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="5" checked="checked"/> Elbow Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="6" checked="checked"/> Wrist Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="7" checked="checked"/> Hand Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="8" checked="checked"/> Shoulder Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="9" checked="checked"/> Elbow Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="10" checked="checked"/> Wrist Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="11" checked="checked"/> Hand Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="12" checked="checked"/> Hip Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="13" checked="checked"/> Knee Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="14" checked="checked"/> Ankle Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="15" checked="checked"/> Foot Left<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="16" checked="checked"/> Hip Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="17" checked="checked"/> Knee Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="18" checked="checked"/> Ankle Right<br />
+                <input type="checkbox" name="joints" onchange="newRequest(this.form)" value="19" checked="checked"/> Foot Right<br />
+                <p><b>Sensor Tilt Control</b></p>
+                <p>&nbsp;Up</p>&nbsp;&nbsp;
+                <span id="range" style="text-align: right">0</span>
+                <br />&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="range"  min="-27" max="27" onchange="showValue(this.value)" onmouseup="moveTilt(this.value)" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <p>&nbsp;Down</p>
+                <script type="text/javascript">
+                    function showValue(newValue) {document.getElementById("range").innerHTML = newValue;}
+                </script>
+            </td>
+            <td class="style4" valign="top">
+                <p style="width: 127px"><b>&nbsp;Rate Control</b></p>
+                <select name="D1" style="margin-left: 7px" onchange="changeRate(this.value)">
+                    <option value="rate,unrated" >unrated SPS</option>
+                    <option value="rate,1" >1 SPS</option>
+                    <option value="rate,5" >5 SPS</option>
+                    <option value="rate,60" >60 SPS</option>
+                </select><br />
+                <br /> &nbsp;&nbsp;&nbsp;&nbsp; <br />
+                <b>&nbsp;Scale Control</b><br /><br />&nbsp;
+                <select name="D2"
+                    style="margin-left: 4px; width: 90px;"
+                    onchange="changeZscale(this.value)" >
+                    <option  value="scale,640,480,10" >640,480,10</option>
+                    <option  value="scale,640,480,20" >640,480,20</option>
+                    <option  value="scale,256,192,20" >256,192,20</option>
+                    <option  value="scale,1280,960,1" >1280,960,1</option>
+                </select><br />
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

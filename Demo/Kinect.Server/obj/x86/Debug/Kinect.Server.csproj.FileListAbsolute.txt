@@ -1,0 +1,299 @@
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\v-vapter\My Projects\Microsoft\ENGAGE\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\v-vapter\My Projects\KinectHtml5\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Administrator\Desktop\KinectHtml5\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+E:\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+E:\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+E:\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.exe
+E:\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+E:\KinectHtml5 v2\Kinect.Server\bin\Debug\Fleck.dll
+E:\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+E:\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+E:\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.application
+E:\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+E:\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\wonderama\Desktop\KinectHtml5 v2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\bin\Debug\Kinect.Server.application
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\bin\Debug\Kinect.Server.exe
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\bin\Debug\Kinect.Server.pdb
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\bin\Debug\Fleck.dll
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+G:\KinectHtml5 v2 - Copy (20120420)\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\KinectHtml5 v2 - 20120520\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerSourceTest3\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.ServerCrowdTest_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\ServerBuilds\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.2 Websocket Clean\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server_v2.3\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Surfer\ServerBuilds\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Surfer\ServerBuilds\Kinect.Serverv2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\KinectSurfer2\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\KinectSurfer2\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.4\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.5\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.6\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Surfer3.0\Kinect.Server v2.7\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.7NEW\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.8\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v2.9\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.0\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.0 final\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.1\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\bin\Debug\Fleck.dll
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server v3.1 fast send\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\bin\Debug\Kinect.Server.application
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\bin\Debug\Kinect.Server.exe
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\bin\Debug\Kinect.Server.pdb
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Debug\Kinect.Server.application
+C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server-31\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server-31\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server-31\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server-31\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server-31\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server-31\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server-31\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server-31\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server-31\obj\x86\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\bin\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\bin\Debug\Kinect.Server.application
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\bin\Debug\Kinect.Server.exe
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\bin\Debug\Kinect.Server.pdb
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\obj\x86\Debug\Kinect.Server.exe.manifest
+C:\Users\Fuji\Desktop\Kinect.Server- 3.2\obj\x86\Debug\Kinect.Server.application
+C:\playerpiano\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\playerpiano\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\playerpiano\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
+C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache

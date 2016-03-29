@@ -1,0 +1,10 @@
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\DemoServer.exe.config
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\DemoServer.exe
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\DemoServer.pdb
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Fleck.dll
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\obj\Debug\DemoServer.csprojResolveAssemblyReference.cache
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\obj\Debug\DemoServer.exe
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\obj\Debug\DemoServer.pdb
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.dll
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.pdb
+c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.xml

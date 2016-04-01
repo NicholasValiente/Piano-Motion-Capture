@@ -25,10 +25,13 @@ namespace DemoServer
 
             //initialise connection
             
-            var server = new WebSocketServer("ws://137.154.151.239:3000/relay");
+         //   var server = new WebSocketServer("ws://137.154.151.239:3000/relay");  //UWS
+            var server = new WebSocketServer("ws://192.168.0.233:3000/relay");      //Lab
 
-
+           // var server = new WebSocketServer("ws://0.0.0.0:8181");
             server.ListenerSocket.NoDelay = true;
+
+           // server.Certificate=
 
 
             Console.WriteLine("Dummy server started\n");
@@ -41,28 +44,28 @@ namespace DemoServer
                 server.Start(socket =>
                 {
                     
-                    socket.OnOpen = () =>
-                        {
-                            Sockets.Add(socket);
-                            Console.WriteLine("Connection Sucessful");
-                        };
+                       socket.OnOpen = () =>
+                           {
+                               Sockets.Add(socket);
+                               Console.WriteLine("Connection Sucessful");
+                           };
 
 
-                    socket.OnClose = () =>
-                        {
-                            Sockets.Remove(socket);
-                            Console.WriteLine("Connection Terminated");
+                       socket.OnClose = () =>
+                           {
+                               Sockets.Remove(socket);
+                               Console.WriteLine("Connection Terminated");
 
-                        };
+                           };
 
 
-                    socket.OnMessage = message =>
-                        {
-                            Console.WriteLine(message);
+                       socket.OnMessage = message =>
+                           {
+                               Console.WriteLine(message);
 
-                        };
+                           };
                       
-                     
+                          
 
                 });
             }
@@ -72,7 +75,7 @@ namespace DemoServer
             }
 
             //after connecting
-           
+         
 
             while (true) //later to be changed to while connected
             {

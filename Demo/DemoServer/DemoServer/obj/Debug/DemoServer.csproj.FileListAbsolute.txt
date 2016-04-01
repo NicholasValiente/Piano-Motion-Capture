@@ -8,3 +8,13 @@ c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\obj\De
 c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.dll
 c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.pdb
 c:\users\nick\documents\visual studio 2013\Projects\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\DemoServer.exe.config
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\obj\Debug\DemoServer.exe
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\obj\Debug\DemoServer.pdb
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\DemoServer.exe
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\DemoServer.pdb
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\Fleck.dll
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Nick\Desktop\Piano-Motion-Capture\Demo\DemoServer\DemoServer\obj\Debug\DemoServer.csprojResolveAssemblyReference.cache

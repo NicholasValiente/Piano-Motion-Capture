@@ -237,7 +237,7 @@ function load_trc(url, callback) {
             for (var i=0; i<trcData.samples.length; i++) {
                 var sample = trcData.samples[i].samples;
                 var vertices = []
-                for (var j=0; j<9; j=j+3) {
+                for (var j=0; j<15; j=j+3) {
 		
 				
 				 var vert = new THREE.Vector3(
@@ -356,13 +356,106 @@ function movePoint(p)
 					trc.data.vertSamples[frameNumber+i][2].y-=10;
 					}
 				}, 2000); 
-		break;		
+		break;
+	case 4:
+		for (var i=0; i<60; i++)
+		{
+		trc.data.vertSamples[currentFrame+i][3].y+=10;
+		}
+		setTimeout ( function () {
+				for (var i=0; i<60; i++)
+					{
+					trc.data.vertSamples[frameNumber+i][3].y-=10;
+					}
+				}, 2000); 
+		break;	
+	case 5:
+		for (var i=0; i<60; i++)
+		{
+		trc.data.vertSamples[currentFrame+i][4].y+=10;
+		}
+		setTimeout ( function () {
+				for (var i=0; i<60; i++)
+					{
+					trc.data.vertSamples[frameNumber+i][4].y-=10;
+					}
+				}, 2000); 
+		break;			
 	}
 
 }
-		//++++++++++++++++++
+		
+
+	//midi parts form here to end of modified section
+		
+var midi, data;
+
+if (navigator.requestMIDIAccess) {
+    navigator.requestMIDIAccess({
+        sysex: false
+    }).then(onMIDISuccess, onMIDIFailure);
+} else {
+   // alert("No MIDI support in your browser.");
+}
+
+function onMIDISuccess(midiAccess) {
+	var textbox = document.getElementById("midiBox");
+		textbox.innerHTML = "MIDI controller Supported";
+		
+	
+    // when we get a succesful response, run this code
+    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
+
+    var inputs = midi.inputs.values();
+    // loop over all available inputs and listen for any MIDI input
+    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+        // each time there is a midi message call the onMIDIMessage function
+        input.value.onmidimessage = onMIDIMessage;
+    }
+		
+	
+}
+		
+function onMIDIFailure(error) {
+    // when we get a failed response, run this code
+    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+}
+
+function onMIDIMessage(message) {
+    data = message.data;
+	
+	if (data[0]==144)
+	{
+		switch (data[1])
+		{
+			case 48:
+				movePoint(1);
+				break;
+			case 49:
+				movePoint(2);
+				break;
+			case 50:
+				movePoint(3);
+				break;
+			case 51:
+				movePoint(4);
+				break;
+			case 52:
+				movePoint(5);
+				break;
+			
+		}
+		
+	}
+}
+
+	
 
 		
+//++++++++++++++++++
+
+
+	
 //keyboard IO, should not need to be touched +NV
 var keyPressed = function(event) {
     console.log(event);
@@ -371,7 +464,7 @@ var keyPressed = function(event) {
             isPlaying = !isPlaying;
             break;
 			
-		//++++++++++++++++++
+			//+++++++++++++++++++++++++++++++
 		case 49: // 1
             movePoint(1); //calling this seems busted?
             break;
@@ -381,8 +474,17 @@ var keyPressed = function(event) {
 		case 51: // 3	
              movePoint(3);
             break;
-		//++++++++++++++++++
-
+		case 52: // 4	
+             movePoint(4);
+            break;
+		case 53: // 5	
+             movePoint(5);
+            break;
+			
+			//+++++++++++++++++++++++++++++++
+			
+			
+			
 		
         case 65: // a - creates a curve that spans through the selected points over the duration of the clip
             create_mkr_path();

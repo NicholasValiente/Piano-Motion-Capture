@@ -309,7 +309,7 @@ function render() {
 }
 
 		//++++++++++++++++++
-function movePoint(p)
+function movePoint(p, dir)
 {
 
 		var currentTime=Date.now(); //set date/time
@@ -320,66 +320,88 @@ function movePoint(p)
 	switch (p)
 	{
 	case 1:
-		for (var i=0; i<60; i++)
+		if (dir == "up")
 		{
-		trc.data.vertSamples[currentFrame+i][0].y+=10;
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][0].y+=10;
+			}
 		}
-		setTimeout ( function () {
-				for (var i=0; i<60; i++)
-					{
-					trc.data.vertSamples[frameNumber+i][0].y-=10;
-					}
-				}, 2000); 
+		if (dir=="down")
+		{
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][0].y-=10;
+			}
+		}
+			
 		break;
 		
 	case 2:
-		for (var i=0; i<60; i++)
+		if (dir == "up")
 		{
-		trc.data.vertSamples[currentFrame+i][1].y+=10;
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][1].y+=10;
+			}
 		}
-		setTimeout ( function () {
-				for (var i=0; i<60; i++)
-					{
-					trc.data.vertSamples[frameNumber+i][1].y-=10;
-					}
-				}, 2000); 
+		if (dir == "down")
+		{
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][1].y-=10;
+			}
+		}
+			
 		break;
 
 	case 3:
-		for (var i=0; i<60; i++)
+		if (dir == "up")
 		{
-		trc.data.vertSamples[currentFrame+i][2].y+=10;
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][2].y+=10;
+			}
 		}
-		setTimeout ( function () {
-				for (var i=0; i<60; i++)
-					{
-					trc.data.vertSamples[frameNumber+i][2].y-=10;
-					}
-				}, 2000); 
+		if (dir == "down")
+		{
+		for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][2].y-=10;
+			}
+		}
 		break;
 	case 4:
-		for (var i=0; i<60; i++)
+		if (dir == "up")
 		{
-		trc.data.vertSamples[currentFrame+i][3].y+=10;
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][3].y+=10;
+			}
 		}
-		setTimeout ( function () {
-				for (var i=0; i<60; i++)
-					{
-					trc.data.vertSamples[frameNumber+i][3].y-=10;
-					}
-				}, 2000); 
+		if (dir == "down")
+		{
+		for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][3].y-=10;
+			}
+		}	
 		break;	
 	case 5:
-		for (var i=0; i<60; i++)
+		if (dir == "up")
 		{
-		trc.data.vertSamples[currentFrame+i][4].y+=10;
+			for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][4].y+=10;
+			}
 		}
-		setTimeout ( function () {
-				for (var i=0; i<60; i++)
-					{
-					trc.data.vertSamples[frameNumber+i][4].y-=10;
-					}
-				}, 2000); 
+		if (dir == "down")
+		{
+		for (var i=0; i<trc.data.NumFrames; i++)
+			{
+			trc.data.vertSamples[i][4].y-=10;
+			}
+		}	
 		break;			
 	}
 
@@ -387,66 +409,49 @@ function movePoint(p)
 		
 
 	//midi parts form here to end of modified section
-		
-var midi, data;
 
-if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-        sysex: false
-    }).then(onMIDISuccess, onMIDIFailure);
-} else {
-   // alert("No MIDI support in your browser.");
-}
+//lab access	
+//var ws = new WebSocket("ws://192.168.0.233:3000/relay");
+//uws access
+var ws = new WebSocket("ws://137.154.151.239:3000/relay");
 
-function onMIDISuccess(midiAccess) {
-	var textbox = document.getElementById("midiBox");
-		textbox.innerHTML = "MIDI controller Supported";
-		
+ws.onopen = function(evt)
+               {
+			    
+               };
+
+			   
+			   
+			   
+ws.onmessage = function (message) {
+    var data = JSON.parse(message.data);
 	
-    // when we get a succesful response, run this code
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
-
-    var inputs = midi.inputs.values();
-    // loop over all available inputs and listen for any MIDI input
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-        // each time there is a midi message call the onMIDIMessage function
-        input.value.onmidimessage = onMIDIMessage;
-    }
-		
+	//alert("got message");
 	
-}
-		
-function onMIDIFailure(error) {
-    // when we get a failed response, run this code
-    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-}
-
-function onMIDIMessage(message) {
-    data = message.data;
-	
-	if (data[0]==144)
+	switch (data[1])
 	{
-		switch (data[1])
-		{
-			case 48:
-				movePoint(1);
-				break;
-			case 49:
-				movePoint(2);
-				break;
-			case 50:
-				movePoint(3);
-				break;
-			case 51:
-				movePoint(4);
-				break;
-			case 52:
-				movePoint(5);
-				break;
-			
-		}
-		
+		case 48:
+			if (data[0]==144)	{movePoint(1, "up");}
+			else 				{movePoint(1, "down");}
+			break;
+		case 49:
+			if (data[0]==144)	{movePoint(2, "up");}
+			else 				{movePoint(2, "down");}
+			break;
+		case 50:
+			if (data[0]==144)	{movePoint(3, "up");}
+			else 				{movePoint(3, "down");}
+			break;
+		case 51:
+			if (data[0]==144)	{movePoint(4, "up");}
+			else 				{movePoint(4, "down");}
+			break;
+		case 52:
+			if (data[0]==144)	{movePoint(5, "up");}
+			else 				{movePoint(5, "down");}
+			break;	
 	}
+			
 }
 
 	

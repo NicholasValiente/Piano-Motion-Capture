@@ -242,7 +242,7 @@ function load_trc(url, callback) {
 				
 				 var vert = new THREE.Vector3(
                         j -10,
-                        1 * SCALE ,
+                        15 ,//* SCALE ,
                         0);
 			
                     vertices.push(vert);
@@ -431,24 +431,24 @@ ws.onmessage = function (message) {
 	switch (data[1])
 	{
 		case 48:
-			if (data[0]==144)	{movePoint(1, "up");}
-			else 				{movePoint(1, "down");}
+			if (data[0]==144)	{movePoint(1, "down");}
+			else 				{movePoint(1, "up");}
 			break;
 		case 49:
-			if (data[0]==144)	{movePoint(2, "up");}
-			else 				{movePoint(2, "down");}
+			if (data[0]==144)	{movePoint(2, "down");}
+			else 				{movePoint(2, "up");}
 			break;
 		case 50:
-			if (data[0]==144)	{movePoint(3, "up");}
-			else 				{movePoint(3, "down");}
+			if (data[0]==144)	{movePoint(3, "down");}
+			else 				{movePoint(3, "up");}
 			break;
 		case 51:
-			if (data[0]==144)	{movePoint(4, "up");}
-			else 				{movePoint(4, "down");}
+			if (data[0]==144)	{movePoint(4, "down");}
+			else 				{movePoint(4, "up");}
 			break;
 		case 52:
-			if (data[0]==144)	{movePoint(5, "up");}
-			else 				{movePoint(5, "down");}
+			if (data[0]==144)	{movePoint(5, "down");}
+			else 				{movePoint(5, "up");}
 			break;	
 	}
 			

@@ -12,6 +12,7 @@ namespace ConsoleApplication2
 {
     class Program
     {
+        
 
         public class Point 
         {
@@ -189,6 +190,7 @@ namespace ConsoleApplication2
 
         }
 
+
         static void Main(string[] args)
         {
             traceData T;
@@ -200,37 +202,11 @@ namespace ConsoleApplication2
 
             T= new traceData(path);
 
-           // T.playback();
+            //  T.playback();
 
-              var wscli = new ClientWebSocket();
-        var tokSrc = new CancellationTokenSource();
-        var task = wscli.ConnectAsync(new Uri("ws://localhost:8181"), tokSrc.Token);
-        task.Wait(); task.Dispose();
-        Console.WriteLine("WebSocket to ws://localhost:8181 OPEN!");
-        Console.WriteLine("SubProtocol: " + wscli.SubProtocol ?? "");
 
-        Console.WriteLine(@"Type ""exit<Enter>"" to quit... ");
-        for (var inp = Console.ReadLine(); inp != "exit"; inp = Console.ReadLine())
-        {
-            task = wscli.SendAsync(
-                        new ArraySegment<byte>(Encoding.UTF8.GetBytes(inp)),
-                        WebSocketMessageType.Text,
-                        false,
-                        tokSrc.Token
-                    );
-            task.Wait(); task.Dispose();
-            Console.WriteLine("**** sent msg");
-        }
 
-        if (wscli.State == WebSocketState.Open)
-        {
-            task = wscli.CloseAsync(WebSocketCloseStatus.NormalClosure, "", tokSrc.Token);
-            task.Wait(); task.Dispose();
-        }
-        tokSrc.Dispose();
-        Console.WriteLine("WebSocket CLOSED");
-    
-
+         
 
 
             Console.Write("Press Any Key to exit...");

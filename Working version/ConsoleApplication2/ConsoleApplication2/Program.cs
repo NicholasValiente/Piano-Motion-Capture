@@ -202,7 +202,7 @@ namespace ConsoleApplication2
 
             T= new traceData(path);
 
-            //  T.playback();
+              T.playback();
 
 
 

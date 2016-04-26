@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="Motion Visualizer - a browser app developed at the Choreographic Coding Lab at Deakin Motion.Lab in Melbourne, 2015, by Philip Boltt.">
+  <meta name="author" content="Philip Boltt">
+  <link rel="icon" href="../img/favicon.ico">
+  <title>MoVis</title>
+  <meta property="og:title" content="Motion Visualizer">
+  <meta property="og:site_name" content="Motion Visualizer">
+  <meta property="og:image" content="http://philboltt.github.io/ccl-2015/img/motionVisualizer.png">
+  <!-- Twitter card data -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@philboltt">
+  <meta name="twitter:title" content="VMotion Visualizer">
+  <meta name="twitter:description" content="Motion Visualizer - a browser app developed at the Choreographic Coding Lab at Deakin Motion.Lab in Melbourne, 2015, by Philip Boltt.">
+  <meta name="twitter:creator" content="@philboltt">
+  <meta name="twitter:image" content="http://philboltt.github.io/ccl-2015/img/motionVisualizer.png">
+  <!-- Bootstrap core CSS -->
+  <link href="css/styles.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="jumbotron">
+      <h1>[Mo]tion[Vis]ualizer</h1>
+      <div class="subtitle">
+        <a href="http://philboltt.github.io/ccl-2015/MoVis.html">Play with it here</a> |
+        <a href="https://github.com/philboltt/ccl-2015">View the source on GitHub</a> |
+        Find me on <a href="https://www.facebook.com/phil.boltt"><i class="fa fa-lg fa-facebook-square"></i></a>
+        <a href="http://instagram.com/philboltt"><i class="fa fa-lg fa-instagram"></i></a>
+        <a href="http://nz.linkedin.com/pub/philip-boltt/2/29/627"><i class="fa fa-lg fa-linkedin-square"></i></a>
+      </div>
+      <p>[Mo]tion[Vis]ualiser was developed during the 2015 Melbourne Choreographic Coding Lab, at the
+        <a href="https://blogs.deakin.edu.au/motionlab/">Deakin University/Motion.Lab</a>  motion capture stage.  The page
+        is an experiment in providing simplified or abstracted views on motion capture marker data, by allowing the user
+        to define the view, style and level of detail that the data presents.</p>
+      <img src="img/vis1.gif">
+      <p>During the lab I had the opportunity to converse with choreographer Anouk van Dijk, creator of the
+        <a href="http://www.countertechnique.com/">Countertechnique method</a>, and work with data that had been recorded
+        of one of the skilled practitioners of Countertechnique, Niharika Senapati, performing a variety of movements
+        based on the method.  The visualization styles were influenced by this discussion, and also by collaboration with data visualization
+        artist, <a href="http://www.ri.id.au/">Ri Liu</a>.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="alert alert-warning" role="alert">This page, and the associated app, have only been tested on Chrome v41
+        running on a (mac) laptop.</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1 content">
+      <h2>About the lab</h2>
+      <p>In April a group of new media artists, performers and programmers gathered at the <a href="https://blogs.deakin.edu.au/motionlab/">Deakin University Motion.Lab</a>
+        motion-capture facility in Melbourne, under the direction and guidance of Scott deLahunta and Florian Jenett of
+        <a href="http://motionbank.org/">MotionBank</a>, to explore the intersection of contemporary dance choreography and
+        technology.  This was the 2015 Melbourne Choreographic Coding Lab.</p>
+      <br/>
+      <div>
+        <iframe src="https://player.vimeo.com/video/125130521?byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>Using the app</h2>
+      <div class="text-center">
+        <iframe src="https://player.vimeo.com/video/124915892?byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <h3>Keyboard Shortcuts</h3>
+      <div class="modal-body text-center">
+        <table class="table table-striped">
+          <tr><th>Key</th><th>Action</th></tr>
+          <tr><td>space</td><td>stop and start playback</td></tr>
+          <tr><td>a</td><td>create path over the duration of the clip</td></tr>
+          <tr><td>b</td><td>creates brush strokes along the ground</td></tr>
+          <tr><td>c</td><td>creates a curve between the selected markers</td></tr>
+          <tr><td>g</td><td>toggles the grid visibility</td></tr>
+          <tr><td>k</td><td>show this dialog</td></tr>
+          <tr><td>m</td><td>toggles the marker visibility</td></tr>
+          <tr><td>o</td><td>open load dialog</td></tr>
+          <tr><td>s</td><td>hide/show marker selection</td></tr>
+          <tr><td>t</td><td>create trails from selected points</td></tr>
+          <tr><td>u</td><td>create "up" arrows</td></tr>
+          <tr><td>v</td><td>create "look-ahead" velocity vector arrows</td></tr>
+          <tr><td>x</td><td>step one frame forward in time</td></tr>
+          <tr><td>z</td><td>step one frame back in time</td></tr>
+          <tr><td>`</td><td>remove all lines</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1 content">
+      <h2>Early tests</h2>
+      <p>My initial thought was to try and implement a live data stream from the mocap system into the browser which,
+        honestly, doesn’t seem like a sensible thing to do.  But since I’m not burdened by an over-abundance of
+        common-sense I thought I’d give it a bash.  The team at Motion.Lab had written a Unity plugin that linked to the
+        Motion Analysis streaming library and converted the stream into OSC messages.  I wrote small websocket server
+        in Go that read the OSC message stream and converted each OSC message into a websocket message.  To test the
+        theory I wrote a small python server that read a trc file (mocap marker data - translations only) and sent an
+        OSC message per sample at the data’s sample rate.  This worked surprisingly well.</p>
+      <br/>
+      <p>Only problem was that the live feed from the stage was sending a distinct OSC message per marker axis, which
+        quickly choked my setup.  Given a bit more time, and a reconfiguration of how the Unity plugin translated the
+        Motion Analysis stream into OSC messages, I’m confident we could have had in-browser visualization driven by a
+        live stream from the mocap stage.  However, time was better spent focussing on the visualization side so I opted
+        to use pre-recorded .trc files and just work with those.
+      </p>
+      <p>This is a screencast of the app as it was on the final day, prior to the little bit of housekeeping I did before
+      putting it online.</p>
+      <div>
+        <iframe src="https://player.vimeo.com/video/124720617?byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1 content">
+      <p>Thanks to all participants for your inspiration and innovation
+      <ul>
+        <li><a href="http://www.ri.id.au/">Ri Liu</a></li>
+        <li><a href="http://www.ethnotekh.com/">Brad Hammond, Chris Vik and Stephen Burns</a></li>
+        <li><a href="http://www.tobyk.com.au/">Toby Knyvett</a></li>
+        <li><a href="http://vimeo.com/89067919">Ryan McGoldrick</a></li>
+        <li><a href="http://caitlynparry.com/structure-of-madness">Caitlyn Parry</a></li>
+        <li><a href="http://www.imagineer.net.au/">Peter Walker</a></li>
+        <li><a href="http://manoeuvre.tv/">Richard De Souza</a></li>
+        <li><a href="https://www.facebook.com/BukWheatSkater">Steven Kilili</a></li>
+        <li>Oliver Elmers</li>
+        <li><a href="http://www.stephhutchison.com">Steph Hutchison</a></li>
+        <li><a href="http://www.johnmccormick.info/category/motion-lab/">John McCormick</a></li>
+        <li><a href="http://chailight.com/">Mark Pedersen</a></li>
+      </ul>
+      Special thanks to our Motion.Lab hosts: Kim Vincs, Jordan Beth Vincent, Daniel Skovli, Simeon Taylor & Peter Divers
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

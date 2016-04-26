@@ -234,8 +234,9 @@ function load_trc(url, callback) {
             trcData.vertSamples = []
 
 			
-            for (var i=0; i<trcData.samples.length; i++) {
-                var sample = trcData.samples[i].samples;
+        //    for (var i=0; i<trcData.samples.length; i++) {
+                var sample = trcData.samples[0].samples;
+				//alert(sample[0]);
                 var vertices = []
                 for (var j=0; j<15; j=j+3) {
 		
@@ -245,12 +246,16 @@ function load_trc(url, callback) {
                         15 ,//* SCALE ,
                         0);
 			
+			   
                     vertices.push(vert);
                 }
+				
                 trcData.vertSamples.push(vertices);
-            }
+         //   }
 			
             trc.data = trcData;
+			
+			alert (trc.data.vertSamples[0][0].x);
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
             var material = new THREE.PointCloudMaterial({size: 1});
@@ -281,7 +286,7 @@ function animate() {
     var currentTime=Date.now(); //set date/time
 	//if is not paused
     if (isPlaying) {
-        var frameNumber = Math.floor(((currentTime - startTime)/interval) % trc.data.NumFrames); //grab current frame number
+        var frameNumber = Math.floor(((currentTime - startTime)/interval) % 1); //grab current frame number
         if (currentFrame != frameNumber) { //if current frame does not match selected frame
             currentFrame = frameNumber; //set current frame to match selected frame
             trc.ptc.geometry.vertices = trc.data.vertSamples[currentFrame];

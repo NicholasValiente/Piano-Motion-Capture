@@ -25,6 +25,8 @@ var isGridHelperVisible = true; //whether grid is visible +NV
 var isPtcVisible = true;
 var isLoading = false;
 
+var flag = false;
+
 //lab access	
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
@@ -210,30 +212,46 @@ ws.onmessage = function (message) {
 // in here we need to take the data loaded from the websocket, convert it from json into an array/vector, and then save the points into a playback buffer that clears after finishing playing
 	
 	console.log("message received\n");
+	
+	
     var data = JSON.parse(message.data);
+	//console.log("message data:\t" + JSON.stringify(data));
 	
-	
-	trcData.vertSamples = []
+	var vertSamples = []
 	//remove for loop and make it 
-            for (var i=0; i<trcData.samples.length; i++) {
+	
+	
+            for (var i=0; i<2; i++) {
 			//replace "trcData.samples[i].samples" with the appropriate part from json message
-                var sample = trcData.samples[i].samples; 
-                var vertices = []
-                for (var j=0; j<sample.length; j=j+3) {
+                var sample = data;
+					
+                var vertices = [];
+                for (var j=0; j<sample.length; j++) {
                     var vert = new THREE.Vector3(
-                        sample[j]   * SCALE,
-                        sample[j+1] * SCALE,
-                        sample[j+2] * SCALE);
+                        sample[j][0]   * SCALE,
+                        sample[j][1] * SCALE,
+                        sample[j][2] * SCALE);
                     vertices.push(vert);
                 }
-                trcData.vertSamples.push(vertices);
-            }
-            trc.data = trcData;
+                vertSamples.push(vertices);
+				
+			
+           	 }
+		   
+           // trc.data.vertSamples.length=0;
+		   //console.log(JSON.stringify(vertSamples));
+            trc.data.vertSamples = vertSamples;
+			
+			//console.log(JSON.stringify(trc.data.vertSamples));
+	
+			
+			scene.remove(trc.ptc);
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
             var material = new THREE.PointCloudMaterial({size: 1});
             trc.ptc = new THREE.PointCloud( geometry, material );
             scene.add(trc.ptc);
+			
 	}
 
 // this needs to be modified to be used on WS message
@@ -334,6 +352,7 @@ function animate() {
     }
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen
+	
 }
 
 function render() {

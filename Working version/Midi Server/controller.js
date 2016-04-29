@@ -19,7 +19,7 @@ if (navigator.requestMIDIAccess) {
 socket.onopen = function(evt)
                {
                   // Web Socket is connected, send data using send()
-                     socket.send("Web Socket Supported: SERVER <br/>");             
+                  //   socket.send("Web Socket Supported: SERVER <br/>");             
                };
 
 
@@ -46,7 +46,7 @@ function onMIDISuccess(midiAccess) {
 	console.log("initialising key points");
 	for(var i=0; i< 49; i++)
 	{
-		keys[i]= new Array( (i*2)-10, 10, 0 );
+		keys[i]= new Array( (i*25)-612, 10, 0 );
 	}
 	
 }
@@ -54,10 +54,11 @@ function onMIDISuccess(midiAccess) {
 function moveKey (num, dir)
 {
 	if (dir=="up")
-		{keys[num][1]+=2;}
+		{keys[num][1]+=10;}
 	else if (dir=="down")
-		{keys[num][1]-=2;}
+		{keys[num][1]-=10;}
 	
+	console.log(JSON.stringify(keys));
 	socket.send (JSON.stringify(keys) );	
 }
 
@@ -68,6 +69,7 @@ function onMIDIFailure(error) {
 
 function onMIDIMessage(message) {
     data = message.data; // this gives us our [command/channel, note, velocity] data.
+	
 	switch (data[1])
 	{
 		case 36:

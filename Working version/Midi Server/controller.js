@@ -1,7 +1,10 @@
 var midi, data;
-//var socket = new WebSocket("ws://echo.websocket.org:80");
+//lab access
 //var socket = new WebSocket("ws://192.168.0.233:3000/relay");
-var socket = new WebSocket("ws://137.154.151.239:3000/relay");
+//uws campus access
+//var socket = new WebSocket("ws://137.154.151.239:3000/relay");
+//home testing
+var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array();
 
@@ -13,14 +16,15 @@ if (navigator.requestMIDIAccess) {
         sysex: false
     }).then(onMIDISuccess, onMIDIFailure);
 } else {
-    alert("No MIDI support in your browser.");
+    console.log("No MIDI support in your browser.");
 }
 
 socket.onopen = function(evt)
-               {
-                  // Web Socket is connected, send data using send()
-                  //   socket.send("Web Socket Supported: SERVER <br/>");             
-               };
+{
+// Web Socket is connected, send data using send()
+	var textbox = document.getElementById("midiBox");
+	textbox.innerHTML = "Connected to server";
+};
 
 
 
@@ -46,17 +50,18 @@ function onMIDISuccess(midiAccess) {
 	console.log("initialising key points");
 	for(var i=0; i< 49; i++)
 	{
-		keys[i]= new Array( (i*25)-612, 10, 0 );
+		keys[i]= new Array( {'x':(i*25)-612, 'y':10, 'z':0} );
 	}
 	
+	console.log(keys[0].x);
 }
 
 function moveKey (num, dir)
 {
 	if (dir=="up")
-		{keys[num][1]+=10;}
+		{keys[num].y+=10;}
 	else if (dir=="down")
-		{keys[num][1]-=10;}
+		{keys[num].y-=10;}
 	
 	console.log(JSON.stringify(keys));
 	socket.send (JSON.stringify(keys) );	

@@ -30,11 +30,15 @@ var flag = false;
 //lab access	
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+//var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+//home testing
+var ws = new WebSocket("ws://127.0.0.1:3000/relay");
+
 
 ws.onopen = function(evt)
                {
-			    
+			    console.log("Successfully connected to server");
+				console.log (evt);
                };
 
 
@@ -218,9 +222,8 @@ ws.onmessage = function (message) {
 	//console.log("message data:\t" + JSON.stringify(data));
 	
 	var vertSamples = []
-	//remove for loop and make it 
 	
-	
+	//MAY be able to remove loop now that incoming points have labelled x,y,z points
             for (var i=0; i<2; i++) {
 			//replace "trcData.samples[i].samples" with the appropriate part from json message
                 var sample = data;

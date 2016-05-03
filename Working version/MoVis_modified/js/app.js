@@ -31,6 +31,8 @@ var flag = false;
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
 var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+//home testing
+//var ws = new WebSocket("ws://127.0.0.1:3000/relay");
 
 ws.onopen = function(evt)
                {
@@ -223,14 +225,14 @@ ws.onmessage = function (message) {
 	
             for (var i=0; i<2; i++) {
 			//replace "trcData.samples[i].samples" with the appropriate part from json message
-                var sample = data;
+               
 					
                 var vertices = [];
                 for (var j=0; j<sample.length; j++) {
                     var vert = new THREE.Vector3(
-                        sample[j][0]   * SCALE,
-                        sample[j][1] * SCALE,
-                        sample[j][2] * SCALE);
+                        data[j][0]   * SCALE,
+                        data[j][1] * SCALE,
+                        data[j][2] * SCALE);
                     vertices.push(vert);
                 }
                 vertSamples.push(vertices);
@@ -238,11 +240,8 @@ ws.onmessage = function (message) {
 			
            	 }
 		   
-           // trc.data.vertSamples.length=0;
-		   //console.log(JSON.stringify(vertSamples));
             trc.data.vertSamples = vertSamples;
 			
-			//console.log(JSON.stringify(trc.data.vertSamples));
 	
 			
 			scene.remove(trc.ptc);

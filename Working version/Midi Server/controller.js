@@ -7,23 +7,78 @@ var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array();
+var date = new Date();
+var lastMessage =  date.getTime();
+console.log(lastMessage);
 
+console.log("initialising key points");
+// white keys
+keys[0] = new Array (-362,10,0);
+keys[2] = new Array (-337,10,0);
+keys[4] = new Array (-312,10,0);
+keys[5] = new Array (-287,10,0);
+keys[7] = new Array (-262,10,0);
+keys[9] = new Array (-237,10,0);
+keys[11] = new Array (-212,10,0);
+keys[12] = new Array (-187,10,0);
+keys[14] = new Array (-162,10,0);
+keys[16] = new Array (-137,10,0);
+keys[17] = new Array (-112,10,0);
+keys[19] = new Array (-87,10,0);
+keys[21] = new Array (-62,10,0);
+keys[23] = new Array (-37,10,0);
+keys[24] = new Array (-12,10,0);
+keys[26] = new Array (13,10,0);
+keys[28] = new Array (38,10,0);
+keys[29] = new Array (63,10,0);
+keys[31] = new Array (88,10,0);
+keys[33] = new Array (113,10,0);
+keys[35] = new Array (138,10,0);
+keys[36] = new Array (163,10,0);
+keys[38] = new Array (188,10,0);
+keys[40] = new Array (213,10,0);
+keys[41] = new Array (238,10,0);
+keys[43] = new Array (263,10,0);
+keys[45] = new Array (288,10,0);
+keys[47] = new Array (313,10,0);
+keys[48] = new Array (338,10,0);
+//black keys
+keys[1] = new Array (-349.5,20,-20);
+keys[3] = new Array (-324.5,20,-20);
+keys[6] = new Array (-274.5,20,-20);
+keys[8] = new Array (-249.5,20,-20);
+keys[10] = new Array (-224.5,20,-20);
+keys[13] = new Array (-174.5,20,-20);
+keys[15] = new Array (-149.5,20,-20);
+keys[18] = new Array (-99.5,20,-20);
+keys[20] = new Array (-74.5,20,-20);
+keys[22] = new Array (-49.5,20,-20);
+keys[25] = new Array (0.5,20,-20);
+keys[27] = new Array (25.5,20,-20);
+keys[30] = new Array (75.5,20,-20);
+keys[32] = new Array (100.5,20,-20);
+keys[34] = new Array (125.5,20,-20);
+keys[37] = new Array (175.5,20,-20);
+keys[39] = new Array (200.5,20,-20);
+keys[42] = new Array (250.5,20,-20);
+keys[44] = new Array (275.5,20,-20);
+keys[46] = new Array (325.5,20,-20);
+	
 
 
 // request MIDI access
 if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-        sysex: false
-    }).then(onMIDISuccess, onMIDIFailure);
+  navigator.requestMIDIAccess({
+    sysex: false
+  }).then(onMIDISuccess, onMIDIFailure);
 } else {
-    alert("No MIDI support in your browser.");
+  alert("No MIDI support in your browser.");
 }
 
 socket.onopen = function(evt)
-               {
-                  // Web Socket is connected, send data using send()
-                  //   socket.send("Web Socket Supported: SERVER <br/>");             
-               };
+        {
+        socket.send (JSON.stringify(keys) );       
+        };
 
 
 
@@ -35,22 +90,18 @@ function onMIDISuccess(midiAccess) {
 		textbox.innerHTML = "MIDI controller Supported";
 		
 	
-    // when we get a succesful response, run this code
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
+  // when we get a succesful response, run this code
+  midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
 
-    var inputs = midi.inputs.values();
-    // loop over all available inputs and listen for any MIDI input
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-        // each time there is a midi message call the onMIDIMessage function
-        input.value.onmidimessage = onMIDIMessage;
-    }
+  var inputs = midi.inputs.values();
+  // loop over all available inputs and listen for any MIDI input
+  for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+    // each time there is a midi message call the onMIDIMessage function
+    input.value.onmidimessage = onMIDIMessage;
+  }
 	
 	//initialise key positions
-	console.log("initialising key points");
-	for(var i=0; i< 49; i++)
-	{
-		keys[i]= new Array( (i*25)-612, 10, 0 );
-	}
+	
 	
 }
 
@@ -61,17 +112,19 @@ function moveKey (num, dir)
 	else if (dir=="down")
 		{keys[num][1]-=10;}
 	
-	console.log(JSON.stringify(keys));
-	socket.send (JSON.stringify(keys) );	
+	if ( date.getTime()-lastMessage >100)
+		socket.send (JSON.stringify(keys) );	
+	else
+		console.log("Too little time between messages");
 }
 
 function onMIDIFailure(error) {
-    // when we get a failed response, run this code
-    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+  // when we get a failed response, run this code
+  console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
 }
 
 function onMIDIMessage(message) {
-    data = message.data; // this gives us our [command/channel, note, velocity] data.
+  data = message.data; // this gives us our [command/channel, note, velocity] data.
 	
 	switch (data[1])
 	{

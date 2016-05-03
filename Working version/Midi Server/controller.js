@@ -112,7 +112,7 @@ function moveKey (num, dir)
 	else if (dir=="down")
 		{keys[num][1]-=10;}
 	
-	if ( date.getTime()-lastMessage >100)
+	if ( date.getTime()-lastMessage >16)
 		socket.send (JSON.stringify(keys) );	
 	else
 		console.log("Too little time between messages");

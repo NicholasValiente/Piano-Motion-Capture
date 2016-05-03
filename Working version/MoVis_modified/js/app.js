@@ -228,7 +228,7 @@ ws.onmessage = function (message) {
                
 					
                 var vertices = [];
-                for (var j=0; j<sample.length; j++) {
+                for (var j=0; j<data.length; j++) {
                     var vert = new THREE.Vector3(
                         data[j][0]   * SCALE,
                         data[j][1] * SCALE,

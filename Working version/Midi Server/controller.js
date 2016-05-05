@@ -2,9 +2,9 @@ var midi, data;
 //lab access
 //var socket = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-var socket = new WebSocket("ws://137.154.151.239:3000/relay");
+//var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-//var socket = new WebSocket("ws://127.0.0.1:3000/relay");
+var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array();
 var date = new Date();
@@ -119,12 +119,28 @@ function moveKey (num, dir, vel)
 			
 		}
 	else if (dir=="down")
-		{keys[num][1]-=vel;}
+		{
+			if (vel <10)
+				keys[num][1]-=10;
+			else
+				keys[num][1]-=vel;
+		}
 	
-	if ( date.getTime()-lastMessage >16)
+	date = new Date();
+	var delay =date.getTime()-lastMessage;
+	if ( delay >16)
+	{
 		socket.send (JSON.stringify(keys) );	
+		lastMessage = date.getTime();
+	}
 	else
-		console.log("Too little time between messages");
+	{
+		console.log("Too little time between messages" );
+		setTimeout(function(){
+			socket.send (JSON.stringify(keys) );	
+			lastMessage = date.getTime();
+			}, 16-delay);
+	}
 }
 
 function onMIDIFailure(error) {

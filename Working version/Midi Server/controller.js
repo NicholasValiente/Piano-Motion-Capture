@@ -2,9 +2,9 @@ var midi, data;
 //lab access
 //var socket = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-//var socket = new WebSocket("ws://137.154.151.239:3000/relay");
+var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-var socket = new WebSocket("ws://127.0.0.1:3000/relay");
+//var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array();
 var date = new Date();

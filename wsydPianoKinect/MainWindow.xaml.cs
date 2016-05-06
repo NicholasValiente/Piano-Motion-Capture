@@ -135,6 +135,8 @@ namespace Wsyd.Piano.Kinect
             // one sensor is currently supported
             this.kinectSensor = KinectSensor.GetDefault();
 
+            Console.WriteLine("Starting connect");
+
             // get the coordinate mapper
             this.coordinateMapper = this.kinectSensor.CoordinateMapper;
 

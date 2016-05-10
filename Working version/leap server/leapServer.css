@@ -2,14 +2,56 @@
 
 #left {
   
-   padding-left: 80px;
+   padding-left: 20px;
+   padding-right: 20px;
 }
-#midiBox {
- height:600px; 
- width:600px; 
+
+#tips {
+ height:300px; 
+ width:300px; 
  border:1px solid #ccc;
  font:16px/26px Georgia, Garamond, Serif;
  overflow:auto;
-  
+ float: left;
+margin-right:20px;
+}
+#knuckle1 {
+ height:300px; 
+ width:300px; 
+ border:1px solid #ccc;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  float: left;
+margin-right:20px;
+}
+#knuckle2 {
+ height:300px; 
+ width:300px; 
+ border:1px solid #ccc;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  float: bottom;
+margin-right:20px;
+}
+#wrists {
+ height:300px; 
+ width:300px; 
+ border:1px solid #ccc;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+   float: left;
+margin-top:20px;
+margin-left:150px;
+margin-right:20px;
+   
+}
+#palms {
+ height:300px; 
+ width:300px; 
+ border:1px solid #ccc;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+   float: left;
+margin-top:20px;
 }
 

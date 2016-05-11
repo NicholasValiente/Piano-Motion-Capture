@@ -30,9 +30,13 @@ var flag = false;
 //lab access	
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+//var ws = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-//var ws = new WebSocket("ws://127.0.0.1:3000/relay");
+var ws = new WebSocket("ws://127.0.0.1:3000/relay");
+
+var midiPoints =[];
+var leapPoints =[];
+var kinectPoints =[];
 
 ws.onopen = function(evt)
                {
@@ -217,18 +221,18 @@ ws.onmessage = function (message) {
 	
 	
     var data = JSON.parse(message.data);
-	//console.log("message data:\t" + JSON.stringify(data));
+	//console.log(data[0]);
 	
 	var vertSamples = []
 	//remove for loop and make it 
 	
 	
-            for (var i=0; i<2; i++) {
+           // for (var i=0; i<2; i++) {
 			//replace "trcData.samples[i].samples" with the appropriate part from json message
                
 					
                 var vertices = [];
-                for (var j=0; j<data.length; j++) {
+                for (var j=1; j<data.length; j++) {
                     var vert = new THREE.Vector3(
                         data[j][0]   * SCALE,
                         data[j][1] * SCALE,
@@ -237,19 +241,52 @@ ws.onmessage = function (message) {
                 }
                 vertSamples.push(vertices);
 				
-			
-           	 }
+		
+           	 //}
+			 
+			 
+			 if (data[0] == "midi")
+			 {
+				midiPoints = [];
+				midiPoints = vertSamples;
+			 }
+			 
+			 if (data[0] == "leap")
+			 {
+				leapPoints = [];
+				leapPoints = vertSamples;
+			 }	 
 		   
-            trc.data.vertSamples = vertSamples;
+		  
+			//midiPoints = midiPoints.concat(leapPoints);
+			//while(midiPoints.length)leapPoints.push(midiPoints.shift());
+			var allPoints = [];
 			
-	
+			for (var i=0; i<midiPoints.length; i++)
+			{
+				allPoints.push(midiPoints[i]);
+			}
+			
+			for (var i=0; i<leapPoints.length; i++)
+			{
+				allPoints.push(leapPoints[i]);
+			}
+			
+			
+            trc.data.vertSamples = allPoints;
+			
+			console.log(JSON.stringify(allPoints));
 			
 			scene.remove(trc.ptc);
+			if (trc.data.vertSamples.length>0)
+			{
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
             var material = new THREE.PointCloudMaterial({size: 1});
             trc.ptc = new THREE.PointCloud( geometry, material );
             scene.add(trc.ptc);
+			}
+			
 			
 	}
 
@@ -349,6 +386,24 @@ function animate() {
             dynObjs[i].updateFunc(dynObjs[i]); //display current marker points locations
         }
     }
+	
+	
+	
+	
+	//console.log(JSON.stringify(midiPoints));
+	
+			/*
+	trc.data.vertSamples = midiPoints;
+	
+			
+	scene.remove(trc.ptc);
+    var geometry = new THREE.Geometry();
+    geometry.vertices = trc.data.vertSamples[currentFrame];
+    var material = new THREE.PointCloudMaterial({size: 1});
+    trc.ptc = new THREE.PointCloud( geometry, material );
+    scene.add(trc.ptc);
+			*/
+			
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen
 	

@@ -233,7 +233,7 @@ namespace Wsyd.Piano.Kinect
             // initialize the components (controls) of the window
             this.InitializeComponent();
 
-            this.ConnectToServer();
+            ConnectToServer();
         }
 
         /// <summary>
@@ -250,7 +250,22 @@ namespace Wsyd.Piano.Kinect
 
         private async Task SendToServer()
         {
-            var message = "[" + head[0] + "," + head[1] + "," + head[2] + "]";
+            float x=10, y=10, z=10;
+
+            foreach (Body body in this.bodies)
+            {
+                if (body.IsTracked)
+                {
+                    Console.WriteLine("tracking the head");
+                    x = body.Joints[JointType.Head].Position.X * 500;
+                    y = body.Joints[JointType.Head].Position.Y * 500 ;
+                    z = body.Joints[JointType.Head].Position.Z * 200 ;
+
+                    Console.WriteLine("x:" + x + "y:" + y + "z:" + z);
+                }
+            }
+
+            var message = "[[" + x + "," + y + "," + z + "]]";
             var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
 
             await _socket.SendAsync(

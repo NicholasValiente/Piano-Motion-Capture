@@ -4,7 +4,18 @@
         <!--<script src="controller.js"></script> -->
         <link rel="stylesheet" type="text/css" href="pretty_server.css">
         <meta charset="UTF-8">
-
+        <style>
+		    #left {
+                padding-left: 80px;
+            }
+            #headBox {
+                height:100px;
+                width:400px;
+                border:1px solid #ccc;
+                font:16px/26px Georgia, Garamond, Serif;
+                overflow:auto;
+            }
+		</style>
 </head>
 <body>
         <div id="left">
@@ -30,7 +41,7 @@
         output = new Array(2);
         socket = new WebSocket("ws://137.154.151.239:3000/relay");
         headbox = document.getElementById("headBox");
-        head = new Array(11, 40, 10, directions.LEFT, directions.UP);
+        head = new Array(11, 400, 10, directions.LEFT, directions.UP);
         lastMessage = new Date().getTime();
         console.log(lastMessage);
 
@@ -39,12 +50,10 @@
                 console.log("Opening web socket connection");
 
                 output[0] = output[1] = new Array(3);
-                output[0][0] = head[0];
-                output[0][1] = head[1];
-                output[0][2] = head[2];
-                output[1][0] = 0;
-                output[1][1] = 0;
-                output[1][2] = 0;
+                output[0][0] = output[0][1] = output[0][2] = 0;
+                output[1][0] = head[0];
+                output[1][1] = head[1];
+                output[1][2] = head[2];
 
                 socket.send (JSON.stringify(output));
 
@@ -55,30 +64,30 @@
         function updatehead() {
 
                 if (head[3] == directions.LEFT){
-                        if (head[0] < -20) {
+                        if (head[0] < -60) {
                                 head[3] = directions.RIGHT;
-                                head[0] += 10;
+                                head[0] += 30;
                         } else {
-                                head[0] -= 10;
+                                head[0] -= 30;
                         }
                 } else {
-                        if (head[0] > 60) {
+                        if (head[0] > 100) {
                                 head[3] = directions.LEFT;
-                                head[0] -= 10;
+                                head[0] -= 30;
                         } else {
-                                head[0] += 10;
+                                head[0] += 30;
                         }
                 }
 
                 if (head[4] == directions.UP) {
-                        if (head[1] > 50) {
+                        if (head[1] > 410) {
                                 head[4] = directions.DOWN;
                                 head[1] -= 2;
                         } else {
                                 head[1] += 2;
                         }
                 } else {
-                        if (head[1] < 30) {
+                        if (head[1] < 390) {
                                 head[4] = directions.UP;
                                 head[1] += 2;
                         } else {
@@ -88,11 +97,14 @@
                 headBox.innerHTML =
                         "head position is " + head[0] + ", " + head[1] + ", " + head[2] ;
 
-                output[0][0] = head[0];
+                output[1][0] = head[0];
+                output[1][1] = head[1];
+                output[1][2] = head[2];
+				output[0][0] = head[0];
                 output[0][1] = head[1];
                 output[0][2] = head[2];
 
-                //socket.send()
+                socket.send(JSON.stringify(output));
 
 
                 return;

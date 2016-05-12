@@ -16,6 +16,11 @@ namespace Wsyd.Piano.Kinect
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using Microsoft.Kinect;
+    using System.Net.WebSockets;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Text;
+
 
     /// <summary>
     /// Interaction logic for MainWindow
@@ -128,6 +133,15 @@ namespace Wsyd.Piano.Kinect
         private string statusText = null;
 
         /// <summary>
+        /// testing to learn how websockets work
+        /// </summary>
+        private int[] head = { 0, 20, 0 };
+        private Uri _serverURI = new Uri("ws://137.154.151.239:3000/relay");
+        private ClientWebSocket _socket;
+        private CancellationTokenSource _cts;
+
+
+        /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
@@ -218,6 +232,32 @@ namespace Wsyd.Piano.Kinect
 
             // initialize the components (controls) of the window
             this.InitializeComponent();
+
+            this.ConnectToServer();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private async Task ConnectToServer()
+        {
+            _cts = new CancellationTokenSource();
+            _socket = new ClientWebSocket();
+
+            await _socket.ConnectAsync(_serverURI, _cts.Token);
+        }
+
+        private async Task SendToServer()
+        {
+            var message = "[" + head[0] + "," + head[1] + "," + head[2] + "]";
+            var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+
+            await _socket.SendAsync(
+                sendbuf,
+                WebSocketMessageType.Text,
+                endOfMessage: true,
+                cancellationToken: _cts.Token);
         }
 
         /// <summary>
@@ -300,7 +340,7 @@ namespace Wsyd.Piano.Kinect
         /// </summary>
         /// <param name="sender">object sending the event</param>
         /// <param name="e">event arguments</param>
-        private void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
+        private async void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
         {
             bool dataReceived = false;
 
@@ -365,6 +405,18 @@ namespace Wsyd.Piano.Kinect
 
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+
+                    if (head[1] > 260)
+                    {
+                        head[1] = 20;
+                    }
+                    else
+                    {
+                        head[1] += 4;
+                    }
+
+                    await SendToServer();
+
                 }
             }
         }

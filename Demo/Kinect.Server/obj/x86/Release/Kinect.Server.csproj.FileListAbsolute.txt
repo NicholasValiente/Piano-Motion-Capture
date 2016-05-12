@@ -100,3 +100,6 @@ C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\bin\Release\Kinect.Se
 C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Release\Kinect.Server.csprojResolveAssemblyReference.cache
 C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Release\Kinect.Server.exe.manifest
 C:\Users\wonderama\Desktop\Kinect Server 3.2\Kinect.Server\obj\x86\Release\Kinect.Server.application
+C:\Users\Wonderama\Documents\GitHub\Piano-Motion-Capture\Demo\Kinect.Server\obj\x86\Release\Kinect.Server.exe
+C:\Users\Wonderama\Documents\GitHub\Piano-Motion-Capture\Demo\Kinect.Server\obj\x86\Release\Kinect.Server.pdb
+C:\Users\Wonderama\Documents\GitHub\Piano-Motion-Capture\Demo\Kinect.Server\obj\x86\Release\Kinect.Server.csprojResolveAssemblyReference.cache

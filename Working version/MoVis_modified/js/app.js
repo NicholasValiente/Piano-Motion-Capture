@@ -30,13 +30,19 @@ var flag = false;
 //lab access	
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-//var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+var ws = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-var ws = new WebSocket("ws://127.0.0.1:3000/relay");
+//var ws = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var midiPoints =[];
 var leapPoints =[];
-var kinectPoints =[];
+var kinect1Points =[];
+var kinect2Points =[];
+
+midiPoints[0] = new Array();
+leapPoints[0] = new Array();
+kinect1Points[0] = new Array();
+kinect2Points[0] = new Array();
 
 ws.onopen = function(evt)
                {
@@ -216,20 +222,11 @@ function toggleSelection() {
 
 ws.onmessage = function (message) {
 // in here we need to take the data loaded from the websocket, convert it from json into an array/vector, and then save the points into a playback buffer that clears after finishing playing
-	
-	console.log("message received\n");
-	
-	
+
     var data = JSON.parse(message.data);
-	//console.log(data[0]);
-	
+
 	var vertSamples = []
-	//remove for loop and make it 
 	
-	
-           // for (var i=0; i<2; i++) {
-			//replace "trcData.samples[i].samples" with the appropriate part from json message
-               
 					
                 var vertices = [];
                 for (var j=1; j<data.length; j++) {
@@ -240,9 +237,6 @@ ws.onmessage = function (message) {
                     vertices.push(vert);
                 }
                 vertSamples.push(vertices);
-				
-		
-           	 //}
 			 
 			 
 			 if (data[0] == "midi")
@@ -256,26 +250,50 @@ ws.onmessage = function (message) {
 				leapPoints = [];
 				leapPoints = vertSamples;
 			 }	 
+			 
+			 if (data[0] == "kin1")
+			 {
+				kinect1Points = [];
+				kinect1Points = vertSamples;
+			 }	 
+			 
+			 if (data[0] == "kin2")
+			 {
+				kinect2Points = [];
+				kinect2Points = vertSamples;
+			 }	 
+			 
+			 
 		   
-		  
-			//midiPoints = midiPoints.concat(leapPoints);
-			//while(midiPoints.length)leapPoints.push(midiPoints.shift());
+		   
+		   
 			var allPoints = [];
+			allPoints [0]= new Array();
 			
-			for (var i=0; i<midiPoints.length; i++)
+		
+			
+			for (var i=0; i<midiPoints[0].length; i++)
 			{
-				allPoints.push(midiPoints[i]);
+				allPoints[0].push(midiPoints[0][i]);
 			}
 			
-			for (var i=0; i<leapPoints.length; i++)
+			for (var i=0; i<leapPoints[0].length; i++)
 			{
-				allPoints.push(leapPoints[i]);
+				allPoints[0].push(leapPoints[0][i]);
+			}
+			
+			for (var i=0; i<kinect1Points[0].length; i++)
+			{
+				allPoints[0].push(kinect1Points[0][i]);
+			}
+			
+			for (var i=0; i<kinect2Points[0].length; i++)
+			{
+				allPoints[0].push(kinect2Points[0][i]);
 			}
 			
 			
             trc.data.vertSamples = allPoints;
-			
-			console.log(JSON.stringify(allPoints));
 			
 			scene.remove(trc.ptc);
 			if (trc.data.vertSamples.length>0)

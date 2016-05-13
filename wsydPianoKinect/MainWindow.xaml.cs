@@ -135,7 +135,7 @@ namespace Wsyd.Piano.Kinect
         /// <summary>
         /// testing to learn how websockets work
         /// </summary>
-        private int[] head = { 0, 20, 0 };
+        ///private int[] head = { 0, 20, 0 };
         private Uri _serverURI = new Uri("ws://137.154.151.239:3000/relay");
         private ClientWebSocket _socket;
         private CancellationTokenSource _cts;
@@ -265,7 +265,7 @@ namespace Wsyd.Piano.Kinect
                 }
             }
 
-            var message = "[[" + x + "," + y + "," + z + "]]";
+            var message = "[\"kin2\",[" + x + "," + y + "," + z + "]]";
             var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
 
             await _socket.SendAsync(
@@ -421,14 +421,6 @@ namespace Wsyd.Piano.Kinect
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    if (head[1] > 260)
-                    {
-                        head[1] = 20;
-                    }
-                    else
-                    {
-                        head[1] += 4;
-                    }
 
                     await SendToServer();
 

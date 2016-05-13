@@ -251,28 +251,41 @@ namespace Wsyd.Piano.Kinect
         private async Task SendToServer()
         {
             float x=10, y=10, z=10;
+            string message;
+            JointType[] tracked = { JointType.Head, JointType.Neck, JointType.ElbowLeft, JointType.ElbowRight,
+                    JointType.ShoulderLeft, JointType.ShoulderRight, JointType.SpineShoulder};
+            ArraySegment<byte> sendbuf;
 
             foreach (Body body in this.bodies)
             {
+                
+
                 if (body.IsTracked)
                 {
-                    Console.WriteLine("tracking the head");
-                    x = body.Joints[JointType.Head].Position.X * 500;
-                    y = body.Joints[JointType.Head].Position.Y * 500 ;
-                    z = body.Joints[JointType.Head].Position.Z * 200 ;
+                    message = "[\"kin2\"";
 
-                    Console.WriteLine("x:" + x + "y:" + y + "z:" + z);
+                    foreach (JointType j in tracked)
+                    {
+                        Console.WriteLine("The joint is" + j);
+                        x = body.Joints[j].Position.X * 500;
+                        y = body.Joints[j].Position.Y * 500 ;
+                        z = body.Joints[j].Position.Z * 500 ;
+                        message += ",[" + x + "," + y + "," + z + "]";
+                    }
+
+                    message += "]";
+
+
+
+                    sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+
+                    await _socket.SendAsync(
+                        sendbuf,
+                        WebSocketMessageType.Text,
+                        endOfMessage: true,
+                        cancellationToken: _cts.Token);
                 }
             }
-
-            var message = "[\"kin2\",[" + x + "," + y + "," + z + "]]";
-            var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
-
-            await _socket.SendAsync(
-                sendbuf,
-                WebSocketMessageType.Text,
-                endOfMessage: true,
-                cancellationToken: _cts.Token);
         }
 
         /// <summary>

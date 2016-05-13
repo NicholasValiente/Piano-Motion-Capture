@@ -34,6 +34,16 @@ var ws = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
 //var ws = new WebSocket("ws://127.0.0.1:3000/relay");
 
+var midiPoints =[];
+var leapPoints =[];
+var kinect1Points =[];
+var kinect2Points =[];
+
+midiPoints[0] = new Array();
+leapPoints[0] = new Array();
+kinect1Points[0] = new Array();
+kinect2Points[0] = new Array();
+
 ws.onopen = function(evt)
                {
 			    
@@ -212,23 +222,14 @@ function toggleSelection() {
 
 ws.onmessage = function (message) {
 // in here we need to take the data loaded from the websocket, convert it from json into an array/vector, and then save the points into a playback buffer that clears after finishing playing
-	
-	console.log("message received\n");
-	
-	
+
     var data = JSON.parse(message.data);
-	//console.log("message data:\t" + JSON.stringify(data));
-	
+
 	var vertSamples = []
-	//remove for loop and make it 
 	
-	
-            for (var i=0; i<2; i++) {
-			//replace "trcData.samples[i].samples" with the appropriate part from json message
-               
 					
                 var vertices = [];
-                for (var j=0; j<data.length; j++) {
+                for (var j=1; j<data.length; j++) {
                     var vert = new THREE.Vector3(
                         data[j][0]   * SCALE,
                         data[j][1] * SCALE,
@@ -236,20 +237,74 @@ ws.onmessage = function (message) {
                     vertices.push(vert);
                 }
                 vertSamples.push(vertices);
-				
-			
-           	 }
+			 
+			 
+			 if (data[0] == "midi")
+			 {
+				midiPoints = [];
+				midiPoints = vertSamples;
+			 }
+			 
+			 if (data[0] == "leap")
+			 {
+				leapPoints = [];
+				leapPoints = vertSamples;
+			 }	 
+			 
+			 if (data[0] == "kin1")
+			 {
+				kinect1Points = [];
+				kinect1Points = vertSamples;
+			 }	 
+			 
+			 if (data[0] == "kin2")
+			 {
+				kinect2Points = [];
+				kinect2Points = vertSamples;
+			 }	 
+			 
+			 
 		   
-            trc.data.vertSamples = vertSamples;
+		   
+		   
+			var allPoints = [];
+			allPoints [0]= new Array();
 			
-	
+		
+			
+			for (var i=0; i<midiPoints[0].length; i++)
+			{
+				allPoints[0].push(midiPoints[0][i]);
+			}
+			
+			for (var i=0; i<leapPoints[0].length; i++)
+			{
+				allPoints[0].push(leapPoints[0][i]);
+			}
+			
+			for (var i=0; i<kinect1Points[0].length; i++)
+			{
+				allPoints[0].push(kinect1Points[0][i]);
+			}
+			
+			for (var i=0; i<kinect2Points[0].length; i++)
+			{
+				allPoints[0].push(kinect2Points[0][i]);
+			}
+			
+			
+            trc.data.vertSamples = allPoints;
 			
 			scene.remove(trc.ptc);
+			if (trc.data.vertSamples.length>0)
+			{
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
             var material = new THREE.PointCloudMaterial({size: 1});
             trc.ptc = new THREE.PointCloud( geometry, material );
             scene.add(trc.ptc);
+			}
+			
 			
 	}
 
@@ -349,6 +404,24 @@ function animate() {
             dynObjs[i].updateFunc(dynObjs[i]); //display current marker points locations
         }
     }
+	
+	
+	
+	
+	//console.log(JSON.stringify(midiPoints));
+	
+			/*
+	trc.data.vertSamples = midiPoints;
+	
+			
+	scene.remove(trc.ptc);
+    var geometry = new THREE.Geometry();
+    geometry.vertices = trc.data.vertSamples[currentFrame];
+    var material = new THREE.PointCloudMaterial({size: 1});
+    trc.ptc = new THREE.PointCloud( geometry, material );
+    scene.add(trc.ptc);
+			*/
+			
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen
 	

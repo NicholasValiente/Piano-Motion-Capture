@@ -6,63 +6,64 @@ var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
 //var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
-var keys = new Array();
+var keys = new Array("midi");
 var date = new Date();
 var lastMessage =  date.getTime();
 console.log(lastMessage);
 
 console.log("initialising key points");
-// white keys
-keys[0] = new Array (-362,10,0);
-keys[2] = new Array (-337,10,0);
-keys[4] = new Array (-312,10,0);
-keys[5] = new Array (-287,10,0);
-keys[7] = new Array (-262,10,0);
-keys[9] = new Array (-237,10,0);
-keys[11] = new Array (-212,10,0);
-keys[12] = new Array (-187,10,0);
-keys[14] = new Array (-162,10,0);
-keys[16] = new Array (-137,10,0);
-keys[17] = new Array (-112,10,0);
-keys[19] = new Array (-87,10,0);
-keys[21] = new Array (-62,10,0);
-keys[23] = new Array (-37,10,0);
-keys[24] = new Array (-12,10,0);
-keys[26] = new Array (13,10,0);
-keys[28] = new Array (38,10,0);
-keys[29] = new Array (63,10,0);
-keys[31] = new Array (88,10,0);
-keys[33] = new Array (113,10,0);
-keys[35] = new Array (138,10,0);
-keys[36] = new Array (163,10,0);
-keys[38] = new Array (188,10,0);
-keys[40] = new Array (213,10,0);
-keys[41] = new Array (238,10,0);
-keys[43] = new Array (263,10,0);
-keys[45] = new Array (288,10,0);
-keys[47] = new Array (313,10,0);
-keys[48] = new Array (338,10,0);
-//black keys
-keys[1] = new Array (-349.5,20,-20);
-keys[3] = new Array (-324.5,20,-20);
-keys[6] = new Array (-274.5,20,-20);
-keys[8] = new Array (-249.5,20,-20);
-keys[10] = new Array (-224.5,20,-20);
-keys[13] = new Array (-174.5,20,-20);
-keys[15] = new Array (-149.5,20,-20);
-keys[18] = new Array (-99.5,20,-20);
-keys[20] = new Array (-74.5,20,-20);
-keys[22] = new Array (-49.5,20,-20);
-keys[25] = new Array (0.5,20,-20);
-keys[27] = new Array (25.5,20,-20);
-keys[30] = new Array (75.5,20,-20);
-keys[32] = new Array (100.5,20,-20);
-keys[34] = new Array (125.5,20,-20);
-keys[37] = new Array (175.5,20,-20);
-keys[39] = new Array (200.5,20,-20);
-keys[42] = new Array (250.5,20,-20);
-keys[44] = new Array (275.5,20,-20);
-keys[46] = new Array (325.5,20,-20);
+
+keys.push( new Array (-362,10,0) );
+keys.push( new Array (-349.5,20,-20));
+keys.push( new Array (-337,10,0));
+keys.push( new Array (-324.5,20,-20));
+keys.push( new Array (-312,10,0));
+keys.push( new Array (-287,10,0));
+keys.push( new Array (-274.5,20,-20));
+keys.push( new Array (-262,10,0));
+keys.push( new Array (-249.5,20,-20));
+keys.push( new Array (-237,10,0));
+keys.push( new Array (-224.5,20,-20));
+keys.push( new Array (-212,10,0));
+keys.push( new Array (-187,10,0));
+keys.push( new Array (-174.5,20,-20));
+keys.push( new Array (-162,10,0));
+keys.push( new Array (-149.5,20,-20));
+keys.push( new Array (-137,10,0));
+keys.push( new Array (-112,10,0));
+keys.push( new Array (-99.5,20,-20));
+keys.push( new Array (-87,10,0));
+keys.push( new Array (-74.5,20,-20));
+keys.push( new Array (-62,10,0));
+keys.push( new Array (-49.5,20,-20));
+keys.push( new Array (-37,10,0));
+keys.push( new Array (-12,10,0));
+keys.push( new Array (0.5,20,-20));
+keys.push( new Array (13,10,0));
+keys.push( new Array (25.5,20,-20));
+keys.push( new Array (38,10,0));
+keys.push( new Array (63,10,0));
+keys.push( new Array (75.5,20,-20));
+keys.push( new Array (88,10,0));
+keys.push( new Array (100.5,20,-20));
+keys.push( new Array (113,10,0));
+keys.push( new Array (125.5,20,-20));
+keys.push( new Array (138,10,0));
+keys.push( new Array (163,10,0));
+keys.push( new Array (175.5,20,-20));
+keys.push( new Array (188,10,0));
+keys.push( new Array (200.5,20,-20));
+keys.push( new Array (213,10,0));
+keys.push( new Array (238,10,0));
+keys.push( new Array (250.5,20,-20));
+keys.push( new Array (263,10,0));
+keys.push( new Array (275.5,20,-20));
+keys.push( new Array (288,10,0));
+keys.push( new Array (300.5,20,-20));
+keys.push( new Array (313,10,0));
+keys.push( new Array (338,10,0));
+
+
 	
 
 
@@ -113,17 +114,17 @@ function moveKey (num, dir, vel)
 			if (	num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
 				 	num==22 || num==25 || num ==27 || num ==30 || num ==32 || num ==34 || num ==37 || num ==39 ||
 					num ==42 || num ==44 || num ==46 )
-				keys[num][1]=20; //move to black keys y starting position
+				keys[num+1][1]=20; //move to black keys y starting position
 			else //if white key
-				keys[num][1]=10; //move to white keys y starting position
+				keys[num+1][1]=10; //move to white keys y starting position
 			
 		}
 	else if (dir=="down")
 		{
 			if (vel <10)
-				keys[num][1]-=10;
+				keys[num+1][1]-=10;
 			else
-				keys[num][1]-=vel;
+				keys[num+1][1]-=vel;
 		}
 	
 	date = new Date();
@@ -151,6 +152,7 @@ function onMIDIFailure(error) {
 function onMIDIMessage(message) {
   data = message.data; // this gives us our [command/channel, note, velocity] data.
 	
+	//console.log(data[1]);
 	switch (data[1])
 	{
 		case 36:

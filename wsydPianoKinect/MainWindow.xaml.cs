@@ -20,6 +20,7 @@ namespace Wsyd.Piano.Kinect
     using System.Threading;
     using System.Threading.Tasks;
     using System.Text;
+    using Newtonsoft.Json;
 
 
     /// <summary>
@@ -251,6 +252,7 @@ namespace Wsyd.Piano.Kinect
         private async Task SendToServer()
         {
             float x=10, y=10, z=10;
+            float[] pos = { 10, 10, 10 };
             string message;
             JointType[] tracked = { JointType.Head, JointType.Neck, JointType.ElbowLeft, JointType.ElbowRight,
                     JointType.ShoulderLeft, JointType.ShoulderRight, JointType.SpineShoulder};
@@ -262,21 +264,21 @@ namespace Wsyd.Piano.Kinect
 
                 if (body.IsTracked)
                 {
-                    message = "[\"kin2\"";
+                    //message = "[\"kin2\"";
 
                     foreach (JointType j in tracked)
                     {
                         Console.WriteLine("The joint is" + j);
-                        x = body.Joints[j].Position.X * 500;
-                        y = body.Joints[j].Position.Y * 500 ;
-                        z = body.Joints[j].Position.Z * 500 ;
-                        message += ",[" + x + "," + y + "," + z + "]";
+                        pos[0] = body.Joints[j].Position.X * 500;
+                        pos[1] = body.Joints[j].Position.Y * 500 ;
+                        pos[2] = body.Joints[j].Position.Z * 500 ;
+                        //message += ",[" + x + "," + y + "," + z + "]";
                     }
 
-                    message += "]";
-
-
-
+                    //message += "]";
+                    object[] o = { "kin2", pos };
+                    message = JsonConvert.SerializeObject(o);
+                    Console.WriteLine(message);
                     sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
 
                     await _socket.SendAsync(

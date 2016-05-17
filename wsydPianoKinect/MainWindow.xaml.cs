@@ -260,8 +260,11 @@ namespace Wsyd.Piano.Kinect
                 JointType.ShoulderLeft,
                 JointType.ShoulderRight,
                 JointType.ElbowLeft,
-                JointType.ElbowRight };
+                JointType.ElbowRight,
+                JointType.WristLeft,
+                JointType.WristRight};
             string message = "";
+            int scaleAmt = 600;
 
             foreach (Body body in this.bodies)
             {
@@ -271,9 +274,9 @@ namespace Wsyd.Piano.Kinect
 
                     foreach(JointType j in tracked)
                     {
-                        pos[0] = body.Joints[j].Position.X * 500;
-                        pos[1] = body.Joints[j].Position.Y * 500;
-                        pos[2] = body.Joints[j].Position.Z * 500;
+                        pos[0] = body.Joints[j].Position.X * scaleAmt;
+                        pos[1] = body.Joints[j].Position.Y * scaleAmt;
+                        pos[2] = body.Joints[j].Position.Z * scaleAmt;
 
                         message += ",[" + pos[0] + "," + pos[1] + "," + pos[2] + "]";
                     }

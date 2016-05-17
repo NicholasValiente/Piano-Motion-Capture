@@ -10,7 +10,7 @@ var data = new Array("leap");
 var empty = true;
 var connected = false;
 
-var controller =  new Leap.Controller({frameEventName: 'animationFrame', background: 'true'});
+var controller =  new Leap.Controller({frameEventName: 'animationFrame', background: true, optimizeHMD: true});
 
 
 socket.onopen = function(evt)
@@ -25,7 +25,8 @@ connected=false;
 
 controller.connect();
 
-Leap.loop(function(frame){
+
+controller.loop(function(frame){
 	var textbox = document.getElementById("databox");
 	var head = document.getElementById("header");
 	var tip = document.getElementById("tips");
@@ -73,12 +74,12 @@ Leap.loop(function(frame){
 		
 		
 		//deciding what to send to movis
-	if (data.length>1)
+	if (data.length>1 && connected)
 		{
 			socket.send(JSON.stringify ( data) );
 			empty=false;
 		}
-	else if (!empty)
+	else if (!empty && connected)
 		{
 			socket.send(JSON.stringify (data ) );
 			empty=true;

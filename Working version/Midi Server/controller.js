@@ -8,9 +8,6 @@ var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 
 var keys = new Array("midi");
 var buffer = new Array("midi");
-var date = new Date();
-var lastMessage =  date.getTime();
-console.log(lastMessage);
 
 console.log("initialising key points");
 

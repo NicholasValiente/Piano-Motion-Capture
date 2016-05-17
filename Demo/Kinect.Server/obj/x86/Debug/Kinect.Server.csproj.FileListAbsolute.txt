@@ -297,3 +297,5 @@ C:\playerpiano\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyRe
 C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
 C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.pdb
 C:\Users\Nick\Desktop\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache
+C:\Users\Wonderama\Documents\GitHub\Piano-Motion-Capture\Demo\Kinect.Server\obj\x86\Debug\Kinect.Server.exe
+C:\Users\Wonderama\Documents\GitHub\Piano-Motion-Capture\Demo\Kinect.Server\obj\x86\Debug\Kinect.Server.csprojResolveAssemblyReference.cache

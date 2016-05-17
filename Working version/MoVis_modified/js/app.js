@@ -39,6 +39,16 @@ var leapPoints =[];
 var kinect1Points =[];
 var kinect2Points =[];
 
+var midiCloud ;
+var leapCloud ;
+var kinect1Cloud ;
+var kinect2Cloud ;
+
+var midiColour = 0xffffff;
+var leapColour = 0xaaff80;
+var kinect1Colour = 0xffffff;
+var kinect2Colour = 0xff0000;//0xff66cc;
+
 midiPoints[0] = new Array();
 leapPoints[0] = new Array();
 kinect1Points[0] = new Array();
@@ -265,67 +275,57 @@ ws.onmessage = function (message) {
 					midiPoints = [];
 					midiPoints = vertSamples;
 					}
+					
+				scene.remove(midiCloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = midiPoints[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:midiColour });
+				midiCloud = new THREE.PointCloud( geometry, material );
+				scene.add(midiCloud);
+					
 				break;
 			 
 			case "leap":
 				leapPoints = [];
 				leapPoints = vertSamples;
+				
+				scene.remove(leapCloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = leapPoints[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:leapColour });
+				leapCloud = new THREE.PointCloud( geometry, material );
+				scene.add(leapCloud);
 				break;
 			 
 			 case "kin1":
 				kinect1Points = [];
 				kinect1Points = vertSamples;
+				
+				scene.remove(kinect1Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect1Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect1Colour });
+				kinect1Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect1Cloud);
 				break;
 			 
 			 case "kin2":
 				kinect2Points = [];
 				kinect2Points = vertSamples;
+				
+				scene.remove(kinect2Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect2Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect2Colour });
+				kinect2Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect2Cloud);
 				break;
 			}
 			 
 	
 		}
 		   //end if here or should it be after everything?
-		   
-			var allPoints = [];
-			allPoints [0]= new Array();
-			
-		
-			
-			for (var i=0; i<midiPoints[0].length; i++)
-			{
-				allPoints[0].push(midiPoints[0][i]);
-			}
-			
-			for (var i=0; i<leapPoints[0].length; i++)
-			{
-				allPoints[0].push(leapPoints[0][i]);
-			}
-			
-			for (var i=0; i<kinect1Points[0].length; i++)
-			{
-				allPoints[0].push(kinect1Points[0][i]);
-			}
-			
-			for (var i=0; i<kinect2Points[0].length; i++)
-			{
-				allPoints[0].push(kinect2Points[0][i]);
-			}
-			
-			
-            trc.data.vertSamples = allPoints;
-			
-			scene.remove(trc.ptc);
-			if (trc.data.vertSamples.length>0)
-			{
-            var geometry = new THREE.Geometry();
-            geometry.vertices = trc.data.vertSamples[currentFrame];
-            var material = new THREE.PointCloudMaterial({size: 1, color:0x339933 }); //quickfind  color: 0xA2CFA5, transparent: true
-            trc.ptc = new THREE.PointCloud( geometry, material );
-            scene.add(trc.ptc);
-			}
-			
-			
+		   			
 	}
 
 

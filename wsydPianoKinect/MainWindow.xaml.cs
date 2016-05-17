@@ -251,28 +251,47 @@ namespace Wsyd.Piano.Kinect
         private async Task SendToServer()
         {
             float x=10, y=10, z=10;
+            float[] pos = { 10, 10, 10 };
+            JointType[] tracked = {
+                JointType.Head,
+                JointType.Neck,
+                JointType.SpineShoulder,
+                JointType.SpineMid,
+                JointType.ShoulderLeft,
+                JointType.ShoulderRight,
+                JointType.ElbowLeft,
+                JointType.ElbowRight };
+            string message = "";
 
             foreach (Body body in this.bodies)
             {
                 if (body.IsTracked)
                 {
-                    Console.WriteLine("tracking the head");
-                    x = body.Joints[JointType.Head].Position.X * 500;
-                    y = body.Joints[JointType.Head].Position.Y * 500 ;
-                    z = body.Joints[JointType.Head].Position.Z * 200 ;
+                    message = "[\"kin2\""; 
 
-                    Console.WriteLine("x:" + x + "y:" + y + "z:" + z);
+                    foreach(JointType j in tracked)
+                    {
+                        pos[0] = body.Joints[j].Position.X * 500;
+                        pos[1] = body.Joints[j].Position.Y * 500;
+                        pos[2] = body.Joints[j].Position.Z * 500;
+
+                        message += ",[" + pos[0] + "," + pos[1] + "," + pos[2] + "]";
+                    }
+
+                    message += "]";
+
+
+                    var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+
+                    await _socket.SendAsync(
+                        sendbuf,
+                        WebSocketMessageType.Text,
+                        endOfMessage: true,
+                        cancellationToken: _cts.Token);
                 }
             }
 
-            var message = "[\"kin2\",[" + x + "," + y + "," + z + "]]";
-            var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
 
-            await _socket.SendAsync(
-                sendbuf,
-                WebSocketMessageType.Text,
-                endOfMessage: true,
-                cancellationToken: _cts.Token);
         }
 
         /// <summary>
@@ -421,10 +440,9 @@ namespace Wsyd.Piano.Kinect
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-
-                    await SendToServer();
-
                 }
+
+                await SendToServer();
             }
         }
 

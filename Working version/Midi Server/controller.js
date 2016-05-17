@@ -7,6 +7,7 @@ var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array("midi");
+var buffer = new Array("midi");
 var date = new Date();
 var lastMessage =  date.getTime();
 console.log(lastMessage);
@@ -68,6 +69,7 @@ keys.push( new Array (338,10,0));
 
 
 // request MIDI access
+requestMidi:
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess({
     sysex: false
@@ -88,7 +90,7 @@ socket.onopen = function(evt)
 // midi functions
 function onMIDISuccess(midiAccess) {
 	var textbox = document.getElementById("midiBox");
-		textbox.innerHTML = "MIDI controller Supported";
+		textbox.innerHTML = "MIDI controller connected";
 		
 	
   // when we get a succesful response, run this code
@@ -106,12 +108,21 @@ function onMIDISuccess(midiAccess) {
 	
 }
 
+function onMIDIFailure(error) {
+  // when we get a failed response, run this code
+  console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+  var textbox = document.getElementById("midiBox");
+		textbox.innerHTML = "No MIDI controller";
+		break requestMidi;
+}
+
+
 function moveKey (num, dir, vel)
 {
 	if (dir=="up")
 		{
 			//if black key
-			if (	num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
+			if (	num ==1 || num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
 				 	num==22 || num==25 || num ==27 || num ==30 || num ==32 || num ==34 || num ==37 || num ==39 ||
 					num ==42 || num ==44 || num ==46 )
 				keys[num+1][1]=20; //move to black keys y starting position
@@ -121,38 +132,48 @@ function moveKey (num, dir, vel)
 		}
 	else if (dir=="down")
 		{
-			if (vel <10)
-				keys[num+1][1]-=10;
-			else
-				keys[num+1][1]-=vel;
+			if (vel <40)
+				keys[num+1][1]-=30;
+			else //if (vel<50)
+				{
+					keys[num+1][1]-=(vel-30);
+					console.log(vel);
+				}
+				
+			//else
+			//keys[num+1][1]-=50;
 		}
+		
+		
+		var flag =false;
+		//if  buffer is not empty (1 is the flag used for movis)
+		if (buffer.length >1)
+		{//iterate through the buffer and compare each points x to the key moved x
+			for (var i=1; i<buffer.lenght; i++)
+			{
+				if (keys[num+1][0]==buffer[i][0]) //if it matches
+				{//replace current version in buffer with the changed one (happens if key goes down-> or visa versa before buffer is sent and cleared)
+				 //and then break out of the loop
+					buffer[i] = keys[num+1];
+					flag = true;	
+					break;
+				}
+			}
+		}
+		//if there is not one in the buffer already, add it in instead
+		if (flag==false)
+			{
+				buffer.push(keys[num+1]);
+			}
 	
-	date = new Date();
-	var delay =date.getTime()-lastMessage;
-	if ( delay >16)
-	{
-		socket.send (JSON.stringify(keys) );	
-		lastMessage = date.getTime();
-	}
-	else
-	{
-		console.log("Too little time between messages" );
-		setTimeout(function(){
-			socket.send (JSON.stringify(keys) );	
-			lastMessage = date.getTime();
-			}, 16-delay);
-	}
 }
 
-function onMIDIFailure(error) {
-  // when we get a failed response, run this code
-  console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-}
+
 
 function onMIDIMessage(message) {
   data = message.data; // this gives us our [command/channel, note, velocity] data.
 	
-	//console.log(data[1]);
+	
 	switch (data[1])
 	{
 		case 36:
@@ -357,3 +378,15 @@ function onMIDIMessage(message) {
 	}
 	
 }
+
+
+setInterval ( function()
+{
+	if (buffer.length >1)
+	{
+	socket.send (JSON.stringify(buffer));
+	//console.log (JSON.stringify(buffer));
+	buffer = new Array("midi");
+	}
+}
+, 16);

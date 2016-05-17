@@ -221,51 +221,71 @@ function toggleSelection() {
 
 
 ws.onmessage = function (message) {
-// in here we need to take the data loaded from the websocket, convert it from json into an array/vector, and then save the points into a playback buffer that clears after finishing playing
-
     var data = JSON.parse(message.data);
 
-	var vertSamples = []
+	if (data[0]=="midi" || data[0]=="leap" || data[0]=="kin1" || data[0]=="kin2")
+		{
+		var vertSamples = []
 	
-					
-                var vertices = [];
-                for (var j=1; j<data.length; j++) {
-                    var vert = new THREE.Vector3(
-                        data[j][0]   * SCALE,
-                        data[j][1] * SCALE,
-                        data[j][2] * SCALE);
-                    vertices.push(vert);
-                }
-                vertSamples.push(vertices);
+		var vertices = [];
+        for (var j=1; j<data.length; j++) 
+			{
+			var vert = new THREE.Vector3(
+				data[j][0]   * SCALE,
+				data[j][1] * SCALE,
+				data[j][2] * SCALE);
+			vertices.push(vert);
+			}
+		vertSamples.push(vertices);
 			 
+
+		switch (data[0])
+			{
+			case "midi":
+				 if (midiPoints[0].length >vertSamples.length)
+					{//replace only new points
+						for (var i=0; i<vertSamples[0].length; i++)
+							{
+								innerLoop:
+							for (var j=0; j<midiPoints[0].length; j++)
+								
+								{
+									if (midiPoints[0][j].x == vertSamples[0][i].x)
+									{
+										midiPoints[0][j] = vertSamples[0][i]; //replace
+										break innerLoop; 
+										//j=midiPoints[0].length; //then set to end of midi points so as to not waste time comparing when we have already found
+									}
+								}
+							}
+					 
+					}
+				 else
+					{
+					midiPoints = [];
+					midiPoints = vertSamples;
+					}
+				break;
 			 
-			 if (data[0] == "midi")
-			 {
-				midiPoints = [];
-				midiPoints = vertSamples;
-			 }
-			 
-			 if (data[0] == "leap")
-			 {
+			case "leap":
 				leapPoints = [];
 				leapPoints = vertSamples;
-			 }	 
+				break;
 			 
-			 if (data[0] == "kin1")
-			 {
+			 case "kin1":
 				kinect1Points = [];
 				kinect1Points = vertSamples;
-			 }	 
+				break;
 			 
-			 if (data[0] == "kin2")
-			 {
+			 case "kin2":
 				kinect2Points = [];
 				kinect2Points = vertSamples;
-			 }	 
+				break;
+			}
 			 
-			 
-		   
-		   
+	
+		}
+		   //end if here or should it be after everything?
 		   
 			var allPoints = [];
 			allPoints [0]= new Array();
@@ -300,7 +320,7 @@ ws.onmessage = function (message) {
 			{
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
-            var material = new THREE.PointCloudMaterial({size: 1});
+            var material = new THREE.PointCloudMaterial({size: 1, color:0x339933 }); //quickfind  color: 0xA2CFA5, transparent: true
             trc.ptc = new THREE.PointCloud( geometry, material );
             scene.add(trc.ptc);
 			}
@@ -308,7 +328,7 @@ ws.onmessage = function (message) {
 			
 	}
 
-// this needs to be modified to be used on WS message
+
 function load_trc(url, callback) {
     console.log("Reading ", url);
     $("#loadingText").html(url);
@@ -405,22 +425,6 @@ function animate() {
         }
     }
 	
-	
-	
-	
-	//console.log(JSON.stringify(midiPoints));
-	
-			/*
-	trc.data.vertSamples = midiPoints;
-	
-			
-	scene.remove(trc.ptc);
-    var geometry = new THREE.Geometry();
-    geometry.vertices = trc.data.vertSamples[currentFrame];
-    var material = new THREE.PointCloudMaterial({size: 1});
-    trc.ptc = new THREE.PointCloud( geometry, material );
-    scene.add(trc.ptc);
-			*/
 			
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen

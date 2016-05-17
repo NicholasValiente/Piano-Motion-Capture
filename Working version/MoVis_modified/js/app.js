@@ -320,7 +320,7 @@ ws.onmessage = function (message) {
 			{
             var geometry = new THREE.Geometry();
             geometry.vertices = trc.data.vertSamples[currentFrame];
-            var material = new THREE.PointCloudMaterial({size: 1});
+            var material = new THREE.PointCloudMaterial({size: 1, color:0x339933 }); //quickfind  color: 0xA2CFA5, transparent: true
             trc.ptc = new THREE.PointCloud( geometry, material );
             scene.add(trc.ptc);
 			}
@@ -425,22 +425,6 @@ function animate() {
         }
     }
 	
-	
-	
-	
-	//console.log(JSON.stringify(midiPoints));
-	
-			/*
-	trc.data.vertSamples = midiPoints;
-	
-			
-	scene.remove(trc.ptc);
-    var geometry = new THREE.Geometry();
-    geometry.vertices = trc.data.vertSamples[currentFrame];
-    var material = new THREE.PointCloudMaterial({size: 1});
-    trc.ptc = new THREE.PointCloud( geometry, material );
-    scene.add(trc.ptc);
-			*/
 			
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen

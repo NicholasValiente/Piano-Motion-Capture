@@ -122,7 +122,7 @@ function moveKey (num, dir, vel)
 	if (dir=="up")
 		{
 			//if black key
-			if (	num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
+			if (	num ==1 || num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
 				 	num==22 || num==25 || num ==27 || num ==30 || num ==32 || num ==34 || num ==37 || num ==39 ||
 					num ==42 || num ==44 || num ==46 )
 				keys[num+1][1]=20; //move to black keys y starting position
@@ -132,10 +132,16 @@ function moveKey (num, dir, vel)
 		}
 	else if (dir=="down")
 		{
-			if (vel <10)
-				keys[num+1][1]-=10;
-			else
-				keys[num+1][1]-=vel;
+			if (vel <40)
+				keys[num+1][1]-=30;
+			else //if (vel<50)
+				{
+					keys[num+1][1]-=(vel-30);
+					console.log(vel);
+				}
+				
+			//else
+			//keys[num+1][1]-=50;
 		}
 		
 		
@@ -159,23 +165,7 @@ function moveKey (num, dir, vel)
 			{
 				buffer.push(keys[num+1]);
 			}
-	/*
-	date = new Date();
-	var delay =date.getTime()-lastMessage;
-	if ( delay >16)
-	{
-		socket.send (JSON.stringify(keys) );	
-		lastMessage = date.getTime();
-	}
-	else
-	{
-		console.log("Too little time between messages" );
-		setTimeout(function(){
-			socket.send (JSON.stringify(keys) );	
-			lastMessage = date.getTime();
-			}, 16-delay);
-	}
-	*/
+	
 }
 
 
@@ -183,7 +173,7 @@ function moveKey (num, dir, vel)
 function onMIDIMessage(message) {
   data = message.data; // this gives us our [command/channel, note, velocity] data.
 	
-	//console.log(data[1]);
+	
 	switch (data[1])
 	{
 		case 36:
@@ -395,7 +385,7 @@ setInterval ( function()
 	if (buffer.length >1)
 	{
 	socket.send (JSON.stringify(buffer));
-	console.log (JSON.stringify(buffer));
+	//console.log (JSON.stringify(buffer));
 	buffer = new Array("midi");
 	}
 }

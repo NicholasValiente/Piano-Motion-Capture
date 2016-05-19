@@ -233,6 +233,7 @@ function toggleSelection() {
 
 ws.onmessage = function (message) {
     var data = JSON.parse(message.data);
+	//console.log(message.data);
 
 	if (data[0]=="midi" || data[0]=="leap" || data[0]=="kin1" || data[0]=="kin2")
 		{
@@ -241,10 +242,20 @@ ws.onmessage = function (message) {
 		var vertices = [];
         for (var j=1; j<data.length; j++) 
 			{
+				if(data[0]=="leap")
+				{
+					var vert = new THREE.Vector3(
+				data[j][0] * SCALE *-1,
+				(data[j][1] * SCALE * -1) +400*SCALE,
+				data[j][2] * SCALE);
+				}
+				else
+				{
 			var vert = new THREE.Vector3(
 				data[j][0]   * SCALE,
 				data[j][1] * SCALE,
 				data[j][2] * SCALE);
+				}
 			vertices.push(vert);
 			}
 		vertSamples.push(vertices);
@@ -253,7 +264,7 @@ ws.onmessage = function (message) {
 		switch (data[0])
 			{
 			case "midi":
-				 if (midiPoints[0].length >vertSamples.length)
+				 if (midiPoints[0].length >vertSamples[0].length)
 					{//replace only new points
 						for (var i=0; i<vertSamples[0].length; i++)
 							{
@@ -290,6 +301,7 @@ ws.onmessage = function (message) {
 				leapPoints = [];
 				leapPoints = vertSamples;
 				
+				
 				scene.remove(leapCloud);
 				var geometry = new THREE.Geometry();
 				geometry.vertices = leapPoints[0];
@@ -311,6 +323,7 @@ ws.onmessage = function (message) {
 				break;
 			 
 			 case "kin2":
+			 
 				kinect2Points = [];
 				kinect2Points = vertSamples;
 				
@@ -323,7 +336,7 @@ ws.onmessage = function (message) {
 				break;
 			}
 			 
-	
+		
 		}
 		   //end if here or should it be after everything?
 		   			

@@ -78,6 +78,8 @@ if (navigator.requestMIDIAccess) {
 socket.onopen = function(evt)
         {
         socket.send (JSON.stringify(keys) );       
+		var textbox = document.getElementById("sockethead");
+		textbox.innerHTML = "Connection to socket established.<br/>";
         };
 
 
@@ -86,9 +88,11 @@ socket.onopen = function(evt)
 
 // midi functions
 function onMIDISuccess(midiAccess) {
-	var textbox = document.getElementById("midiBox");
-		textbox.innerHTML = "MIDI controller connected";
-		
+	var midiconnect = document.getElementById("midihead");
+		midiconnect.innerHTML = "MIDI controller connected.<br/>";
+	var box = document.getElementById("midiBox");
+		box.innerHTML = buffer.toString();	
+
 	
   // when we get a succesful response, run this code
   midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
@@ -134,7 +138,7 @@ function moveKey (num, dir, vel)
 			else //if (vel<50)
 				{
 					keys[num+1][1]-=(vel-30);
-					console.log(vel);
+					//console.log(vel);
 				}
 				
 			//else
@@ -382,7 +386,8 @@ setInterval ( function()
 	if (buffer.length >1)
 	{
 	socket.send (JSON.stringify(buffer));
-	//console.log (JSON.stringify(buffer));
+	var box = document.getElementById("midiBox");
+	box.innerHTML = buffer.toString();	
 	buffer = new Array("midi");
 	}
 }

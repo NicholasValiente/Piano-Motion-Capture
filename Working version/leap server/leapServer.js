@@ -6,51 +6,93 @@ var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 
-var data = new Array("leap");
+//var data = new Array("leap");
 var empty = true;
 var connected = false;
+var lastMessage = Date.now();
 
 var controller =  new Leap.Controller({frameEventName: 'animationFrame', background: true, optimizeHMD: true});
 
-
-socket.onopen = function(evt)
-{
-connected=true;
-};
-
-socket.onclose = function(evt)
-{
-connected=false;
-};
-
-controller.connect();
-
-
-controller.loop(function(frame){
 	var textbox = document.getElementById("databox");
-	var head = document.getElementById("header");
 	var tip = document.getElementById("tips");
 	var knuck1 = document.getElementById("knuckle1");
 	var knuck2 = document.getElementById("knuckle2");
 	var wrist = document.getElementById("wrists");
 	var palm = document.getElementById("palms");
+	
+socket.onopen = function(evt)
+{
+connected=true;
+	var socketHead = document.getElementById("header2");
 
-	if (connected)
-			head.innerHTML = "Connection to socket established.<br/>" ;
-	else
-			head.innerHTML = "Failed to connect to socket.<br/>" ;
+socketHead.innerHTML = "Connection to socket established.<br/>" ;
+};
+
+socket.onclose = function(evt)
+{
+connected=false;
+	var socketHead = document.getElementById("header2");
+socketHead.innerHTML = "Failed to connect to socket.<br/>" ;
+};
+
+
+controller.on ('deviceStreaming',  function() {
+	var deviceHead = document.getElementById("header1");
+	deviceHead.innerHTML = "Leap Motion device is connected.<br/>"
+	});
+controller.on ('deviceStopped',  function() {
+	var deviceHead = document.getElementById("header1");
+	deviceHead.innerHTML = "Leap Motion device is disconnected.<br/>"
+	});
+
+controller.connect();
+
+var t=0;
+
+controller.loop(function(frame){
+	var data = new Array("leap");
+	
+
+
+	
+	var currentTime = Date.now();
+	if ( currentTime-lastMessage>=32)
+	{
+		lastMessage=currentTime;
 		
-
 	for(i=0, len=frame.pointables.length; i < len; i++){
+		//can add if statements before all of these with a flag to turn the set of points off.
 		data.push(frame.pointables[i].tipPosition);				//fingertips
-		data.push(frame.pointables[i].dipPosition);				//knuckle 1
-		data.push(frame.pointables[i].pipPosition);				//knuckle 2
+		data.push(frame.pointables[i].dipPosition);				//last knuckle
+		data.push(frame.pointables[i].pipPosition);				//middle knuckle
 		data.push(frame.pointables[i].carpPosition);			//wrist
 		data.push(frame.pointables[i].hand().palmPosition ); 	//centre of palm
+
+		}
+		
+
+		
+		if (data.length>1)
+		{
+			/*
+			for(var i=1; i<data.length; i++ )
+			{
+				data[i][1]*=-1; //vertiacl flip
+				data[i][1]+=300; //vertiacl translation
+				data[i][0]*=-1; //horizontal left-right
+			}
+			*/
+			
+			if (connected)
+			{
+			var message = JSON.stringify(data);
+			socket.send (message);
+			empty=false;
+			}
 		}
 		
 		//adding text tracking to web page
-		
+		/*
 	tip.innerHTML = "Fingertip points:<br/>";
 	for(i=0, len=frame.pointables.length; i < len; i++){
 		tip.innerHTML += frame.pointables[i].tipPosition +"<br/>";
@@ -71,20 +113,13 @@ controller.loop(function(frame){
 	for(i=0, len=frame.pointables.length; i < len; i++){
 		palm.innerHTML += frame.pointables[i].hand().palmPosition +"<br/>";
 		}
+		*/
+		
+
 		
 		
-		//deciding what to send to movis
-	if (data.length>1 && connected)
-		{
-			socket.send(JSON.stringify ( data) );
-			empty=false;
-		}
-	else if (!empty && connected)
-		{
-			socket.send(JSON.stringify (data ) );
-			empty=true;
-		}
-		data = new Array("leap");
+	}
+		
 }
 )
 
@@ -93,6 +128,6 @@ window.onbeforeunload = function() {
     socket.close()
 };
 
-/*
 
-*/
+
+

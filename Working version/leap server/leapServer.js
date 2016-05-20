@@ -87,8 +87,13 @@ controller.loop(function(frame){
 			{
 			var message = JSON.stringify(data);
 			socket.send (message);
-			empty=false;
+			empty=true;
 			}
+		}
+		else if (connected && empty)
+		{
+			socket.send (JSON.stringify(data));
+			empty=false;
 		}
 		
 		//adding text tracking to web page

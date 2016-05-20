@@ -209,26 +209,31 @@ function initGui() {
 		kinect1Bar:kinect1Scale,
 		kinect2Bar:kinect2Scale
     };
+	/*
     for (var i=0; i<trc.data.groups.length; i++) {
         mkrParams[trc.data.groups[i]] = false;
-    }
+    }*/
 	
 	
     gui.add(mkrParams, "all");
     gui.add(mkrParams, "none");
     gui.add(mkrParams, "toggle");
 
+	/*
     for (var i=0; i<trc.data.groups.length; i++) {
         gui.add(mkrParams, trc.data.groups[i]).listen();
     }
+	*/
 	
 	midiScaleBar = gui.add(mkrParams, "midiBar",0.05,0.2).name('Midi Scale').listen(); 
 	leapScaleBar = gui.add(mkrParams, "leapBar",0.05,0.2).name('Leap Scale').listen(); 
 	kinect1ScaleBar = gui.add(mkrParams, "kinect1Bar",0.05,0.2).name('Kinect 1 Scale').listen(); 
 	kinect2ScaleBar = gui.add(mkrParams, "kinect2Bar",0.05,0.2).name('Kinect 2 Scale').listen(); 
 	
-	midiScaleBar.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+	midiScaleBar.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);	
 	leapScaleBar.onChange(	function (newValue)	{	leapScale = newValue;	}	);	
+	kinect1ScaleBar.onChange(	function (newValue)	{	kinect1Scale = newValue;	}	);	
+	kinect2ScaleBar.onChange(	function (newValue)	{	kinect2Scale = newValue;	}	);	
 	
     isLoading = false;
     animate();
@@ -262,6 +267,7 @@ ws.onmessage = function (message) {
 
 	if (data[0]=="midi" || data[0]=="leap" || data[0]=="kin1" || data[0]=="kin2")
 		{
+		
 		var vertSamples = []
 		var vertices = [];
 		switch (data[0])
@@ -278,6 +284,7 @@ ws.onmessage = function (message) {
 					}
 				vertSamples.push(vertices);
 				
+			
 				 if (midiPoints[0].length >vertSamples[0].length)
 					{//replace only new points
 						for (var i=0; i<vertSamples[0].length; i++)
@@ -301,6 +308,7 @@ ws.onmessage = function (message) {
 					midiPoints = [];
 					midiPoints = vertSamples;
 					}
+	
 					/*
 				scene.remove(midiCloud);
 				var geometry = new THREE.Geometry();
@@ -477,7 +485,28 @@ function animate() {
 				geometry.vertices = leapPoints[0];
 				var material = new THREE.PointCloudMaterial({size: 1, color:leapColour });
 				leapCloud = new THREE.PointCloud( geometry, material );
-				scene.add(leapCloud);
+				scene.add(leapCloud);				
+				
+				scene.remove(midiCloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = midiPoints[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:midiColour });
+				midiCloud = new THREE.PointCloud( geometry, material );
+				scene.add(midiCloud);
+				
+				scene.remove(kinect1Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect1Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect1Colour });
+				kinect1Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect1Cloud);
+				
+				scene.remove(kinect2Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect2Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect2Colour });
+				kinect2Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect2Cloud);
 		
         var frameNumber = Math.floor(((currentTime - startTime)/interval) % trc.data.NumFrames); //grab current frame number
         if (currentFrame != frameNumber) { //if current frame does not match selected frame

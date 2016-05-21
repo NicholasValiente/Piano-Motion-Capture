@@ -60,6 +60,10 @@ var leapScale =  0.05;
 var kinect1Scale =  0.05;
 var kinect2Scale =  0.05;
 
+var xOffset= new Array(0,0,0,0);
+var yOffset= new Array(0,0,0,0);
+var zOffset= new Array(0,0,0,0);
+
 midiPoints[0] = new Array();
 leapPoints[0] = new Array();
 kinect1Points[0] = new Array();
@@ -203,11 +207,27 @@ function initGui() {
     mkrParams = {
         all:selectAll,
         none:selectNone,
-        toggle:toggleSelection,
-		midiBar:midiScale,
-		leapBar:leapScale,
-		kinect1Bar:kinect1Scale,
-		kinect2Bar:kinect2Scale
+        toggle:toggleSelection ,
+		
+		midiScaleBar:midiScale,
+		leapScaleBar:leapScale,
+		kin1ScaleBar:kinect1Scale,
+		kin2ScaleBar:kinect2Scale,	
+		
+		midiXOffset: xOffset[0],
+		leapXOffset: xOffset[1],
+		kin1XOffset: xOffset[2],
+		kin2XOffset: xOffset[3],
+		
+		midiyOffset: yOffset[0],
+		leapyOffset: yOffset[1],
+		kin1yOffset: yOffset[2],
+		kin2yOffset: yOffset[3],
+		
+		midizOffset: zOffset[0],
+		leapzOffset: zOffset[1],
+		kin1zOffset: zOffset[2],
+		kin2zOffset: zOffset[3]
     };
 	/*
     for (var i=0; i<trc.data.groups.length; i++) {
@@ -218,22 +238,56 @@ function initGui() {
     gui.add(mkrParams, "all");
     gui.add(mkrParams, "none");
     gui.add(mkrParams, "toggle");
-
+	
 	/*
     for (var i=0; i<trc.data.groups.length; i++) {
         gui.add(mkrParams, trc.data.groups[i]).listen();
     }
 	*/
+	var midiFolder = gui.addFolder("Midi Settings");
+	var leapFolder = gui.addFolder("Leap Settings");
+	var kinect1Folder = gui.addFolder("Kinect 1 Settings");
+	var kinect2Folder = gui.addFolder("Kinect 2 Settings");
 	
-	midiScaleBar = gui.add(mkrParams, "midiBar",0.05,0.2).name('Midi Scale').listen(); 
-	leapScaleBar = gui.add(mkrParams, "leapBar",0.05,0.2).name('Leap Scale').listen(); 
-	kinect1ScaleBar = gui.add(mkrParams, "kinect1Bar",0.05,0.2).name('Kinect 1 Scale').listen(); 
-	kinect2ScaleBar = gui.add(mkrParams, "kinect2Bar",0.05,0.2).name('Kinect 2 Scale').listen(); 
-	
-	midiScaleBar.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);	
-	leapScaleBar.onChange(	function (newValue)	{	leapScale = newValue;	}	);	
-	kinect1ScaleBar.onChange(	function (newValue)	{	kinect1Scale = newValue;	}	);	
-	kinect2ScaleBar.onChange(	function (newValue)	{	kinect2Scale = newValue;	}	);	
+	midiFolder	.add(mkrParams, 'midiScaleBar', 0.05, 0.2).name('Midi Scale').listen()
+				.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);				
+	midiFolder	.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
+				.onChange(	function (newValue)	{	xOffset[0]; ws.send(JSON.stringify("resend")); }	);	
+	midiFolder	.add(mkrParams, 'midiyOffset', -100, 100).name('Midi Y Offset').listen()
+				.onChange(	function (newValue)	{	yOffset[0]; ws.send(JSON.stringify("resend")); }	);
+	midiFolder	.add(mkrParams, 'midizOffset', -100, 100).name('Midi Z Offset').listen()
+				.onChange(	function (newValue)	{	zOffset[0]; ws.send(JSON.stringify("resend")); }	);
+				
+				
+	leapFolder	.add(mkrParams, 'leapScaleBar', 0.05, 0.2).name('Leap Scale').listen()
+				.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+	leapFolder	.add(mkrParams, 'leapXOffset', -100, 100).name('Leap X Offset').listen()
+				.onChange(	function (newValue)	{	xOffset[1]; }	);	
+	leapFolder	.add(mkrParams, 'leapyOffset', -100, 100).name('Leap Y Offset').listen()
+				.onChange(	function (newValue)	{	yOffset[1]; }	);	
+	leapFolder	.add(mkrParams, 'leapzOffset', -100, 100).name('Leap Z Offset').listen()
+				.onChange(	function (newValue)	{	zOffset[1]; }	);	
+				
+				
+	kinect1Folder	.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
+					.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+	kinect1Folder	.add(mkrParams, 'kin1XOffset', -100, 100).name('Kinect 1 X Offset').listen()
+					.onChange(	function (newValue)	{	xOffset[1]; }	);	
+	kinect1Folder	.add(mkrParams, 'kin1yOffset', -100, 100).name('Kinect 1 Y Offset').listen()
+					.onChange(	function (newValue)	{	yOffset[1]; }	);	
+	kinect1Folder	.add(mkrParams, 'kin1zOffset', -100, 100).name('Kinect 1 Z Offset').listen()
+					.onChange(	function (newValue)	{	zOffset[1]; }	);	
+				
+				
+	kinect2Folder	.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
+					.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+	kinect2Folder	.add(mkrParams, 'kin2XOffset', -100, 100).name('Kinect 2 X Offset').listen()
+					.onChange(	function (newValue)	{	xOffset[1]; }	);	
+	kinect2Folder	.add(mkrParams, 'kin2yOffset', -100, 100).name('Kinect 2 Y Offset').listen()
+					.onChange(	function (newValue)	{	yOffset[1]; }	);	
+	kinect2Folder	.add(mkrParams, 'kin2zOffset', -100, 100).name('Kinect 2 Z Offset').listen()
+					.onChange(	function (newValue)	{	zOffset[1]; }	);	
+					
 	
     isLoading = false;
     animate();

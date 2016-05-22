@@ -252,41 +252,41 @@ function initGui() {
 	midiFolder	.add(mkrParams, 'midiScaleBar', 0.05, 0.2).name('Midi Scale').listen()
 				.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);				
 	midiFolder	.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
-				.onChange(	function (newValue)	{	xOffset[0]; ws.send(JSON.stringify("resend")); }	);	
+				.onChange(	function (newValue)	{	xOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);	
 	midiFolder	.add(mkrParams, 'midiyOffset', -100, 100).name('Midi Y Offset').listen()
-				.onChange(	function (newValue)	{	yOffset[0]; ws.send(JSON.stringify("resend")); }	);
+				.onChange(	function (newValue)	{	yOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);
 	midiFolder	.add(mkrParams, 'midizOffset', -100, 100).name('Midi Z Offset').listen()
-				.onChange(	function (newValue)	{	zOffset[0]; ws.send(JSON.stringify("resend")); }	);
+				.onChange(	function (newValue)	{	zOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);
 				
 				
 	leapFolder	.add(mkrParams, 'leapScaleBar', 0.05, 0.2).name('Leap Scale').listen()
-				.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+				.onChange(	function (newValue)	{	leapScale = newValue;	}	);	
 	leapFolder	.add(mkrParams, 'leapXOffset', -100, 100).name('Leap X Offset').listen()
-				.onChange(	function (newValue)	{	xOffset[1]; }	);	
+				.onChange(	function (newValue)	{	xOffset[1] = newValue; }	);	
 	leapFolder	.add(mkrParams, 'leapyOffset', -100, 100).name('Leap Y Offset').listen()
-				.onChange(	function (newValue)	{	yOffset[1]; }	);	
+				.onChange(	function (newValue)	{	yOffset[1] = newValue; }	);	
 	leapFolder	.add(mkrParams, 'leapzOffset', -100, 100).name('Leap Z Offset').listen()
-				.onChange(	function (newValue)	{	zOffset[1]; }	);	
+				.onChange(	function (newValue)	{	zOffset[1] = newValue; }	);	
 				
 				
 	kinect1Folder	.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
-					.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+					.onChange(	function (newValue)	{	kinect1Scale = newValue;	}	);	
 	kinect1Folder	.add(mkrParams, 'kin1XOffset', -100, 100).name('Kinect 1 X Offset').listen()
-					.onChange(	function (newValue)	{	xOffset[1]; }	);	
+					.onChange(	function (newValue)	{	xOffset[2] = newValue; }	);	
 	kinect1Folder	.add(mkrParams, 'kin1yOffset', -100, 100).name('Kinect 1 Y Offset').listen()
-					.onChange(	function (newValue)	{	yOffset[1]; }	);	
+					.onChange(	function (newValue)	{	yOffset[2] = newValue; }	);	
 	kinect1Folder	.add(mkrParams, 'kin1zOffset', -100, 100).name('Kinect 1 Z Offset').listen()
-					.onChange(	function (newValue)	{	zOffset[1]; }	);	
+					.onChange(	function (newValue)	{	zOffset[2] = newValue; }	);	
 				
 				
 	kinect2Folder	.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
-					.onChange(	function (newValue)	{	midiScale = newValue;	}	);	
+					.onChange(	function (newValue)	{	kinect2Scale = newValue;	}	);	
 	kinect2Folder	.add(mkrParams, 'kin2XOffset', -100, 100).name('Kinect 2 X Offset').listen()
-					.onChange(	function (newValue)	{	xOffset[1]; }	);	
+					.onChange(	function (newValue)	{	xOffset[3] = newValue; }	);	
 	kinect2Folder	.add(mkrParams, 'kin2yOffset', -100, 100).name('Kinect 2 Y Offset').listen()
-					.onChange(	function (newValue)	{	yOffset[1]; }	);	
+					.onChange(	function (newValue)	{	yOffset[3] = newValue; }	);	
 	kinect2Folder	.add(mkrParams, 'kin2zOffset', -100, 100).name('Kinect 2 Z Offset').listen()
-					.onChange(	function (newValue)	{	zOffset[1]; }	);	
+					.onChange(	function (newValue)	{	zOffset[3] = newValue; }	);	
 					
 	
     isLoading = false;
@@ -331,9 +331,9 @@ ws.onmessage = function (message) {
 				for (var j=1; j<data.length; j++) 
 					{
 					var vert = new THREE.Vector3(
-					data[j][0] * midiScale,
-					data[j][1] * midiScale,
-					data[j][2] * midiScale);
+					data[j][0] * midiScale +xOffset[0],
+					data[j][1] * midiScale +yOffset[0],
+					data[j][2] * midiScale +zOffset[0]	);
 					vertices.push(vert);
 					}
 				vertSamples.push(vertices);
@@ -363,24 +363,18 @@ ws.onmessage = function (message) {
 					midiPoints = vertSamples;
 					}
 	
-					/*
-				scene.remove(midiCloud);
-				var geometry = new THREE.Geometry();
-				geometry.vertices = midiPoints[0];
-				var material = new THREE.PointCloudMaterial({size: 1, color:midiColour });
-				midiCloud = new THREE.PointCloud( geometry, material );
-				scene.add(midiCloud);
-					*/
+				
 				break;
 			 
 			case "leap":
-			
+				//need to add something to snap hands to kinect wrist points if found
+				//will be done if/when we get time
 				for (var j=1; j<data.length; j++) 
 					{
 					var vert = new THREE.Vector3(
-					data[j][0] * leapScale *-1,
-					(data[j][1] * leapScale * -1) +400*leapScale,
-					data[j][2] * leapScale);
+					data[j][0] * leapScale *-1 +xOffset[1],
+					(data[j][1] * leapScale * -1) +400*leapScale +yOffset[1],
+					data[j][2] * leapScale + zOffset[1]	) ;
 					vertices.push(vert);
 					}
 				vertSamples.push(vertices);
@@ -388,14 +382,7 @@ ws.onmessage = function (message) {
 				leapPoints = [];
 				leapPoints = vertSamples;
 				
-				/*
-				scene.remove(leapCloud);
-				var geometry = new THREE.Geometry();
-				geometry.vertices = leapPoints[0];
-				var material = new THREE.PointCloudMaterial({size: 1, color:leapColour });
-				leapCloud = new THREE.PointCloud( geometry, material );
-				scene.add(leapCloud);
-				*/
+			
 				break;
 			 
 			 case "kin1":
@@ -403,9 +390,9 @@ ws.onmessage = function (message) {
 				for (var j=1; j<data.length; j++) 
 					{
 					var vert = new THREE.Vector3(
-					data[j][0] * midiScale,
-					data[j][1] * midiScale,
-					data[j][2] * midiScale);
+					data[j][0] * kinect1Scale +xOffset[2],
+					data[j][1] * kinect1Scale +yOffset[2],
+					data[j][2] * kinect1Scale +zOffset[2]	);
 					vertices.push(vert);
 					}
 				vertSamples.push(vertices);
@@ -413,14 +400,7 @@ ws.onmessage = function (message) {
 				kinect1Points = [];
 				kinect1Points = vertSamples;
 				
-				/*
-				scene.remove(kinect1Cloud);
-				var geometry = new THREE.Geometry();
-				geometry.vertices = kinect1Points[0];
-				var material = new THREE.PointCloudMaterial({size: 1, color:kinect1Colour });
-				kinect1Cloud = new THREE.PointCloud( geometry, material );
-				scene.add(kinect1Cloud);
-				*/
+				
 				break;
 			 
 			 case "kin2":
@@ -428,9 +408,9 @@ ws.onmessage = function (message) {
 			 for (var j=1; j<data.length; j++) 
 					{
 					var vert = new THREE.Vector3(
-					data[j][0] * midiScale,
-					data[j][1] * midiScale,
-					data[j][2] * midiScale);
+					data[j][0] * kinect2Scale  +xOffset[3],
+					data[j][1] * kinect2Scale  +yOffset[3],
+					data[j][2] * kinect2Scale  +zOffset[3]	);
 					vertices.push(vert);
 					}
 				vertSamples.push(vertices);
@@ -438,14 +418,7 @@ ws.onmessage = function (message) {
 				kinect2Points = [];
 				kinect2Points = vertSamples;
 				
-				/*
-				scene.remove(kinect2Cloud);
-				var geometry = new THREE.Geometry();
-				geometry.vertices = kinect2Points[0];
-				var material = new THREE.PointCloudMaterial({size: 1, color:kinect2Colour });
-				kinect2Cloud = new THREE.PointCloud( geometry, material );
-				scene.add(kinect2Cloud);
-				*/
+
 				break;
 			}
 			 

@@ -1,73 +1,74 @@
-
+// all current options for websockets, maybe we add a picker for the socket if we get time?
 //lab access	
 //var ws = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
 //var ws = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-var ws = new WebSocket("ws://127.0.0.1:3000/relay");
+var ws;
+ws = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var scene;
 var camera;
 var renderer;
 var controls;
 
-//array of possible upper body label flags +NV
+//array of possible upper body label flags 
 var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_Top', 'R_Shoulder_Back', 'R_Bicep', 'R_Elbow', 'R_Wrist_Upper', 'R_Wrist_Lower', 'R_Pinky', 'R_Thumb', 'L_Shoulder_Top', 'L_Shoulder_Back', 'L_Bicep', 'L_Elbow', 'L_Wrist_Upper', 'L_Wrist_Lower', 'L_Pinky', 'L_Thumb', 'Topspine', 'Sternum', 'Midback', 'Lowback_Center', 'Lowback_Right', 'Lowback_Left', 'Root']
-//array of possible lower body label flags +NV
+//array of possible lower body label flags 
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
 
 var SCALE = 0.05;
-var trc = {};
+var trc = {}; //where everything from the trc.json files gets stored
 var isPlaying = true;
 var currentFrame = 0;
 var startTime;
 var previousTime;
-var interval; //time between frames +NV
-var dynObjs = []; //points +NV
-var mkrParams;
+var interval; //time between frames 
+var dynObjs = []; 
+var mkrParams; //dat.ui elements
 var gui;
 var trailLength = 50;
 
-var gridHelper; //3D grid +NV
-var isGridHelperVisible = true; //whether grid is visible +NV
+var gridHelper; //3D grid 
+var isGridHelperVisible = true; //whether grid is visible 
 var isPtcVisible = true;
 var isLoading = false;
 
 var flag = false;
 
+//arrays for storing points from each device
 var midiPoints =[];
 var leapPoints =[];
 var kinect1Points =[];
 var kinect2Points =[];
+//initialising the array of points for each device
+midiPoints[0] = new Array();
+leapPoints[0] = new Array();
+kinect1Points[0] = new Array();
+kinect2Points[0] = new Array();
 
+//point clouds for each device
 var midiCloud ;
 var leapCloud ;
 var kinect1Cloud ;
 var kinect2Cloud ;
 
+//colour variables for each device, may add a dat.ui colour picker later on, no reason why we cant.
 var midiColour = 0xffffff;
 var leapColour = 0xaaff80;
 var kinect1Colour = 0xffffff;
-var kinect2Colour = 0xff0000;//0xff66cc;
-
-var midiOffset =  new Array(0,0,0);
-var leapOffset =  new Array(0,0,0);
-var kinect1Offset =  new Array(0,0,0);
-var kinect2Offset =  new Array(0,0,0);
+var kinect2Colour = 0xff0000;	//0xff66cc;
 
 var midiScale =  0.05;
 var leapScale =  0.05;
 var kinect1Scale =  0.05;
 var kinect2Scale =  0.05;
 
+//variables for the offsets, in order of: midi, leap, kinect 1, kinect 2
 var xOffset= new Array(0,0,0,0);
 var yOffset= new Array(0,0,0,0);
 var zOffset= new Array(0,0,0,0);
 
-midiPoints[0] = new Array();
-leapPoints[0] = new Array();
-kinect1Points[0] = new Array();
-kinect2Points[0] = new Array();
 
 ws.onopen = function(evt)
                {
@@ -75,13 +76,14 @@ ws.onopen = function(evt)
                };
 
 
-//most likely needs to be moved to server to load the file to be streamed (canned only) +NV
-//file selection menu, if we add a button for live feed we should be able to keep mostly as is. +NV
+
+//file selection menu, if we add a button for live feed we should be able to keep mostly as is. 
+//need to work out how to bypass having to load a file and skip to an empty file
 function load_data_index(url, callback) { //take the trc.json file and a ??callback
     $.getJSON(url, function(data) { //get the .json file and open it. ??function(data)
 
         for (var folder in data) {
-			//a bunch of HTML editing below
+			//a bunch of HTML and JQueery editing below
             var innerHeader = $(document.createElement('div'))
                 .attr({id: folder, role: 'tab'})
                 .addClass('panel-heading').append(
@@ -135,10 +137,10 @@ function load_data_index(url, callback) { //take the trc.json file and a ??callb
 }
 
 
-//should not have to touch this part either, all it does is set up the canvas +NV
+//should not have to touch this part either, all it does is set up the canvas 
 function init() {
 
-//set up for the 3D webGL renderer, does all the work for displaying the points for us +NV
+//set up for the 3D webGL renderer, does all the work for displaying the points for us 
     renderer = new THREE.WebGLRenderer(); 
     renderer.setClearColor( 0x212538 );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -147,7 +149,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
 	
-//adding event listener to look for resize operations
+//adding event listener to look for window resize operations
     window.addEventListener('resize', function() {
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
         renderer.setSize(WIDTH, HEIGHT);
@@ -167,7 +169,7 @@ function init() {
 }
 
 
-//should not have to touch this part, all it does is set up the openGL scene +NV
+//should not have to touch this part, all it does is set up the openGL scene 
 function new_scene() {
 	//if there is already a scene, clear it
     if (scene != undefined) {
@@ -195,7 +197,7 @@ function new_scene() {
     isPtcVisible = true;
 }
 
-//initialisation of GUI, should not need touching either +NV
+//initialisation of GUI, should not need touching either 
 function initGui() {
     if (gui != undefined) {
         gui = {};
@@ -209,6 +211,7 @@ function initGui() {
         none:selectNone,
         toggle:toggleSelection ,
 		
+		//add all slider bars with their default values
 		midiScaleBar:midiScale,
 		leapScaleBar:leapScale,
 		kin1ScaleBar:kinect1Scale,
@@ -229,26 +232,20 @@ function initGui() {
 		kin1zOffset: zOffset[2],
 		kin2zOffset: zOffset[3]
     };
-	/*
-    for (var i=0; i<trc.data.groups.length; i++) {
-        mkrParams[trc.data.groups[i]] = false;
-    }*/
+	
 	
 	
     gui.add(mkrParams, "all");
     gui.add(mkrParams, "none");
     gui.add(mkrParams, "toggle");
 	
-	/*
-    for (var i=0; i<trc.data.groups.length; i++) {
-        gui.add(mkrParams, trc.data.groups[i]).listen();
-    }
-	*/
+	//add and initialise folders to sort the sliders by input group
 	var midiFolder = gui.addFolder("Midi Settings");
 	var leapFolder = gui.addFolder("Leap Settings");
 	var kinect1Folder = gui.addFolder("Kinect 1 Settings");
 	var kinect2Folder = gui.addFolder("Kinect 2 Settings");
 	
+	//add all sliders to the midi folder and initialise them
 	midiFolder	.add(mkrParams, 'midiScaleBar', 0.05, 0.2).name('Midi Scale').listen()
 				.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);				
 	midiFolder	.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
@@ -259,6 +256,7 @@ function initGui() {
 				.onChange(	function (newValue)	{	zOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);
 				
 				
+	//add all sliders to the leap folder and initialise them
 	leapFolder	.add(mkrParams, 'leapScaleBar', 0.05, 0.2).name('Leap Scale').listen()
 				.onChange(	function (newValue)	{	leapScale = newValue;	}	);	
 	leapFolder	.add(mkrParams, 'leapXOffset', -100, 100).name('Leap X Offset').listen()
@@ -269,6 +267,7 @@ function initGui() {
 				.onChange(	function (newValue)	{	zOffset[1] = newValue; }	);	
 				
 				
+	//add all sliders to the kinect 1 folder and initialise them
 	kinect1Folder	.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
 					.onChange(	function (newValue)	{	kinect1Scale = newValue;	}	);	
 	kinect1Folder	.add(mkrParams, 'kin1XOffset', -100, 100).name('Kinect 1 X Offset').listen()
@@ -279,6 +278,7 @@ function initGui() {
 					.onChange(	function (newValue)	{	zOffset[2] = newValue; }	);	
 				
 				
+	//add all sliders to the kinect 2 folder and initialise them
 	kinect2Folder	.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
 					.onChange(	function (newValue)	{	kinect2Scale = newValue;	}	);	
 	kinect2Folder	.add(mkrParams, 'kin2XOffset', -100, 100).name('Kinect 2 X Offset').listen()
@@ -289,25 +289,26 @@ function initGui() {
 					.onChange(	function (newValue)	{	zOffset[3] = newValue; }	);	
 					
 	
+	//maybe use these last two lines to skip file loading later?
     isLoading = false;
-    animate();
+    animate(); // start the animation loop
 }
 
-//function to select all markers +NV
+//function to select all markers 
 function selectAll() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = true;
     }
 }
 
-//function to select no markers +NV
+//function to select no markers 
 function selectNone() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = false;
     }
 }
 
-//function to swap marker selection +NV
+//function to swap marker selection 
 function toggleSelection() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = !mkrParams[trc.data.groups[i]];
@@ -500,7 +501,7 @@ function open_trc(url) {
 }
 
 
-//playback part, may rip some of this out and move it to the server +NV
+//playback part, may rip some of this out and move it to the server 
 function animate() {
     if (isLoading) return; // if is still loading, do nothing 
     var currentTime=Date.now(); //set date/time
@@ -565,7 +566,7 @@ function render() {
     controls.update();
 }
 
-//keyboard IO, should not need to be touched +NV
+//keyboard IO, should not need to be touched 
 var keyPressed = function(event) {
     console.log(event);
     switch (event.keyCode) {

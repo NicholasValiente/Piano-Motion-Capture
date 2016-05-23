@@ -36,6 +36,7 @@ var isLoading = false;
 
 var flag = false;
 
+var rawMidi = [];
 //arrays for storing points from each device
 var midiPoints =[];
 var leapPoints =[];
@@ -72,7 +73,11 @@ var zOffset= new Array(0,0,0,0);
 
 ws.onopen = function(evt)
                {
-			    
+				setTimeout(function(){
+    //do what you need here
+				ws.send(JSON.stringify("sink"));
+				}, 2000);
+			   
                };
 
 
@@ -247,13 +252,77 @@ function initGui() {
 	
 	//add all sliders to the midi folder and initialise them
 	midiFolder	.add(mkrParams, 'midiScaleBar', 0.05, 0.2).name('Midi Scale').listen()
-				.onChange(	function (newValue)	{	midiScale = newValue; ws.send(JSON.stringify("resend")); }	);				
+				.onChange(	function (newValue)	{	
+							midiScale = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples;
+				}	);				
 	midiFolder	.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
-				.onChange(	function (newValue)	{	xOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);	
+				.onChange(	function (newValue)	{	
+							xOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);	
 	midiFolder	.add(mkrParams, 'midiyOffset', -100, 100).name('Midi Y Offset').listen()
-				.onChange(	function (newValue)	{	yOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);
+				.onChange(	function (newValue)	{	
+							yOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);
 	midiFolder	.add(mkrParams, 'midizOffset', -100, 100).name('Midi Z Offset').listen()
-				.onChange(	function (newValue)	{	zOffset[0] = newValue; ws.send(JSON.stringify("resend")); }	);
+				.onChange(	function (newValue)	{	
+							xOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);
 				
 				
 	//add all sliders to the leap folder and initialise them
@@ -323,7 +392,7 @@ ws.onmessage = function (message) {
 	if (data[0]=="midi" || data[0]=="leap" || data[0]=="kin1" || data[0]=="kin2")
 		{
 		
-		var vertSamples = []
+		var vertSamples = [];
 		var vertices = [];
 		switch (data[0])
 			{
@@ -342,24 +411,19 @@ ws.onmessage = function (message) {
 			
 				 if (midiPoints[0].length >vertSamples[0].length)
 					{//replace only new points
+						
 						for (var i=0; i<vertSamples[0].length; i++)
 							{
-								innerLoop:
-							for (var j=0; j<midiPoints[0].length; j++)
-								
-								{
-									if (midiPoints[0][j].x == vertSamples[0][i].x)
-									{
-										midiPoints[0][j] = vertSamples[0][i]; //replace
-										break innerLoop; 
-										//j=midiPoints[0].length; //then set to end of midi points so as to not waste time comparing when we have already found
-									}
-								}
+								console.log(data[i]);
+								var temp =data[i+1][3];
+								midiPoints[0][temp] =vertSamples[0][i];
 							}
+							
 					 
 					}
 				 else
 					{
+					rawMidi=data;
 					midiPoints = [];
 					midiPoints = vertSamples;
 					}

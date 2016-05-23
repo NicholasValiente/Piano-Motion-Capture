@@ -86,10 +86,7 @@ socket.onopen = function(evt)
 socket.onmessage = function (message)
 	{
 
-	if(JSON.parse(message.data) == "resend")
-		{
-		 socket.send (JSON.stringify(keys) );  
-		}
+
 	};
 
 
@@ -147,7 +144,6 @@ function moveKey (num, dir, vel)
 			else //if (vel<50)
 				{
 					keys[num+1][1]-=(vel-30);
-					//console.log(vel);
 				}
 				
 			//else
@@ -174,7 +170,9 @@ function moveKey (num, dir, vel)
 		if (flag==false)
 			{
 				buffer.push(keys[num+1]);
+				buffer [ buffer.length-1][3]= num;
 			}
+			
 	
 }
 

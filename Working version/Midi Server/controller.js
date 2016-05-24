@@ -85,12 +85,11 @@ socket.onopen = function(evt)
 
 socket.onmessage = function (message)
 	{
-
-
 	};
 
 
-
+	
+	
 // midi functions
 function onMIDISuccess(midiAccess) {
 	var midiconnect = document.getElementById("midihead");
@@ -385,6 +384,11 @@ function onMIDIMessage(message) {
 			//ect for all other keys			
 	}
 	
+}
+
+function resend()
+{
+	socket.send (JSON.stringify(keys) );       
 }
 
 

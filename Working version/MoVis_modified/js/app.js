@@ -235,7 +235,13 @@ function initGui() {
 		midizOffset: zOffset[0],
 		leapzOffset: zOffset[1],
 		kin1zOffset: zOffset[2],
-		kin2zOffset: zOffset[3]
+		kin2zOffset: zOffset[3],
+		
+		midiColourPicker: midiColour,
+		leapColourPicker: leapColour,
+		kin1ColourPicker: kinect1Colour,
+		kin2ColourPicker: kinect2Colour
+		
     };
 	
 	
@@ -323,6 +329,8 @@ function initGui() {
 							vertSamples.push(vertices);
 							midiPoints= vertSamples; 
 							}	);
+	midiFolder	.addColor(mkrParams, 'midiColourPicker') .name('Midi Colour').listen()
+				.onChange(	function (newValue)	{midiColour = newValue;	 } );		
 				
 				
 	//add all sliders to the leap folder and initialise them
@@ -334,7 +342,8 @@ function initGui() {
 				.onChange(	function (newValue)	{	yOffset[1] = newValue; }	);	
 	leapFolder	.add(mkrParams, 'leapzOffset', -100, 100).name('Leap Z Offset').listen()
 				.onChange(	function (newValue)	{	zOffset[1] = newValue; }	);	
-				
+	leapFolder	.addColor(mkrParams, 'leapColourPicker') .name('Leap Colour').listen()
+				.onChange(	function (newValue)	{leapColour = newValue;	 } );			
 				
 	//add all sliders to the kinect 1 folder and initialise them
 	kinect1Folder	.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
@@ -345,7 +354,8 @@ function initGui() {
 					.onChange(	function (newValue)	{	yOffset[2] = newValue; }	);	
 	kinect1Folder	.add(mkrParams, 'kin1zOffset', -100, 100).name('Kinect 1 Z Offset').listen()
 					.onChange(	function (newValue)	{	zOffset[2] = newValue; }	);	
-				
+	kinect1Folder	.addColor(mkrParams, 'kin1ColourPicker', kinect1Colour) .name('Kinect 1 Colour').listen()
+					.onChange(	function (newValue)	{kinect1Colour = newValue;	 } );			
 				
 	//add all sliders to the kinect 2 folder and initialise them
 	kinect2Folder	.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
@@ -356,8 +366,9 @@ function initGui() {
 					.onChange(	function (newValue)	{	yOffset[3] = newValue; }	);	
 	kinect2Folder	.add(mkrParams, 'kin2zOffset', -100, 100).name('Kinect 2 Z Offset').listen()
 					.onChange(	function (newValue)	{	zOffset[3] = newValue; }	);	
-					
-	
+	kinect2Folder	.addColor(mkrParams, 'kin2ColourPicker', kinect2Colour) .name('Kinect 2 Colour').listen()
+					.onChange(	function (newValue)	{kinect2Colour = newValue;	 } );		
+		
 	//maybe use these last two lines to skip file loading later?
     isLoading = false;
     animate(); // start the animation loop

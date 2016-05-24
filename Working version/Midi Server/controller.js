@@ -2,15 +2,12 @@ var midi, data;
 //lab access
 //var socket = new WebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-var socket = new WebSocket("ws://137.154.151.239:3000/relay");
+//var socket = new WebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-//var socket = new WebSocket("ws://127.0.0.1:3000/relay");
+var socket = new WebSocket("ws://127.0.0.1:3000/relay");
 
 var keys = new Array("midi");
 var buffer = new Array("midi");
-var date = new Date();
-var lastMessage =  date.getTime();
-console.log(lastMessage);
 
 console.log("initialising key points");
 
@@ -81,17 +78,26 @@ if (navigator.requestMIDIAccess) {
 socket.onopen = function(evt)
         {
         socket.send (JSON.stringify(keys) );       
+		var textbox = document.getElementById("sockethead");
+		textbox.innerHTML = "Connection to socket established.<br/>";
         };
 
 
+socket.onmessage = function (message)
+	{
+
+
+	};
 
 
 
 // midi functions
 function onMIDISuccess(midiAccess) {
-	var textbox = document.getElementById("midiBox");
-		textbox.innerHTML = "MIDI controller connected";
-		
+	var midiconnect = document.getElementById("midihead");
+		midiconnect.innerHTML = "MIDI controller connected.<br/>";
+	var box = document.getElementById("midiBox");
+		box.innerHTML = buffer.toString();	
+
 	
   // when we get a succesful response, run this code
   midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
@@ -117,12 +123,13 @@ function onMIDIFailure(error) {
 }
 
 
+
 function moveKey (num, dir, vel)
 {
 	if (dir=="up")
 		{
 			//if black key
-			if (	num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
+			if (	num ==1 || num ==3 || num ==6 || num ==8 || num ==10 || num ==13 || num ==15 || num ==18 || num ==20 ||
 				 	num==22 || num==25 || num ==27 || num ==30 || num ==32 || num ==34 || num ==37 || num ==39 ||
 					num ==42 || num ==44 || num ==46 )
 				keys[num+1][1]=20; //move to black keys y starting position
@@ -132,10 +139,15 @@ function moveKey (num, dir, vel)
 		}
 	else if (dir=="down")
 		{
-			if (vel <10)
-				keys[num+1][1]-=10;
-			else
-				keys[num+1][1]-=vel;
+			if (vel <40)
+				keys[num+1][1]-=30;
+			else //if (vel<50)
+				{
+					keys[num+1][1]-=(vel-30);
+				}
+				
+			//else
+			//keys[num+1][1]-=50;
 		}
 		
 		
@@ -158,24 +170,10 @@ function moveKey (num, dir, vel)
 		if (flag==false)
 			{
 				buffer.push(keys[num+1]);
+				buffer [ buffer.length-1][3]= num;
 			}
-	/*
-	date = new Date();
-	var delay =date.getTime()-lastMessage;
-	if ( delay >16)
-	{
-		socket.send (JSON.stringify(keys) );	
-		lastMessage = date.getTime();
-	}
-	else
-	{
-		console.log("Too little time between messages" );
-		setTimeout(function(){
-			socket.send (JSON.stringify(keys) );	
-			lastMessage = date.getTime();
-			}, 16-delay);
-	}
-	*/
+			
+	
 }
 
 
@@ -183,7 +181,7 @@ function moveKey (num, dir, vel)
 function onMIDIMessage(message) {
   data = message.data; // this gives us our [command/channel, note, velocity] data.
 	
-	//console.log(data[1]);
+	
 	switch (data[1])
 	{
 		case 36:
@@ -395,7 +393,8 @@ setInterval ( function()
 	if (buffer.length >1)
 	{
 	socket.send (JSON.stringify(buffer));
-	console.log (JSON.stringify(buffer));
+	var box = document.getElementById("midiBox");
+	box.innerHTML = buffer.toString();	
 	buffer = new Array("midi");
 	}
 }

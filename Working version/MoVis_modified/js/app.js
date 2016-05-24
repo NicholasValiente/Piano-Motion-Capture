@@ -1,62 +1,94 @@
+// all current options for websockets, maybe we add a picker for the socket if we get time?
+//lab access	
+//var ws = new WebSocket("ws://192.168.0.233:3000/relay");
+//uws access
+//var ws = new WebSocket("ws://137.154.151.239:3000/relay");
+//home testing
+var ws;
+ws = new WebSocket("ws://127.0.0.1:3000/relay");
+
 var scene;
 var camera;
 var renderer;
 var controls;
 
-//array of possible upper body label flags +NV
+//array of possible upper body label flags 
 var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_Top', 'R_Shoulder_Back', 'R_Bicep', 'R_Elbow', 'R_Wrist_Upper', 'R_Wrist_Lower', 'R_Pinky', 'R_Thumb', 'L_Shoulder_Top', 'L_Shoulder_Back', 'L_Bicep', 'L_Elbow', 'L_Wrist_Upper', 'L_Wrist_Lower', 'L_Pinky', 'L_Thumb', 'Topspine', 'Sternum', 'Midback', 'Lowback_Center', 'Lowback_Right', 'Lowback_Left', 'Root']
-//array of possible lower body label flags +NV
+//array of possible lower body label flags 
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
 
 var SCALE = 0.05;
-var trc = {};
+var trc = {}; //where everything from the trc.json files gets stored
 var isPlaying = true;
 var currentFrame = 0;
 var startTime;
 var previousTime;
-var interval; //time between frames +NV
-var dynObjs = []; //points +NV
-var mkrParams;
+var interval; //time between frames 
+var dynObjs = []; 
+var mkrParams; //dat.ui elements
 var gui;
 var trailLength = 50;
 
-var gridHelper; //3D grid +NV
-var isGridHelperVisible = true; //whether grid is visible +NV
+var gridHelper; //3D grid 
+var isGridHelperVisible = true; //whether grid is visible 
 var isPtcVisible = true;
 var isLoading = false;
 
 var flag = false;
 
-//lab access	
-//var ws = new WebSocket("ws://192.168.0.233:3000/relay");
-//uws access
-var ws = new WebSocket("ws://137.154.151.239:3000/relay");
-//home testing
-//var ws = new WebSocket("ws://127.0.0.1:3000/relay");
-
+var rawMidi = [];
+//arrays for storing points from each device
 var midiPoints =[];
 var leapPoints =[];
 var kinect1Points =[];
 var kinect2Points =[];
-
+//initialising the array of points for each device
 midiPoints[0] = new Array();
 leapPoints[0] = new Array();
 kinect1Points[0] = new Array();
 kinect2Points[0] = new Array();
 
+//point clouds for each device
+var midiCloud ;
+var leapCloud ;
+var kinect1Cloud ;
+var kinect2Cloud ;
+
+//colour variables for each device, may add a dat.ui colour picker later on, no reason why we cant.
+var midiColour = 0xffffff;
+var leapColour = 0xaaff80;
+var kinect1Colour = 0xffffff;
+var kinect2Colour = 0xff0000;	//0xff66cc;
+
+var midiScale =  0.05;
+var leapScale =  0.05;
+var kinect1Scale =  0.05;
+var kinect2Scale =  0.05;
+
+//variables for the offsets, in order of: midi, leap, kinect 1, kinect 2
+var xOffset= new Array(0,0,0,0);
+var yOffset= new Array(0,0,0,0);
+var zOffset= new Array(0,0,0,0);
+
+
 ws.onopen = function(evt)
                {
-			    
+				setTimeout(function(){
+    //do what you need here
+				ws.send(JSON.stringify("sink"));
+				}, 2000);
+			   
                };
 
 
-//most likely needs to be moved to server to load the file to be streamed (canned only) +NV
-//file selection menu, if we add a button for live feed we should be able to keep mostly as is. +NV
+
+//file selection menu, if we add a button for live feed we should be able to keep mostly as is. 
+//need to work out how to bypass having to load a file and skip to an empty file
 function load_data_index(url, callback) { //take the trc.json file and a ??callback
     $.getJSON(url, function(data) { //get the .json file and open it. ??function(data)
 
         for (var folder in data) {
-			//a bunch of HTML editing below
+			//a bunch of HTML and JQueery editing below
             var innerHeader = $(document.createElement('div'))
                 .attr({id: folder, role: 'tab'})
                 .addClass('panel-heading').append(
@@ -110,10 +142,10 @@ function load_data_index(url, callback) { //take the trc.json file and a ??callb
 }
 
 
-//should not have to touch this part either, all it does is set up the canvas +NV
+//should not have to touch this part either, all it does is set up the canvas 
 function init() {
 
-//set up for the 3D webGL renderer, does all the work for displaying the points for us +NV
+//set up for the 3D webGL renderer, does all the work for displaying the points for us 
     renderer = new THREE.WebGLRenderer(); 
     renderer.setClearColor( 0x212538 );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -122,7 +154,7 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000);
 	
-//adding event listener to look for resize operations
+//adding event listener to look for window resize operations
     window.addEventListener('resize', function() {
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
         renderer.setSize(WIDTH, HEIGHT);
@@ -142,7 +174,7 @@ function init() {
 }
 
 
-//should not have to touch this part, all it does is set up the openGL scene +NV
+//should not have to touch this part, all it does is set up the openGL scene 
 function new_scene() {
 	//if there is already a scene, clear it
     if (scene != undefined) {
@@ -170,7 +202,7 @@ function new_scene() {
     isPtcVisible = true;
 }
 
-//initialisation of GUI, should not need touching either +NV
+//initialisation of GUI, should not need touching either 
 function initGui() {
     if (gui != undefined) {
         gui = {};
@@ -182,37 +214,170 @@ function initGui() {
     mkrParams = {
         all:selectAll,
         none:selectNone,
-        toggle:toggleSelection
+        toggle:toggleSelection ,
+		
+		//add all slider bars with their default values
+		midiScaleBar:midiScale,
+		leapScaleBar:leapScale,
+		kin1ScaleBar:kinect1Scale,
+		kin2ScaleBar:kinect2Scale,	
+		
+		midiXOffset: xOffset[0],
+		leapXOffset: xOffset[1],
+		kin1XOffset: xOffset[2],
+		kin2XOffset: xOffset[3],
+		
+		midiyOffset: yOffset[0],
+		leapyOffset: yOffset[1],
+		kin1yOffset: yOffset[2],
+		kin2yOffset: yOffset[3],
+		
+		midizOffset: zOffset[0],
+		leapzOffset: zOffset[1],
+		kin1zOffset: zOffset[2],
+		kin2zOffset: zOffset[3]
     };
-    for (var i=0; i<trc.data.groups.length; i++) {
-        mkrParams[trc.data.groups[i]] = false;
-    }
+	
+	
+	
     gui.add(mkrParams, "all");
     gui.add(mkrParams, "none");
     gui.add(mkrParams, "toggle");
+	
+	//add and initialise folders to sort the sliders by input group
+	var midiFolder = gui.addFolder("Midi Settings");
+	var leapFolder = gui.addFolder("Leap Settings");
+	var kinect1Folder = gui.addFolder("Kinect 1 Settings");
+	var kinect2Folder = gui.addFolder("Kinect 2 Settings");
+	
+	//add all sliders to the midi folder and initialise them
+	midiFolder	.add(mkrParams, 'midiScaleBar', 0.05, 0.2).name('Midi Scale').listen()
+				.onChange(	function (newValue)	{	
+							midiScale = newValue; 
+							var vertSamples = [];
+							var vertices = [];
 
-    for (var i=0; i<trc.data.groups.length; i++) {
-        gui.add(mkrParams, trc.data.groups[i]).listen();
-    }
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples;
+				}	);				
+	midiFolder	.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
+				.onChange(	function (newValue)	{	
+							xOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);	
+	midiFolder	.add(mkrParams, 'midiyOffset', -100, 100).name('Midi Y Offset').listen()
+				.onChange(	function (newValue)	{	
+							yOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);
+	midiFolder	.add(mkrParams, 'midizOffset', -100, 100).name('Midi Z Offset').listen()
+				.onChange(	function (newValue)	{	
+							xOffset[0] = newValue; 
+							var vertSamples = [];
+							var vertices = [];
+
+							for (var j=1; j<rawMidi.length; j++) 
+							{
+								var vert = new THREE.Vector3(
+								rawMidi[j][0] * midiScale +xOffset[0],
+								rawMidi[j][1] * midiScale +yOffset[0],
+								rawMidi[j][2] * midiScale +zOffset[0]	);
+								vertices.push(vert);
+							}
+								
+							vertSamples.push(vertices);
+							midiPoints= vertSamples; 
+							}	);
+				
+				
+	//add all sliders to the leap folder and initialise them
+	leapFolder	.add(mkrParams, 'leapScaleBar', 0.05, 0.2).name('Leap Scale').listen()
+				.onChange(	function (newValue)	{	leapScale = newValue;	}	);	
+	leapFolder	.add(mkrParams, 'leapXOffset', -100, 100).name('Leap X Offset').listen()
+				.onChange(	function (newValue)	{	xOffset[1] = newValue; }	);	
+	leapFolder	.add(mkrParams, 'leapyOffset', -100, 100).name('Leap Y Offset').listen()
+				.onChange(	function (newValue)	{	yOffset[1] = newValue; }	);	
+	leapFolder	.add(mkrParams, 'leapzOffset', -100, 100).name('Leap Z Offset').listen()
+				.onChange(	function (newValue)	{	zOffset[1] = newValue; }	);	
+				
+				
+	//add all sliders to the kinect 1 folder and initialise them
+	kinect1Folder	.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
+					.onChange(	function (newValue)	{	kinect1Scale = newValue;	}	);	
+	kinect1Folder	.add(mkrParams, 'kin1XOffset', -100, 100).name('Kinect 1 X Offset').listen()
+					.onChange(	function (newValue)	{	xOffset[2] = newValue; }	);	
+	kinect1Folder	.add(mkrParams, 'kin1yOffset', -100, 100).name('Kinect 1 Y Offset').listen()
+					.onChange(	function (newValue)	{	yOffset[2] = newValue; }	);	
+	kinect1Folder	.add(mkrParams, 'kin1zOffset', -100, 100).name('Kinect 1 Z Offset').listen()
+					.onChange(	function (newValue)	{	zOffset[2] = newValue; }	);	
+				
+				
+	//add all sliders to the kinect 2 folder and initialise them
+	kinect2Folder	.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
+					.onChange(	function (newValue)	{	kinect2Scale = newValue;	}	);	
+	kinect2Folder	.add(mkrParams, 'kin2XOffset', -100, 100).name('Kinect 2 X Offset').listen()
+					.onChange(	function (newValue)	{	xOffset[3] = newValue; }	);	
+	kinect2Folder	.add(mkrParams, 'kin2yOffset', -100, 100).name('Kinect 2 Y Offset').listen()
+					.onChange(	function (newValue)	{	yOffset[3] = newValue; }	);	
+	kinect2Folder	.add(mkrParams, 'kin2zOffset', -100, 100).name('Kinect 2 Z Offset').listen()
+					.onChange(	function (newValue)	{	zOffset[3] = newValue; }	);	
+					
+	
+	//maybe use these last two lines to skip file loading later?
     isLoading = false;
-    animate();
+    animate(); // start the animation loop
 }
 
-//function to select all markers +NV
+//function to select all markers 
 function selectAll() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = true;
     }
 }
 
-//function to select no markers +NV
+//function to select no markers 
 function selectNone() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = false;
     }
 }
 
-//function to swap marker selection +NV
+//function to swap marker selection 
 function toggleSelection() {
     for (var i=0; i<trc.data.groups.length; i++ ) {
         mkrParams[trc.data.groups[i]] = !mkrParams[trc.data.groups[i]];
@@ -222,110 +387,110 @@ function toggleSelection() {
 
 ws.onmessage = function (message) {
     var data = JSON.parse(message.data);
+	//console.log(message.data);
 
 	if (data[0]=="midi" || data[0]=="leap" || data[0]=="kin1" || data[0]=="kin2")
 		{
-		var vertSamples = []
-	
+		
+		var vertSamples = [];
 		var vertices = [];
-        for (var j=1; j<data.length; j++) 
-			{
-			var vert = new THREE.Vector3(
-				data[j][0]   * SCALE,
-				data[j][1] * SCALE,
-				data[j][2] * SCALE);
-			vertices.push(vert);
-			}
-		vertSamples.push(vertices);
-			 
-
 		switch (data[0])
 			{
 			case "midi":
-				 if (midiPoints[0].length >vertSamples.length)
+				
+				for (var j=1; j<data.length; j++) 
+					{
+					var vert = new THREE.Vector3(
+					data[j][0] * midiScale +xOffset[0],
+					data[j][1] * midiScale +yOffset[0],
+					data[j][2] * midiScale +zOffset[0]	);
+					vertices.push(vert);
+					}
+				vertSamples.push(vertices);
+				
+			
+				 if (midiPoints[0].length >vertSamples[0].length)
 					{//replace only new points
+						
 						for (var i=0; i<vertSamples[0].length; i++)
 							{
-								innerLoop:
-							for (var j=0; j<midiPoints[0].length; j++)
-								
-								{
-									if (midiPoints[0][j].x == vertSamples[0][i].x)
-									{
-										midiPoints[0][j] = vertSamples[0][i]; //replace
-										break innerLoop; 
-										//j=midiPoints[0].length; //then set to end of midi points so as to not waste time comparing when we have already found
-									}
-								}
+								console.log(data[i]);
+								var temp =data[i+1][3];
+								midiPoints[0][temp] =vertSamples[0][i];
 							}
+							
 					 
 					}
 				 else
 					{
+					rawMidi=data;
 					midiPoints = [];
 					midiPoints = vertSamples;
 					}
+	
+				
 				break;
 			 
 			case "leap":
+				//need to add something to snap hands to kinect wrist points if found
+				//will be done if/when we get time
+				for (var j=1; j<data.length; j++) 
+					{
+					var vert = new THREE.Vector3(
+					data[j][0] * leapScale *-1 +xOffset[1],
+					(data[j][1] * leapScale * -1) +400*leapScale +yOffset[1],
+					data[j][2] * leapScale + zOffset[1]	) ;
+					vertices.push(vert);
+					}
+				vertSamples.push(vertices);
+				
 				leapPoints = [];
 				leapPoints = vertSamples;
+				
+			
 				break;
 			 
 			 case "kin1":
+			 
+				for (var j=1; j<data.length; j++) 
+					{
+					var vert = new THREE.Vector3(
+					data[j][0] * kinect1Scale +xOffset[2],
+					data[j][1] * kinect1Scale +yOffset[2],
+					data[j][2] * kinect1Scale +zOffset[2]	);
+					vertices.push(vert);
+					}
+				vertSamples.push(vertices);
+				
 				kinect1Points = [];
 				kinect1Points = vertSamples;
+				
+				
 				break;
 			 
 			 case "kin2":
+			 
+			 for (var j=1; j<data.length; j++) 
+					{
+					var vert = new THREE.Vector3(
+					data[j][0] * kinect2Scale  +xOffset[3],
+					data[j][1] * kinect2Scale  +yOffset[3],
+					data[j][2] * kinect2Scale  +zOffset[3]	);
+					vertices.push(vert);
+					}
+				vertSamples.push(vertices);
+			 
 				kinect2Points = [];
 				kinect2Points = vertSamples;
+				
+
 				break;
 			}
 			 
-	
+		
 		}
 		   //end if here or should it be after everything?
-		   
-			var allPoints = [];
-			allPoints [0]= new Array();
-			
-		
-			
-			for (var i=0; i<midiPoints[0].length; i++)
-			{
-				allPoints[0].push(midiPoints[0][i]);
-			}
-			
-			for (var i=0; i<leapPoints[0].length; i++)
-			{
-				allPoints[0].push(leapPoints[0][i]);
-			}
-			
-			for (var i=0; i<kinect1Points[0].length; i++)
-			{
-				allPoints[0].push(kinect1Points[0][i]);
-			}
-			
-			for (var i=0; i<kinect2Points[0].length; i++)
-			{
-				allPoints[0].push(kinect2Points[0][i]);
-			}
-			
-			
-            trc.data.vertSamples = allPoints;
-			
-			scene.remove(trc.ptc);
-			if (trc.data.vertSamples.length>0)
-			{
-            var geometry = new THREE.Geometry();
-            geometry.vertices = trc.data.vertSamples[currentFrame];
-            var material = new THREE.PointCloudMaterial({size: 1});
-            trc.ptc = new THREE.PointCloud( geometry, material );
-            scene.add(trc.ptc);
-			}
-			
-			
+		   			
 	}
 
 
@@ -400,12 +565,41 @@ function open_trc(url) {
 }
 
 
-//playback part, may rip some of this out and move it to the server +NV
+//playback part, may rip some of this out and move it to the server 
 function animate() {
     if (isLoading) return; // if is still loading, do nothing 
     var currentTime=Date.now(); //set date/time
 	//if is not paused
     if (isPlaying) {
+		
+				scene.remove(leapCloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = leapPoints[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:leapColour });
+				leapCloud = new THREE.PointCloud( geometry, material );
+				scene.add(leapCloud);				
+				
+				scene.remove(midiCloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = midiPoints[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:midiColour });
+				midiCloud = new THREE.PointCloud( geometry, material );
+				scene.add(midiCloud);
+				
+				scene.remove(kinect1Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect1Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect1Colour });
+				kinect1Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect1Cloud);
+				
+				scene.remove(kinect2Cloud);
+				var geometry = new THREE.Geometry();
+				geometry.vertices = kinect2Points[0];
+				var material = new THREE.PointCloudMaterial({size: 1, color:kinect2Colour });
+				kinect2Cloud = new THREE.PointCloud( geometry, material );
+				scene.add(kinect2Cloud);
+		
         var frameNumber = Math.floor(((currentTime - startTime)/interval) % trc.data.NumFrames); //grab current frame number
         if (currentFrame != frameNumber) { //if current frame does not match selected frame
             currentFrame = frameNumber; //set current frame to match selected frame
@@ -425,22 +619,6 @@ function animate() {
         }
     }
 	
-	
-	
-	
-	//console.log(JSON.stringify(midiPoints));
-	
-			/*
-	trc.data.vertSamples = midiPoints;
-	
-			
-	scene.remove(trc.ptc);
-    var geometry = new THREE.Geometry();
-    geometry.vertices = trc.data.vertSamples[currentFrame];
-    var material = new THREE.PointCloudMaterial({size: 1});
-    trc.ptc = new THREE.PointCloud( geometry, material );
-    scene.add(trc.ptc);
-			*/
 			
     requestAnimationFrame(animate); //request next frame
     render(); //draw current frame to screen
@@ -452,7 +630,7 @@ function render() {
     controls.update();
 }
 
-//keyboard IO, should not need to be touched +NV
+//keyboard IO, should not need to be touched 
 var keyPressed = function(event) {
     console.log(event);
     switch (event.keyCode) {

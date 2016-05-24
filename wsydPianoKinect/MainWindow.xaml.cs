@@ -278,10 +278,10 @@ namespace Wsyd.Piano.Kinect
                         pos[1] = body.Joints[j].Position.Y * scaleAmt;
                         pos[2] = body.Joints[j].Position.Z * scaleAmt;
 
-                        message += ",[" + pos[0] + "," + pos[1] + "," + pos[2] + "]";
+                        message += String.Format( ",[{0},{1},{2}]", pos[0], pos[1], pos[2] );
                     }
 
-                    message += "]";
+                    message += "]"; Console.WriteLine(message);
 
 
                     var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
@@ -443,9 +443,10 @@ namespace Wsyd.Piano.Kinect
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
+                    await SendToServer();
                 }
 
-                await SendToServer();
+
             }
         }
 

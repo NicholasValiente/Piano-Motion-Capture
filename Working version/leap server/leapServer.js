@@ -13,36 +13,36 @@ var lastMessage = Date.now();
 
 var controller =  new Leap.Controller({frameEventName: 'animationFrame', background: true, optimizeHMD: true});
 
-	var textbox = document.getElementById("databox");
-	var tip = document.getElementById("tips");
-	var knuck1 = document.getElementById("knuckle1");
-	var knuck2 = document.getElementById("knuckle2");
-	var wrist = document.getElementById("wrists");
-	var palm = document.getElementById("palms");
 	
 socket.onopen = function(evt)
 {
 connected=true;
 	var socketHead = document.getElementById("header2");
 
-socketHead.innerHTML = "Connection to socket established.<br/>" ;
+	socketHead.innerHTML = "Connection to socket established.<br/>" ;
+	socketHead.style.color = " #2aa22a";
 };
 
 socket.onclose = function(evt)
 {
 connected=false;
 	var socketHead = document.getElementById("header2");
-socketHead.innerHTML = "Failed to connect to socket.<br/>" ;
+	socketHead.innerHTML = "Failed to connect to socket.<br/>" ;
+	socketHead.style.color = "#a22a2a";
 };
 
 
 controller.on ('deviceStreaming',  function() {
 	var deviceHead = document.getElementById("header1");
+	
+	deviceHead.style.color = " #2aa22a";
 	deviceHead.innerHTML = "Leap Motion device is connected.<br/>"
+
 	});
 controller.on ('deviceStopped',  function() {
 	var deviceHead = document.getElementById("header1");
 	deviceHead.innerHTML = "Leap Motion device is disconnected.<br/>"
+	socketHead.style.color = "#a22a2a";
 	});
 
 controller.connect();
@@ -52,6 +52,8 @@ var t=0;
 controller.loop(function(frame){
 	var data = new Array("leap");
 	
+	var textbox = document.getElementById("hands");
+	hands.innerHTML = frame.hands.length;
 
 
 	

@@ -62,7 +62,24 @@ keys.push( new Array (313,10,0));
 keys.push( new Array (338,10,0));
 
 
-	
+socket.onopen = function(evt)
+        {
+        socket.send (JSON.stringify(keys) );       
+		var textbox = document.getElementById("sockethead");
+		textbox.innerHTML = "Connection to socket established.<br/>";
+		textbox.style.color = "#2aa22a"
+        };
+		
+socket.onclose = function(evt)
+{
+		var textbox = document.getElementById("sockethead");
+	textbox.innerHTML = "Failed to connect to socket.<br/>" ;
+	textbox.style.color = "#a22a2a";
+};
+
+socket.onmessage = function (message)
+	{
+	};
 
 
 // request MIDI access
@@ -72,29 +89,15 @@ if (navigator.requestMIDIAccess) {
     sysex: false
   }).then(onMIDISuccess, onMIDIFailure);
 } else {
-  alert("No MIDI support in your browser.");
+ // document.getElementById
 }
 
-socket.onopen = function(evt)
-        {
-        socket.send (JSON.stringify(keys) );       
-		var textbox = document.getElementById("sockethead");
-		textbox.innerHTML = "Connection to socket established.<br/>";
-        };
-
-
-socket.onmessage = function (message)
-	{
-
-
-	};
 
 
 
 // midi functions
 function onMIDISuccess(midiAccess) {
-	var midiconnect = document.getElementById("midihead");
-		midiconnect.innerHTML = "MIDI controller connected.<br/>";
+	
 	var box = document.getElementById("midiBox");
 		box.innerHTML = buffer.toString();	
 
@@ -103,13 +106,28 @@ function onMIDISuccess(midiAccess) {
   midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
 
   var inputs = midi.inputs.values();
+ 
+	
+  var atLeastOneDevice = false;
   // loop over all available inputs and listen for any MIDI input
   for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
     // each time there is a midi message call the onMIDIMessage function
     input.value.onmidimessage = onMIDIMessage;
+	atLeastOneDevice =true;
   }
-	
-	//initialise key positions
+	var midiconnect = document.getElementById("midihead");
+  if (atLeastOneDevice)
+	{
+		midiconnect.innerHTML = "MIDI controller connected.<br/>";
+		midiconnect.style.color = "#2aa22a";
+	}
+  else
+  {
+		midiconnect.innerHTML = "No MIDI controller connected.<br/>";
+		midiconnect.style.color = "#a22a2a";
+  }
+	  
+  
 	
 	
 }
@@ -117,8 +135,6 @@ function onMIDISuccess(midiAccess) {
 function onMIDIFailure(error) {
   // when we get a failed response, run this code
   console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-  var textbox = document.getElementById("midiBox");
-		textbox.innerHTML = "No MIDI controller";
 		break requestMidi;
 }
 
@@ -385,6 +401,11 @@ function onMIDIMessage(message) {
 			//ect for all other keys			
 	}
 	
+}
+
+function resend()
+{
+	socket.send (JSON.stringify(keys) );       
 }
 
 

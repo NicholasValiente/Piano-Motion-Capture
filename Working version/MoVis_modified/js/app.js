@@ -18,7 +18,7 @@ var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_T
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
 
 var SCALE = 0.05;
-var trc = {}; //where everything from the trc.json files gets stored
+var trc = {'data':new Array ({'NumFrames':0})  }; //where everything from the trc.json files gets stored
 var isPlaying = true;
 var currentFrame = 0;
 var startTime;
@@ -174,6 +174,8 @@ function init() {
 }
 
 
+//+++++++++++++++++++++++++++ we are calling new_scene BEFROE init, we need it other way
+
 //should not have to touch this part, all it does is set up the openGL scene 
 function new_scene() {
 	//if there is already a scene, clear it
@@ -189,10 +191,10 @@ function new_scene() {
     directionalLight.position.set( 0, 0, 0.5 );
     scene.add( directionalLight );
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new THREE.OrbitControls(camera, renderer.domElement); //<- here is wher it says renderr undefined
     controls.damping = 0.2;
 
-    gridHelper = new THREE.GridHelper(100, 10);
+    gridHelper = new THREE.GridHelper(100, 10); 
     scene.add(gridHelper);
 
     currentFrame = 0;
@@ -506,11 +508,11 @@ ws.onmessage = function (message) {
 
 
 function load_trc(url, callback) {
-    console.log("Reading ", url);
+    console.log("load_trc ", url);
     $("#loadingText").html(url);
     $("#loadingModal").modal({
         keyboard: false,
-        show: true
+        show: false
     })
     if (trc!=undefined) {
         trc = {};
@@ -565,14 +567,18 @@ function load_trc(url, callback) {
             callback();
         } 
     });
+			
+		
 }
 
 function open_trc(url) {
     isLoading = true;
+	console.log("open_trc\t"+url);
     // clean scene
     $('#loadModal').modal('hide');
     new_scene();
     load_trc(url, initGui);
+  //initGui();
 }
 
 
@@ -1019,5 +1025,6 @@ var degToRad = function(val) {
     return val*Math.PI/180.0;
 }
 
-load_data_index("data/trc.json", init);
-//init();
+//load_data_index("data/trc.json", init);
+init();
+open_trc("data/trc/test.trc.json");

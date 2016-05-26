@@ -75,7 +75,7 @@ ws.onopen = function(evt)
                {
 				setTimeout(function(){
     //do what you need here
-				ws.send(JSON.stringify("sink"));
+				ws.send("sink");
 				}, 2000);
 			   
                };

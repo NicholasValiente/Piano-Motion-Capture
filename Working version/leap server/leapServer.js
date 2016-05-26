@@ -1,139 +1,139 @@
-//var socket = new WebSocket("ws://192.168.0.233:3000/relay");
+//var socket = new ReconnectingWebSocket("ws://192.168.0.233:3000/relay");
 //uws access
-//var socket = new WebSocket("ws://137.154.151.239:3000/relay");
-//home testing
-var socket = new WebSocket("ws://127.0.0.1:3000/relay");
+//var socket = new ReconnectingWebSocket("ws://137.154.151.239:3000/relay");
+//local machine
+var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
 
-
-//var data = new Array("leap");
 var empty = true;
 var connected = false;
 var lastMessage = Date.now();
+var messageLengths = 0;
 
-var controller =  new Leap.Controller({frameEventName: 'animationFrame', background: true, optimizeHMD: true});
+//set up leap controller settings
+var controller = new Leap.Controller(
+	{
+		frameEventName : 'animationFrame', //read at 60FPS
+		background : true, //run in background window if not minimised and is the focused tab
+		optimizeHMD : true // overhead mode (does not seem to work unfortunately)
+	}
+	);
 
-	
-socket.onopen = function(evt)
+//when the socket gets a connection
+socket.onopen = function (evt)
 {
-connected=true;
+	connected = true; //set connected flag to true
+	//update page to show that we have connected
 	var socketHead = document.getElementById("header2");
-
-	socketHead.innerHTML = "Connection to socket established.<br/>" ;
+	socketHead.innerHTML = "Connection to socket established.<br/>";
 	socketHead.style.color = " #2aa22a";
 };
 
-socket.onclose = function(evt)
+//if connection fails or on disconnect
+socket.onclose = function (evt)
 {
-connected=false;
+	connected = false; //set connection flag
+	//update page to show that we have connected
 	var socketHead = document.getElementById("header2");
-	socketHead.innerHTML = "Failed to connect to socket.<br/>" ;
+	socketHead.innerHTML = "Failed to connect to socket.<br/>";
 	socketHead.style.color = "#a22a2a";
 };
 
-
-controller.on ('deviceStreaming',  function() {
+//if leap motion device is connected
+controller.on('deviceStreaming', function ()
+{
+	//update page to show that we have connected
 	var deviceHead = document.getElementById("header1");
-	
 	deviceHead.style.color = " #2aa22a";
 	deviceHead.innerHTML = "Leap Motion device is connected.<br/>"
 
-	});
-controller.on ('deviceStopped',  function() {
+}
+);
+
+//if leap motion device is not connected/disconnects during running
+controller.on('deviceStopped', function ()
+{
+	//update page to show that we have connected
 	var deviceHead = document.getElementById("header1");
 	deviceHead.innerHTML = "Leap Motion device is disconnected.<br/>"
-	socketHead.style.color = "#a22a2a";
-	});
+		socketHead.style.color = "#a22a2a";
+}
+);
 
+//start controller
 controller.connect();
 
-var t=0;
+//active loop of controller
+controller.loop(function (frame)
+{
+	var data = new Array("leap"); //make empty array with only our flag
 
-controller.loop(function(frame){
-	var data = new Array("leap");
-	
+	//get data box and change it to display current number of hands
 	var textbox = document.getElementById("hands");
 	hands.innerHTML = frame.hands.length;
 
-
-	
-	var currentTime = Date.now();
-	if ( currentTime-lastMessage>=32)
+	var currentTime = Date.now(); //get current time
+	//if  long enough between messages:
+	if (currentTime - lastMessage >= 32)
 	{
-		lastMessage=currentTime;
-		
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		//can add if statements before all of these with a flag to turn the set of points off.
-		data.push(frame.pointables[i].tipPosition);				//fingertips
-		data.push(frame.pointables[i].dipPosition);				//last knuckle
-		data.push(frame.pointables[i].pipPosition);				//middle knuckle
-		data.push(frame.pointables[i].carpPosition);			//wrist
-		data.push(frame.pointables[i].hand().palmPosition ); 	//centre of palm
+		lastMessage = currentTime; //update time of last sent message to current
+
+		//iterate through all captured points of all hands
+		for (i = 0, len = frame.pointables.length; i < len; i++)
+		{
+			//can add if statements before all of these with a flag to turn the set of points off.
+
+			//add each array of the following points to our sending message
+			data.push(frame.pointables[i].tipPosition); //fingertips
+			data.push(frame.pointables[i].dipPosition); //last knuckle
+			data.push(frame.pointables[i].pipPosition); //middle knuckle
+			data.push(frame.pointables[i].carpPosition); //wrist
+			data.push(frame.pointables[i].hand().palmPosition); //centre of palm
 
 		}
-		
 
-		
-		if (data.length>1)
+		for (var i = 1; i < data.length; i++)
 		{
-			/*
-			for(var i=1; i<data.length; i++ )
+			for (var j = 0; j < data[i].length; j++)
 			{
-				data[i][1]*=-1; //vertiacl flip
-				data[i][1]+=300; //vertiacl translation
-				data[i][0]*=-1; //horizontal left-right
-			}
-			*/
+			data[i][j] = parseInt(data[i][j]);
 			
-			if (connected)
-			{
-			var message = JSON.stringify(data);
-			socket.send (message);
-			empty=true;
 			}
 		}
-		else if (connected && empty)
+		//if we have connection to the socket
+		if (connected)
 		{
-			socket.send (JSON.stringify(data));
-			empty=false;
-		}
-		
-		//adding text tracking to web page
-		/*
-	tip.innerHTML = "Fingertip points:<br/>";
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		tip.innerHTML += frame.pointables[i].tipPosition +"<br/>";
-		}
-	knuck1.innerHTML = "First Knuckle Points:<br/>";
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		knuck1.innerHTML += frame.pointables[i].dipPosition +"<br/>";
-		}
-	knuck2.innerHTML = "Second Knuckle Points:<br/>";
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		knuck2.innerHTML += frame.pointables[i].pipPosition +"<br/>";
-		}	
-	wrist.innerHTML = "Wrist Points:<br/>";
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		wrist.innerHTML += frame.pointables[i].carpPosition +"<br/>";
-		}
-	palm.innerHTML = "Palm Points:<br/>";
-	for(i=0, len=frame.pointables.length; i < len; i++){
-		palm.innerHTML += frame.pointables[i].hand().palmPosition +"<br/>";
-		}
-		*/
-		
+			//if at least 1 point is in the message array
+			if (data.length > 1)
+			{
+				var message = JSON.stringify(data); //package up the array of points + flag
+				socket.send(message); //send off nicely packaged array
+				messageLengths += message.length;
+				empty = true; //then set empty flag
+			}
+			//otherwise, if e have not sent an empty message
+			else if (empty)
+			{
 
-		
-		
+				var message = JSON.stringify(data); //package up an empty array with just the flag
+				socket.send(message); //send off nicely packaged array
+				messageLengths += message.length;
+				empty = false; //then set empty message flag
+			}
+		}
+
 	}
-		
+
 }
 )
 
-window.onbeforeunload = function() {
-    socket.onclose = function () {}; // disable onclose handler first
-    socket.close()
+window.onbeforeunload = function ()
+{
+	socket.onclose = function ()  {};
+	socket.close()
 };
 
-
-
-
+setInterval(function ()
+{
+	console.log("bitrate:\t" + messageLengths + " characters/s");
+	messageLengths = 0;
+}, 1000);

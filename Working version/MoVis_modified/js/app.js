@@ -18,7 +18,7 @@ var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_T
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
 
 var SCALE = 0.05;
-var trc = {'data':new Array ({'NumFrames':0})  }; //where everything from the trc.json files gets stored
+var trc = {  }; //where everything from the trc.json files gets stored
 var isPlaying = true;
 var currentFrame = 0;
 var startTime;

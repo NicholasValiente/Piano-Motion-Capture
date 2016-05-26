@@ -20,6 +20,7 @@ namespace Wsyd.Piano.Kinect
     using System.Threading;
     using System.Threading.Tasks;
     using System.Text;
+    using System.Timers;
 
 
     /// <summary>
@@ -27,6 +28,8 @@ namespace Wsyd.Piano.Kinect
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+        public static event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
         /// <summary>
         /// Radius of drawn hand circles
         /// </summary>
@@ -135,10 +138,11 @@ namespace Wsyd.Piano.Kinect
         /// <summary>
         /// testing to learn how websockets work
         /// </summary>
-        ///private int[] head = { 0, 20, 0 };
+
         private Uri _serverURI = new Uri("ws://137.154.151.239:3000/relay");
+        // private Uri _serverURI = new Uri("ws://127.0.0.1:3000/relay");
         private ClientWebSocket _socket;
-        private CancellationTokenSource _cts;
+        private System.Timers.Timer _heartbeat;
 
 
         /// <summary>
@@ -233,6 +237,11 @@ namespace Wsyd.Piano.Kinect
             // initialize the components (controls) of the window
             this.InitializeComponent();
 
+            this._heartbeat = new System.Timers.Timer();
+            this._heartbeat.Elapsed += new ElapsedEventHandler(SendHeartbeat);
+            this._heartbeat.Interval = 60 * 1000; /* send a heartbeat every 60 seconds */
+
+
             ConnectToServer();
         }
 
@@ -242,15 +251,29 @@ namespace Wsyd.Piano.Kinect
         /// <returns></returns>
         private async Task ConnectToServer()
         {
-            _cts = new CancellationTokenSource();
             _socket = new ClientWebSocket();
 
-            await _socket.ConnectAsync(_serverURI, _cts.Token);
+            await _socket.ConnectAsync(_serverURI, CancellationToken.None);
+            this._heartbeat.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private void SendHeartbeat(object source, ElapsedEventArgs e)
+        {
+            var sendResult = _socket.SendAsync(
+                    new ArraySegment<byte>(Encoding.UTF8.GetBytes("heartbeat")),
+                    WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    cancellationToken: CancellationToken.None);
+
+            sendResult.Wait();
         }
 
         private async Task SendToServer()
         {
-            float x=10, y=10, z=10;
             float[] pos = { 10, 10, 10 };
             JointType[] tracked = {
                 JointType.Head,
@@ -285,12 +308,24 @@ namespace Wsyd.Piano.Kinect
 
 
                     var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
-
-                    await _socket.SendAsync(
+                  
+                    try
+                    {
+                     var  sendResult = _socket.SendAsync(
                         sendbuf,
                         WebSocketMessageType.Text,
                         endOfMessage: true,
-                        cancellationToken: _cts.Token);
+                        cancellationToken: CancellationToken.None);
+
+                        sendResult.Wait();
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    };
+                    
                 }
             }
 
@@ -446,6 +481,9 @@ namespace Wsyd.Piano.Kinect
                 }
 
                 await SendToServer();
+
+                Console.WriteLine(UnobservedTaskException);
+
             }
         }
 

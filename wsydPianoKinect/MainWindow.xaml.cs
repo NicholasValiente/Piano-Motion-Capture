@@ -20,6 +20,7 @@ namespace Wsyd.Piano.Kinect
     using System.Threading;
     using System.Threading.Tasks;
     using System.Text;
+    using System.Timers;
 
 
     /// <summary>
@@ -27,6 +28,8 @@ namespace Wsyd.Piano.Kinect
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+
+
         /// <summary>
         /// Radius of drawn hand circles
         /// </summary>
@@ -135,10 +138,12 @@ namespace Wsyd.Piano.Kinect
         /// <summary>
         /// testing to learn how websockets work
         /// </summary>
-        ///private int[] head = { 0, 20, 0 };
-        private Uri _serverURI = new Uri("ws://137.154.151.239:3000/relay");
+
+        //private Uri _serverURI = new Uri("ws://137.154.151.239:3000/relay");
+        private Uri _serverURI = new Uri("ws://127.0.0.1:3000/relay");
+        //private Uri _serverURI = new Uri("ws://echo.websocket.org");
         private ClientWebSocket _socket;
-        private CancellationTokenSource _cts;
+        private System.Timers.Timer _heartbeat;
 
 
         /// <summary>
@@ -233,6 +238,10 @@ namespace Wsyd.Piano.Kinect
             // initialize the components (controls) of the window
             this.InitializeComponent();
 
+            this._heartbeat = new System.Timers.Timer();
+            //this._heartbeat.Elapsed += new ElapsedEventHandler(SendHeartbeat);
+            this._heartbeat.Interval = 10 * 1000; /* send a heartbeat every 60 seconds */
+
             ConnectToServer();
         }
 
@@ -240,18 +249,54 @@ namespace Wsyd.Piano.Kinect
         /// 
         /// </summary>
         /// <returns></returns>
-        private async Task ConnectToServer()
+        async private Task ConnectToServer()
         {
-            _cts = new CancellationTokenSource();
             _socket = new ClientWebSocket();
+            await _socket.ConnectAsync(_serverURI, CancellationToken.None);
+            this._heartbeat.Start();
+            Console.WriteLine("connected to server");
 
-            await _socket.ConnectAsync(_serverURI, _cts.Token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private void SendHeartbeat(object source, ElapsedEventArgs e)
+        {
+            byte[] message = Encoding.UTF8.GetBytes("heartbeat");
+
+            Console.WriteLine("sending heartbeat");
+
+            var sendheart = _socket.SendAsync(
+                    new ArraySegment<byte>(message),
+                    WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    cancellationToken: CancellationToken.None);
+
+            try
+            {
+                sendheart.Wait();
+            }
+            catch (AggregateException ex)
+            {
+                Console.WriteLine("Restarting websocket connection");
+                _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                this._heartbeat.Stop();
+                ConnectToServer();
+            }
+
+            message = Encoding.UTF8.GetBytes("");
+
+            //var retrieveheart = _socket.ReceiveAsync(
+            //        new ArraySegment<byte>(message),
+            //        CancellationToken.None);
+            //Console.WriteLine("heartbeat replied " + Encoding.UTF8.GetString(message));
         }
 
         private async Task SendToServer()
         {
-            float x=10, y=10, z=10;
-            float[] pos = { 10, 10, 10 };
+            int[] pos = { 10, 10, 10 };
             JointType[] tracked = {
                 JointType.Head,
                 JointType.Neck,
@@ -263,34 +308,47 @@ namespace Wsyd.Piano.Kinect
                 JointType.ElbowRight,
                 JointType.WristLeft,
                 JointType.WristRight};
-            string message = "";
-            int scaleAmt = 600;
+            string message = string.Empty;
+            string points = string.Empty;
+            int scaleAmt = 1000;
 
             foreach (Body body in this.bodies)
             {
                 if (body.IsTracked)
                 {
-                    message = "[\"kin2\""; 
-
-                    foreach(JointType j in tracked)
+                    foreach (JointType j in tracked)
                     {
-                        pos[0] = body.Joints[j].Position.X * scaleAmt;
-                        pos[1] = body.Joints[j].Position.Y * scaleAmt;
-                        pos[2] = body.Joints[j].Position.Z * scaleAmt;
+                        pos[0] = (int)(body.Joints[j].Position.X * scaleAmt);
+                        pos[1] = (int)(body.Joints[j].Position.Y * scaleAmt);
+                        pos[2] = (int)(body.Joints[j].Position.Z * scaleAmt);
 
-                        message += String.Format( ",[{0},{1},{2}]", pos[0], pos[1], pos[2] );
+                        points += string.Format(",[{0},{1},{2}]", pos[0], pos[1], pos[2]);
                     }
 
-                    message += "]"; Console.WriteLine(message);
-
+                    message = string.Format("[\"kin2\"{0}]", points);
 
                     var sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
 
-                    await _socket.SendAsync(
-                        sendbuf,
-                        WebSocketMessageType.Text,
-                        endOfMessage: true,
-                        cancellationToken: _cts.Token);
+                    try
+                    {
+                        var sendResult = _socket.SendAsync(
+                           sendbuf,
+                           WebSocketMessageType.Text,
+                           endOfMessage: true,
+                           cancellationToken: CancellationToken.None);
+
+                        sendResult.Wait();
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Restarting websocket connection");
+                        await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                        this._heartbeat.Stop();
+                        await ConnectToServer();
+                    };
+
                 }
             }
 
@@ -443,8 +501,10 @@ namespace Wsyd.Piano.Kinect
                     // prevent drawing outside of our render area
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    await SendToServer();
                 }
+
+                await SendToServer();
+
 
 
             }

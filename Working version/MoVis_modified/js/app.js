@@ -4,7 +4,9 @@
 //uws access
 //var socket = new ReconnectingWebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
+//var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
+//local network (nick)
+var socket = new ReconnectingWebSocket("ws://192.168.1.101:3000/relay");
 
 var scene;
 var camera;
@@ -42,29 +44,29 @@ var rawMidi = [];
 //arrays for storing points from each device
 var midiPoints = [];
 var leapPoints = [];
-var kinect1Points = [];
+//var kinect1Points = [];
 var kinect2Points = [];
 //initialising the array of points for each device
 midiPoints[0] = new Array();
 leapPoints[0] = new Array();
-kinect1Points[0] = new Array();
+//kinect1Points[0] = new Array();
 kinect2Points[0] = new Array();
 
 //point clouds for each device
 var midiCloud;
 var leapCloud;
-var kinect1Cloud;
+//var kinect1Cloud;
 var kinect2Cloud;
 
 //colour variables for each device, may add a dat.ui colour picker later on, no reason why we cant.
 var midiColour = 0xffffff;
 var leapColour = 0xaaff80;
-var kinect1Colour = 0xffffff;
+//var kinect1Colour = 0xffffff;
 var kinect2Colour = 0xff0000; //0xff66cc;
 
 var midiScale = 0.05;
 var leapScale = 0.05;
-var kinect1Scale = 0.05;
+//var kinect1Scale = 0.05;
 var kinect2Scale = 0.05;
 
 //variables for the offsets, in order of: midi, leap, kinect 1, kinect 2
@@ -253,27 +255,27 @@ function initGui()
 		//add all slider bars with their default values
 		midiScaleBar : midiScale,
 		leapScaleBar : leapScale,
-		kin1ScaleBar : kinect1Scale,
+		//kin1ScaleBar : kinect1Scale,
 		kin2ScaleBar : kinect2Scale,
 
 		midiXOffset : xOffset[0],
 		leapXOffset : xOffset[1],
-		kin1XOffset : xOffset[2],
+		//kin1XOffset : xOffset[2],
 		kin2XOffset : xOffset[3],
 
 		midiyOffset : yOffset[0],
 		leapyOffset : yOffset[1],
-		kin1yOffset : yOffset[2],
+		//kin1yOffset : yOffset[2],
 		kin2yOffset : yOffset[3],
 
 		midizOffset : zOffset[0],
 		leapzOffset : zOffset[1],
-		kin1zOffset : zOffset[2],
+		//kin1zOffset : zOffset[2],
 		kin2zOffset : zOffset[3],
 
 		midiColourPicker : midiColour,
 		leapColourPicker : leapColour,
-		kin1ColourPicker : kinect1Colour,
+		//kin1ColourPicker : kinect1Colour,
 		kin2ColourPicker : kinect2Colour
 
 	};
@@ -285,7 +287,7 @@ function initGui()
 	//add and initialise folders to sort the sliders by input group
 	var midiFolder = gui.addFolder("Midi Settings");
 	var leapFolder = gui.addFolder("Leap Settings");
-	var kinect1Folder = gui.addFolder("Kinect 1 Settings");
+	//var kinect1Folder = gui.addFolder("Kinect 1 Settings");
 	var kinect2Folder = gui.addFolder("Kinect 2 Settings");
 
 	//add all sliders to the midi folder and initialise them
@@ -409,7 +411,8 @@ function initGui()
 	);
 
 	//add all sliders to the kinect 1 folder and initialise them
-	kinect1Folder.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect1 Scale').listen()
+	/*
+	kinect1Folder.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('kinect1 Scale').listen()
 	.onChange(function (newValue)
 	{
 		kinect1Scale = newValue;
@@ -439,7 +442,8 @@ function initGui()
 		kinect1Colour = newValue;
 	}
 	);
-
+*/
+	
 	//add all sliders to the kinect 2 folder and initialise them
 	kinect2Folder.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
 	.onChange(function (newValue)
@@ -509,7 +513,7 @@ socket.onmessage = function (message)
 {
 	var data = JSON.parse(message.data);
 	
-	if (data[0] == "midi" || data[0] == "leap" || data[0] == "kin1" || data[0] == "kin2")
+	if (data[0] == "midi" || data[0] == "leap" || /* data[0] == "kin1" || */ data[0] == "kin2")
 	{
 
 		var vertSamples = [];
@@ -565,7 +569,7 @@ socket.onmessage = function (message)
 
 			break;
 
-		case "kin1":
+		/*case "kin1":
 
 			for (var j = 1; j < data.length; j++)
 			{
@@ -581,7 +585,7 @@ socket.onmessage = function (message)
 			kinect1Points = vertSamples;
 
 			break;
-
+*/
 		case "kin2":
 
 			for (var j = 1; j < data.length; j++)
@@ -741,7 +745,7 @@ function animate()
 		midiCloud = new THREE.PointCloud(geometry, material);	//replace old midi cloud with updated one
 		scene.add(midiCloud);									//add new midi cloud back into the scene
 
-		
+		/*
 		scene.remove(kinect1Cloud); 			//remove last set of kinect 1 points
 		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array	
 		geometry.vertices = kinect1Points[0];	//fill it with the kinect 1 points
@@ -754,7 +758,7 @@ function animate()
 			);
 		kinect1Cloud = new THREE.PointCloud(geometry, material);	//replace old kinect 1 cloud with updated one
 		scene.add(kinect1Cloud);									////add new kinect 1 cloud back into the scene
-
+*/
 		
 		scene.remove(kinect2Cloud); 			//remove last set of kinect 2 points
 		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array	

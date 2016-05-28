@@ -13,13 +13,13 @@ var camera;
 var renderer;
 var controls;
 
-/* 
+/*
 //old flags that we don't use any more
 //array of possible upper body label flags
 var TOP = ['Top_Head', 'FR_Head', 'BR_Head', 'FL_Head', 'BL_Head', 'R_Shoulder_Top', 'R_Shoulder_Back', 'R_Bicep', 'R_Elbow', 'R_Wrist_Upper', 'R_Wrist_Lower', 'R_Pinky', 'R_Thumb', 'L_Shoulder_Top', 'L_Shoulder_Back', 'L_Bicep', 'L_Elbow', 'L_Wrist_Upper', 'L_Wrist_Lower', 'L_Pinky', 'L_Thumb', 'Topspine', 'Sternum', 'Midback', 'Lowback_Center', 'Lowback_Right', 'Lowback_Left', 'Root']
 //array of possible lower body label flags
 var BOTTOM = ['BRHip', 'BLHip', 'FRHip', 'FLHip', 'R_Troc', 'R_Thigh', 'R_Knee', 'R_Calf', 'R_Ankle', 'R_Foot_Lat', 'R_Toe_Lat', 'R_Toe_Med', 'L_Troc', 'L_Thigh', 'L_Knee', 'L_Calf', 'L_Ankle', 'L_Foot_Lat', 'L_Toe_Lat', 'L_Toe_Med'];
-*/
+ */
 
 var SCALE = 0.05;
 var trc = {}; //where everything from the trc.json files gets stored
@@ -68,6 +68,11 @@ var midiScale = 0.05;
 var leapScale = 0.05;
 //var kinect1Scale = 0.05;
 var kinect2Scale = 0.05;
+
+var showMidi = true;
+var showLeap = true;
+//var showKinect1 = true;
+var showKinect2 = true;
 
 //variables for the offsets, in order of: midi, leap, kinect 1, kinect 2
 var xOffset = new Array(0, 0, 0, 0);
@@ -200,7 +205,6 @@ function init()
 	)
 }
 
-
 //should not have to touch this part, all it does is set up the openGL scene
 function new_scene()
 {
@@ -276,13 +280,43 @@ function initGui()
 		midiColourPicker : midiColour,
 		leapColourPicker : leapColour,
 		//kin1ColourPicker : kinect1Colour,
-		kin2ColourPicker : kinect2Colour
+		kin2ColourPicker : kinect2Colour,
+
+		midiToggle : showMidi,
+		leapToggle : showLeap,
+		//kin1Toggle: showKinect1,
+		kin2Toggle : showKinect2
 
 	};
 
 	gui.add(mkrParams, "all");
 	gui.add(mkrParams, "none");
 	gui.add(mkrParams, "toggle");
+
+	gui.add(mkrParams, 'midiToggle').name('Show Midi').listen(showMidi).onFinishChange(function (newValue)
+	{
+		showMidi = newValue;
+	}
+	);
+	console.log(gui.__controllers[3]);
+
+	gui.add(mkrParams, 'leapToggle').name('Show Leap').listen().onFinishChange(function (newValue)
+	{
+		showLeap = newValue;
+	}
+	);
+	/*
+	gui.add(mkrParams, 'kin1Toggle').name('Show Kinect 1').listen().onFinishChange(function (newValue)
+{
+	showkinect1 = newValue;
+	}
+	);
+	 */
+	gui.add(mkrParams, 'kin2Toggle').name('Show Kinect 2').listen().onFinishChange(function (newValue)
+	{
+		showkinect2 = newValue;
+	}
+	);
 
 	//add and initialise folders to sort the sliders by input group
 	var midiFolder = gui.addFolder("Midi Settings");
@@ -311,7 +345,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midiXOffset', -100, 100).name('Midi X Offset').listen()
+	midiFolder.add(mkrParams, 'midiXOffset', -100, 100).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[0] = newValue;
@@ -331,7 +365,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midiyOffset', -100, 100).name('Midi Y Offset').listen()
+	midiFolder.add(mkrParams, 'midiyOffset', -100, 100).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[0] = newValue;
@@ -351,7 +385,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midizOffset', -100, 100).name('Midi Z Offset').listen()
+	midiFolder.add(mkrParams, 'midizOffset', -100, 100).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[0] = newValue;
@@ -385,19 +419,19 @@ function initGui()
 		leapScale = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapXOffset', -100, 100).name('Leap X Offset').listen()
+	leapFolder.add(mkrParams, 'leapXOffset', -100, 100).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[1] = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapyOffset', -100, 100).name('Leap Y Offset').listen()
+	leapFolder.add(mkrParams, 'leapyOffset', -100, 100).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[1] = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapzOffset', -100, 100).name('Leap Z Offset').listen()
+	leapFolder.add(mkrParams, 'leapzOffset', -100, 100).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		zOffset[1] = newValue;
@@ -412,58 +446,58 @@ function initGui()
 
 	//add all sliders to the kinect 1 folder and initialise them
 	/*
-	kinect1Folder.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('kinect1 Scale').listen()
+	kinect1Folder.add(mkrParams, 'kin1ScaleBar', 0.05, 0.2).name('Kinect 1 Scale').listen()
 	.onChange(function (newValue)
-	{
-		kinect1Scale = newValue;
+{
+	kinect1Scale = newValue;
 	}
 	);
-	kinect1Folder.add(mkrParams, 'kin1XOffset', -100, 100).name('Kinect 1 X Offset').listen()
+	kinect1Folder.add(mkrParams, 'kin1XOffset', -100, 100).name('Translate X').listen()
 	.onChange(function (newValue)
-	{
-		xOffset[2] = newValue;
+{
+	xOffset[2] = newValue;
 	}
 	);
-	kinect1Folder.add(mkrParams, 'kin1yOffset', -100, 100).name('Kinect 1 Y Offset').listen()
+	kinect1Folder.add(mkrParams, 'kin1yOffset', -100, 100).name('Translate Y').listen()
 	.onChange(function (newValue)
-	{
-		yOffset[2] = newValue;
+{
+	yOffset[2] = newValue;
 	}
 	);
-	kinect1Folder.add(mkrParams, 'kin1zOffset', -100, 100).name('Kinect 1 Z Offset').listen()
+	kinect1Folder.add(mkrParams, 'kin1zOffset', -100, 100).name('Translate Z').listen()
 	.onChange(function (newValue)
-	{
-		zOffset[2] = newValue;
+{
+	zOffset[2] = newValue;
 	}
 	);
 	kinect1Folder.addColor(mkrParams, 'kin1ColourPicker', kinect1Colour).name('Kinect 1 Colour').listen()
 	.onChange(function (newValue)
-	{
-		kinect1Colour = newValue;
+{
+	kinect1Colour = newValue;
 	}
 	);
-*/
-	
+	 */
+
 	//add all sliders to the kinect 2 folder and initialise them
-	kinect2Folder.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect2 Scale').listen()
+	kinect2Folder.add(mkrParams, 'kin2ScaleBar', 0.05, 0.2).name('Kinect 2 Scale').listen()
 	.onChange(function (newValue)
 	{
 		kinect2Scale = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2XOffset', -100, 100).name('Kinect 2 X Offset').listen()
+	kinect2Folder.add(mkrParams, 'kin2XOffset', -100, 100).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[3] = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2yOffset', -100, 100).name('Kinect 2 Y Offset').listen()
+	kinect2Folder.add(mkrParams, 'kin2yOffset', -100, 100).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[3] = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2zOffset', -100, 100).name('Kinect 2 Z Offset').listen()
+	kinect2Folder.add(mkrParams, 'kin2zOffset', -100, 100).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		zOffset[3] = newValue;
@@ -484,36 +518,54 @@ function initGui()
 //function to select all markers
 function selectAll()
 {
-	for (var i = 0; i < trc.data.groups.length; i++)
-	{
-		mkrParams[trc.data.groups[i]] = true;
-	}
+	showMidi = true;
+	mkrParams.midiToggle = true;
+	showLeap = true;
+	mkrParams.leapToggle = true;
+	//showKinect1 = true;
+	//mkrParams.kin1Toggle = true;
+	showKinect2 = true;
+	mkrParams.kin2Toggle = true;
+	
+	
+	
 }
 
 //function to select no markers
 function selectNone()
 {
-	for (var i = 0; i < trc.data.groups.length; i++)
-	{
-		mkrParams[trc.data.groups[i]] = false;
-	}
+	showMidi = false;
+	mkrParams.midiToggle = false;
+	showLeap = false;
+	mkrParams.leapToggle = false;
+	//showKinect1 = false;
+	//mkrParams.kin1Toggle = false;
+	showKinect2 = false;
+	mkrParams.kin2Toggle = false;
+	
+	
 }
 
 //function to swap marker selection
 function toggleSelection()
 {
-	for (var i = 0; i < trc.data.groups.length; i++)
-	{
-		mkrParams[trc.data.groups[i]] = !mkrParams[trc.data.groups[i]];
-	}
+	showMidi = !showMidi;
+	mkrParams.midiToggle = !mkrParams.midiToggle;
+	showLeap = !showLeap;
+	mkrParams.leapToggle = !mkrParams.leapToggle;
+	//showKinect1 = !showKinect1;
+	//mkrParams.kin1Toggle = mkrParams.kin1Toggle;
+	showKinect2 = !showKinect2;
+	mkrParams.kin2Toggle = !mkrParams.kin2Toggle;
 }
 
 //upon receiving a web socket message
 socket.onmessage = function (message)
 {
 	var data = JSON.parse(message.data);
-	
-	if (data[0] == "midi" || data[0] == "leap" || /* data[0] == "kin1" || */ data[0] == "kin2")
+
+	if (data[0] == "midi" || data[0] == "leap" || /* data[0] == "kin1" || */
+		data[0] == "kin2")
 	{
 
 		var vertSamples = [];
@@ -569,15 +621,14 @@ socket.onmessage = function (message)
 
 			break;
 
-		/*case "kin1":
+			/*case "kin1":
 
-			for (var j = 1; j < data.length; j++)
-			{
-				var vert = new THREE.Vector3(
-						data[j][0] * kinect1Scale + xOffset[2],
-						data[j][1] * kinect1Scale + yOffset[2],
-						data[j][2] * kinect1Scale + zOffset[2]);
-				vertices.push(vert);
+			for (var j = 1; j < data.length; j++){
+			var vert = new THREE.Vector3(
+			data[j][0] * kinect1Scale + xOffset[2],
+			data[j][1] * kinect1Scale + yOffset[2],
+			data[j][2] * kinect1Scale + zOffset[2]);
+			vertices.push(vert);
 			}
 			vertSamples.push(vertices);
 
@@ -585,7 +636,7 @@ socket.onmessage = function (message)
 			kinect1Points = vertSamples;
 
 			break;
-*/
+			 */
 		case "kin2":
 
 			for (var j = 1; j < data.length; j++)
@@ -717,67 +768,76 @@ function animate()
 	//if is not paused
 	if (isPlaying)
 	{
-		
-		scene.remove(leapCloud); 				//remove last set of leap points
-		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array
-		geometry.vertices = leapPoints[0]; 		//fill it with the leap points
-		//set its material size and colour
-		var material = new THREE.PointCloudMaterial(
-			{
-				size : 1,
-				color : leapColour
-			}
-			);
-		leapCloud = new THREE.PointCloud(geometry, material);	//replace old leap cloud with updated one
-		scene.add(leapCloud);									//add new leap cloud back into the scene
 
-		
-		scene.remove(midiCloud);				//remove last set of midi points
-		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array	
-		geometry.vertices = midiPoints[0];		//fill it with the midi points
-		//set its material size and colour
-		var material = new THREE.PointCloudMaterial(
-			{
-				size : 1,
-				color : midiColour
-			}
-			);
-		midiCloud = new THREE.PointCloud(geometry, material);	//replace old midi cloud with updated one
-		scene.add(midiCloud);									//add new midi cloud back into the scene
+		scene.remove(leapCloud); //remove last set of leap points
+		if (showLeap)
+		{
+			var geometry = new THREE.Geometry(); //make an empty 3d vertexes array
+			geometry.vertices = leapPoints[0]; //fill it with the leap points
+			//set its material size and colour
+			var material = new THREE.PointCloudMaterial(
+				{
+					size : 1,
+					color : leapColour
+				}
+				);
+			leapCloud = new THREE.PointCloud(geometry, material); //replace old leap cloud with updated one
+			scene.add(leapCloud); //add new leap cloud back into the scene
+		}
 
+		scene.remove(midiCloud); //remove last set of midi points
+		if (showMidi)
+		{
+			var geometry = new THREE.Geometry(); //make an empty 3d vertexes array
+			geometry.vertices = midiPoints[0]; //fill it with the midi points
+			//set its material size and colour
+			var material = new THREE.PointCloudMaterial(
+				{
+					size : 1,
+					color : midiColour
+				}
+				);
+			midiCloud = new THREE.PointCloud(geometry, material); //replace old midi cloud with updated one
+			scene.add(midiCloud); //add new midi cloud back into the scene
+		}
 		/*
-		scene.remove(kinect1Cloud); 			//remove last set of kinect 1 points
-		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array	
-		geometry.vertices = kinect1Points[0];	//fill it with the kinect 1 points
+		scene.remove(kinect1Cloud); //remove last set of kinect 1 points
+		if (showKinect1)
+	{
+		var geometry = new THREE.Geometry(); //make an empty 3d vertexes array
+		geometry.vertices = kinect1Points[0]; //fill it with the kinect 1 points
 		//set its material size and colour
 		var material = new THREE.PointCloudMaterial(
-			{
-				size : 1,
-				color : kinect1Colour
-			}
-			);
-		kinect1Cloud = new THREE.PointCloud(geometry, material);	//replace old kinect 1 cloud with updated one
-		scene.add(kinect1Cloud);									////add new kinect 1 cloud back into the scene
-*/
-		
-		scene.remove(kinect2Cloud); 			//remove last set of kinect 2 points
-		var geometry = new THREE.Geometry();	//make an empty 3d vertexes array	
-		geometry.vertices = kinect2Points[0];	//fill it with the kinect 2 points
-		//set its material size and colour
-		var material = new THREE.PointCloudMaterial(
-			{
-				size : 1,
-				color : kinect2Colour
-			}
-			);
-		kinect2Cloud = new THREE.PointCloud(geometry, material);	//replace old kinect 2 cloud with updated one
-		scene.add(kinect2Cloud);									//add new kinect 2 cloud back into the scene
+	{
+		size : 1,
+		color : kinect1Colour
+		}
+		);
+		kinect1Cloud = new THREE.PointCloud(geometry, material); //replace old kinect 1 cloud with updated one
+		scene.add(kinect1Cloud); //add new kinect 1 cloud back into the scene
+		}
+		 */
+		scene.remove(kinect2Cloud); //remove last set of kinect 2 points
+		if (showKinect2)
+		{
+			var geometry = new THREE.Geometry(); //make an empty 3d vertexes array
+			geometry.vertices = kinect2Points[0]; //fill it with the kinect 2 points
+			//set its material size and colour
+			var material = new THREE.PointCloudMaterial(
+				{
+					size : 1,
+					color : kinect2Colour
+				}
+				);
+			kinect2Cloud = new THREE.PointCloud(geometry, material); //replace old kinect 2 cloud with updated one
+			scene.add(kinect2Cloud); //add new kinect 2 cloud back into the scene
+		}
 
 		//grab current frame number
-		var frameNumber = Math.floor(((currentTime - startTime) / interval) % trc.data.NumFrames); 
+		var frameNumber = Math.floor(((currentTime - startTime) / interval) % trc.data.NumFrames);
 		if (currentFrame != frameNumber)
-		{ 									//if current frame does not match selected frame
-			currentFrame = frameNumber; 	//set current frame to match selected frame
+		{ //if current frame does not match selected frame
+			currentFrame = frameNumber; //set current frame to match selected frame
 			trc.ptc.geometry.vertices = trc.data.vertSamples[currentFrame];
 			trc.ptc.geometry.verticesNeedUpdate = true;
 			//
@@ -789,7 +849,7 @@ function animate()
 
 	}
 	else //if it is paused, use current verticies and dont keep playing
-	{ 
+	{
 		trc.ptc.geometry.vertices = trc.data.vertSamples[currentFrame];
 		trc.ptc.geometry.verticesNeedUpdate = true;
 		for (var i = 0; i < dynObjs.length; i++)
@@ -799,7 +859,7 @@ function animate()
 	}
 
 	requestAnimationFrame(animate); //request next frame
-	render(); 						//draw current frame to screen
+	render(); //draw current frame to screen
 
 }
 
@@ -1178,7 +1238,7 @@ function update_speed_circles(obj)
 	obj.children.push(circle);
 }
 
-//create 3d spheres to show speed, was already implemented before we made changes 
+//create 3d spheres to show speed, was already implemented before we made changes
 function create_speed_spheres()
 {
 	var indices = get_selected_marker_indices();

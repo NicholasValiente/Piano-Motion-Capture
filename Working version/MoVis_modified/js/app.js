@@ -36,16 +36,17 @@ var trailLength = 50;
 var gridHelper; //3D grid
 var isGridHelperVisible = true; //whether grid is visible
 var isPtcVisible = true;
-var isLoading = false;
+var isLoading = false; //show loading bar flag
 
 var flag = false;
 
-var rawMidi = [];
+var rawMidi = []; 	//array to store our largest keyboard message, used for reference when scaling and re-positioning keyboard
 //arrays for storing points from each device
 var midiPoints = [];
 var leapPoints = [];
 //var kinect1Points = [];
 var kinect2Points = [];
+
 //initialising the array of points for each device
 midiPoints[0] = new Array();
 leapPoints[0] = new Array();
@@ -58,17 +59,19 @@ var leapCloud;
 //var kinect1Cloud;
 var kinect2Cloud;
 
-//colour variables for each device, may add a dat.ui colour picker later on, no reason why we cant.
+//colour variables for each device and default colours
 var midiColour = 0xffffff;
 var leapColour = 0xaaff80;
 //var kinect1Colour = 0xffffff;
-var kinect2Colour = 0xff0000; //0xff66cc;
+var kinect2Colour = 0xff0000; 
 
+//scale variables for each device, along with default values
 var midiScale = 0.05;
 var leapScale = 0.05;
 //var kinect1Scale = 0.05;
 var kinect2Scale = 0.05;
 
+//flag as to whether to show a devices points or not, set to true by default
 var showMidi = true;
 var showLeap = true;
 //var showKinect1 = true;
@@ -85,12 +88,12 @@ socket.onopen = function (evt)
 	{
 		//do what you need here
 		socket.send("sink");
-	}, 2000);
+	}, 100);
 
 };
 
-//file selection menu, if we add a button for live feed we should be able to keep mostly as is.
-//need to work out how to bypass having to load a file and skip to an empty file
+//file selection menu, is still there, however no buttons are added, and we bypass this,
+//is only here for legacy reasons in case client decides to add file loading back in later
 function load_data_index(url, callback)
 { //take the trc.json file and a ??callback
 	$.getJSON(url, function (data)
@@ -166,7 +169,7 @@ function load_data_index(url, callback)
 	);
 }
 
-//should not have to touch this part either, all it does is set up the canvas
+//set up renderer and camera for us before we start anything else
 function init()
 {
 
@@ -205,7 +208,7 @@ function init()
 	)
 }
 
-//should not have to touch this part, all it does is set up the openGL scene
+//initialise openGL scene
 function new_scene()
 {
 	//if there is already a scene, clear it
@@ -222,7 +225,7 @@ function new_scene()
 	directionalLight.position.set(0, 0, 0.5);
 	scene.add(directionalLight);
 
-	controls = new THREE.OrbitControls(camera, renderer.domElement); //<- here is wher it says renderr undefined
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
 	controls.damping = 0.2;
 
 	gridHelper = new THREE.GridHelper(100, 10);
@@ -235,7 +238,7 @@ function new_scene()
 	isPtcVisible = true;
 }
 
-//initialisation of GUI, should not need touching either
+//initialisation of GUI, made modifications to show our devices elements
 function initGui()
 {
 	if (gui != undefined)
@@ -293,6 +296,7 @@ function initGui()
 	gui.add(mkrParams, "none");
 	gui.add(mkrParams, "toggle");
 
+	//add all devices display checkbox to gui and initialise them
 	gui.add(mkrParams, 'midiToggle').name('Show Midi').listen(showMidi).onFinishChange(function (newValue)
 	{
 		showMidi = newValue;
@@ -510,12 +514,13 @@ function initGui()
 	}
 	);
 
-	//maybe use these last two lines to skip file loading later?
+	//close the loading bar
 	isLoading = false;
 	animate(); // start the animation loop
 }
 
 //function to select all markers
+//we modified this to only work with our devices markers and ignore default groups
 function selectAll()
 {
 	showMidi = true;
@@ -526,12 +531,10 @@ function selectAll()
 	//mkrParams.kin1Toggle = true;
 	showKinect2 = true;
 	mkrParams.kin2Toggle = true;
-	
-	
-	
 }
 
 //function to select no markers
+//we modified this to only work with our devices markers and ignore default groups
 function selectNone()
 {
 	showMidi = false;
@@ -542,11 +545,10 @@ function selectNone()
 	//mkrParams.kin1Toggle = false;
 	showKinect2 = false;
 	mkrParams.kin2Toggle = false;
-	
-	
 }
 
 //function to swap marker selection
+//we modified this to only work with our devices markers and ignore default groups
 function toggleSelection()
 {
 	showMidi = !showMidi;
@@ -554,7 +556,7 @@ function toggleSelection()
 	showLeap = !showLeap;
 	mkrParams.leapToggle = !mkrParams.leapToggle;
 	//showKinect1 = !showKinect1;
-	//mkrParams.kin1Toggle = mkrParams.kin1Toggle;
+	//mkrParams.kin1Toggle = !mkrParams.kin1Toggle;
 	showKinect2 = !showKinect2;
 	mkrParams.kin2Toggle = !mkrParams.kin2Toggle;
 }
@@ -562,10 +564,11 @@ function toggleSelection()
 //upon receiving a web socket message
 socket.onmessage = function (message)
 {
-	var data = JSON.parse(message.data);
+	var data = JSON.parse(message.data); //unpack the message
 
-	if (data[0] == "midi" || data[0] == "leap" || /* data[0] == "kin1" || */
-		data[0] == "kin2")
+//check our flag variable to see if it matches one of our devices
+	if (data[0] == "midi" || data[0] == "leap" 
+/*	||  data[0] == "kin1" */ ||  data[0] == "kin2")
 	{
 
 		var vertSamples = [];
@@ -573,7 +576,7 @@ socket.onmessage = function (message)
 		switch (data[0])
 		{
 		case "midi":
-
+			//store all points into one frame of the temporary array 
 			for (var j = 1; j < data.length; j++)
 			{
 				var vert = new THREE.Vector3(
@@ -584,6 +587,7 @@ socket.onmessage = function (message)
 			}
 			vertSamples.push(vertices);
 
+			//if message is less then full keyboard in length
 			if (midiPoints[0].length > vertSamples[0].length)
 			{ //replace only new points
 
@@ -594,8 +598,10 @@ socket.onmessage = function (message)
 				}
 
 			}
+			//otherwise 
 			else
 			{
+				//update both reference keyboard and keyboard points array
 				rawMidi = data;
 				midiPoints = [];
 				midiPoints = vertSamples;
@@ -604,8 +610,9 @@ socket.onmessage = function (message)
 			break;
 
 		case "leap":
-			//need to add something to snap hands to kinect wrist points if found
-			//will be done if/when we get time
+			//in future add something to snap the leap hand to the kinect matching by wrist points 
+			//last 2 points are left and right hand respectively kinect
+			//3rd last point for each hand is centre wrist
 			for (var j = 1; j < data.length; j++)
 			{
 				var vert = new THREE.Vector3(
@@ -863,7 +870,7 @@ function animate()
 
 }
 
-//render settings, was already implemented before we made changes
+//add scene and camera to the renderer, was already implemented before we made changes
 function render()
 {
 	renderer.render(scene, camera);
@@ -959,6 +966,7 @@ var keyPressed = function (event)
 		break;
 	}
 }
+//add key listener
 document.addEventListener("keydown", keyPressed, false);
 
 //return selected marker(s) index(/indices) in array, was already implemented before we made changes
@@ -1172,8 +1180,8 @@ function update_velocity_arrow(arrowObj)
 	arrowObj.obj.setColor(col.getHex());
 }
 
-var maxSpeeds = {}
 //create circles that increase in size depending on speed, was already implemented before we made changes
+var maxSpeeds = {}
 function create_speed_circles()
 {
 	var indices = get_selected_marker_indices();

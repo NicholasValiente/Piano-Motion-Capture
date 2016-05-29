@@ -10,7 +10,7 @@ var messageLengths=0;
 var keys = new Array("midi");
 var buffer = new Array("midi");
 
-//set all of our keys points
+//initialise all of our keys points
 console.log("initialising key points");
 keys.push(new Array(-362, 10, 0));
 keys.push(new Array(-349.5, 20, -20));

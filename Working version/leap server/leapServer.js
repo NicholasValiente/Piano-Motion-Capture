@@ -4,7 +4,7 @@
 //local machine
 var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
 
-var empty = true;
+var emptyMessageSent = true;
 var connected = false;
 var lastMessage = Date.now();
 var messageLengths = 0;
@@ -108,16 +108,16 @@ controller.loop(function (frame)
 				var message = JSON.stringify(data); //package up the array of points + flag
 				socket.send(message); //send off nicely packaged array
 				messageLengths += message.length;
-				empty = true; //then set empty flag
+				emptyMessageSent = false; //then set empty message flag
 			}
-			//otherwise, if e have not sent an empty message
-			else if (empty)
+			//otherwise, if we have not sent an empty array with just the flag
+			else if (!emptyMessageSent)
 			{
 
 				var message = JSON.stringify(data); //package up an empty array with just the flag
 				socket.send(message); //send off nicely packaged array
 				messageLengths += message.length;
-				empty = false; //then set empty message flag
+				emptyMessageSent = true; //then set empty message flag
 			}
 		}
 
@@ -131,6 +131,7 @@ window.onbeforeunload = function ()
 	socket.onclose = function ()  {};
 	socket.close()
 };
+
 
 setInterval(function ()
 {

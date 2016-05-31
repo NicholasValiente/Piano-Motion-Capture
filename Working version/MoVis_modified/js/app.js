@@ -1,13 +1,3 @@
-// all current options for websockets, maybe we add a picker for the socket if we get time?
-//lab access
-//var socket = new ReconnectingWebSocket("ws://192.168.0.233:3000/relay");
-//uws access
-//var socket = new ReconnectingWebSocket("ws://137.154.151.239:3000/relay");
-//home testing
-var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
-//local network (nick)
-//var socket = new ReconnectingWebSocket("ws://192.168.1.101:3000/relay");
-
 var scene;
 var camera;
 var renderer;

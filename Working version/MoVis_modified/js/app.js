@@ -4,9 +4,9 @@
 //uws access
 //var socket = new ReconnectingWebSocket("ws://137.154.151.239:3000/relay");
 //home testing
-//var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
+var socket = new ReconnectingWebSocket("ws://127.0.0.1:3000/relay");
 //local network (nick)
-var socket = new ReconnectingWebSocket("ws://192.168.1.101:3000/relay");
+//var socket = new ReconnectingWebSocket("ws://192.168.1.101:3000/relay");
 
 var scene;
 var camera;
@@ -80,7 +80,7 @@ var showKinect2 = true;
 //variables for the offsets, in order of: midi, leap, kinect 1, kinect 2
 var xOffset = new Array(0, 0, 0, 0);
 var yOffset = new Array(0, 0, 0, 0);
-var zOffset = new Array(0, 0, 0, 0);
+var zOffset = new Array(0, 0, 0, -80);
 
 socket.onopen = function (evt)
 {
@@ -318,7 +318,7 @@ function initGui()
 	 */
 	gui.add(mkrParams, 'kin2Toggle').name('Show Kinect 2').listen().onFinishChange(function (newValue)
 	{
-		showkinect2 = newValue;
+		showKinect2 = newValue;
 	}
 	);
 
@@ -349,7 +349,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midiXOffset', -100, 100).name('Translate X').listen()
+	midiFolder.add(mkrParams, 'midiXOffset', -30, 30).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[0] = newValue;
@@ -369,7 +369,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midiyOffset', -100, 100).name('Translate Y').listen()
+	midiFolder.add(mkrParams, 'midiyOffset', -30, 30).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[0] = newValue;
@@ -389,7 +389,7 @@ function initGui()
 		midiPoints = vertSamples;
 	}
 	);
-	midiFolder.add(mkrParams, 'midizOffset', -100, 100).name('Translate Z').listen()
+	midiFolder.add(mkrParams, 'midizOffset', -30, 30).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[0] = newValue;
@@ -423,19 +423,19 @@ function initGui()
 		leapScale = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapXOffset', -100, 100).name('Translate X').listen()
+	leapFolder.add(mkrParams, 'leapXOffset', -30, 30).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[1] = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapyOffset', -100, 100).name('Translate Y').listen()
+	leapFolder.add(mkrParams, 'leapyOffset', -30, 30).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[1] = newValue;
 	}
 	);
-	leapFolder.add(mkrParams, 'leapzOffset', -100, 100).name('Translate Z').listen()
+	leapFolder.add(mkrParams, 'leapzOffset', -30, 30).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		zOffset[1] = newValue;
@@ -489,19 +489,19 @@ function initGui()
 		kinect2Scale = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2XOffset', -100, 100).name('Translate X').listen()
+	kinect2Folder.add(mkrParams, 'kin2XOffset', -30, 30).name('Translate X').listen()
 	.onChange(function (newValue)
 	{
 		xOffset[3] = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2yOffset', -100, 100).name('Translate Y').listen()
+	kinect2Folder.add(mkrParams, 'kin2yOffset', -30, 30).name('Translate Y').listen()
 	.onChange(function (newValue)
 	{
 		yOffset[3] = newValue;
 	}
 	);
-	kinect2Folder.add(mkrParams, 'kin2zOffset', -100, 100).name('Translate Z').listen()
+	kinect2Folder.add(mkrParams, 'kin2zOffset', -80, -20).name('Translate Z').listen()
 	.onChange(function (newValue)
 	{
 		zOffset[3] = newValue;

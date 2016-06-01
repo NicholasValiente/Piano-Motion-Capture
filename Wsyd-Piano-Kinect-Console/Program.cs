@@ -61,6 +61,7 @@
 
         async Task ConnectToServer()
         {
+            this._socket = new ClientWebSocket();
             await _socket.ConnectAsync(_serverURI, CancellationToken.None);
             //this._hearbeat.Start();
 
@@ -243,19 +244,16 @@
 
                 sendResult.Wait();
             }
-            catch (AggregateException ae)
+            catch (Exception e)
             {
-                foreach (Exception ex in ae.InnerExceptions)
-                {
-                    Console.SetCursorPosition(0, 15);
-                    Console.WriteLine("Restarted websocket connection at {0}", DateTime.Now.ToString("h:mm:ss tt"));
-                    Console.WriteLine("The error was: {0}", ex.Message);
+                Console.SetCursorPosition(0, 15);
+                Console.WriteLine("Restarted websocket connection at {0}", DateTime.Now.ToString("h:mm:ss tt"));
+                Console.WriteLine("The error was: {0}", e.Message);
 
-                    await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-                    this._heartbeat.Stop();
-                    await ConnectToServer();
+                await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                this._heartbeat.Stop();
+                await ConnectToServer();
 
-                }
 
             }
 

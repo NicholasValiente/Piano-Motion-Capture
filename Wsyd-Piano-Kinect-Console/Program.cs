@@ -31,7 +31,6 @@
 
         void InitKinectSensor()
         {
-            Console.WriteLine("Initialising Kinect Sensor");
             this._kinectSensor = KinectSensor.GetDefault();
             this._coordinateMapper = this._kinectSensor.CoordinateMapper;
             this._frameDescription = this._kinectSensor.DepthFrameSource.FrameDescription;
@@ -48,7 +47,6 @@
 
         void InitWebSocket(Uri server)
         {
-            Console.WriteLine("Initialising Websocket Connection");
             this._serverURI = server;
             this._heartbeat = new System.Timers.Timer();
             //this._heartbeat.Elapsed += new System.Timers.ElapsedEventHandler(SendHeartBeat);
@@ -65,8 +63,6 @@
             await _socket.ConnectAsync(_serverURI, CancellationToken.None);
             //this._hearbeat.Start();
 
-
-            Console.WriteLine("Attained a websocket");
         }
 
         private void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
@@ -156,7 +152,9 @@
                         }
 
                         this.DrawToScreen();
-                        this.SendToServer();
+
+                        if (this._socket.State == WebSocketState.Open)
+                            this.SendToServer();
                     }
                     else // if the body is not tracked
                     {
@@ -173,45 +171,54 @@
         public void DrawToScreen()
         {
             string message = string.Empty;
+            WritingObject title = new WritingObject();
+            WritingObject kinectStatus = new WritingObject();
+            WritingObject websocketStatus = new WritingObject();
+            WritingObject headTracker = new WritingObject();
+            WritingObject wristLeftTracker = new WritingObject();
+            WritingObject wristRightTracker = new WritingObject();
 
+            title.SetPosition(10, 3);
+            title.Message = "=== Kinect Server Console... Press Escape to Quit";
 
-            Console.SetCursorPosition(10, 3);
-            Console.WriteLine("=== Kinect Server Console... Press Escape to Quit");
+            kinectStatus.SetPosition(0, 5);
+            message = this._kinectSensor.IsOpen ? "Connected and ready" : "Not available    ";
+            kinectStatus.Message = string.Format("Kinect status: {0}", message);
 
-
-            message = "Connected";
-            Console.SetCursorPosition(0, 5);
-            Console.Write("Kinect connection : {0} "); //todo: message about kinect connection
-
-            message = "Connected";
-            Console.SetCursorPosition(0, 6);
-            Console.Write(
-                "Connection To Websocket {0}: {1}",
+            websocketStatus.SetPosition(0, 6);
+            message = this._socket.State == WebSocketState.Open ? "Connected    " : "Not connected";
+            websocketStatus.Message = string.Format(
+                "Connection To Websocket ({0}): {1}",
                 this._serverURI.ToString(),
-                message); //todo: message about websocket connection
+                message);
 
-
+            headTracker.SetPosition(0, 8);
             if (this._headPos.Equals(new CameraSpacePoint()))
                 message = "N/A, N/A, N/A";
             else
                 message = string.Format("{0}, {1}, {2}", this._headPos.X, this._headPos.Y, this._headPos.Z);
-            Console.SetCursorPosition(0, 8);
-            Console.WriteLine("Head position: {0}", message);
+            headTracker.Message = string.Format("Head position: {0}", message);
 
+            wristLeftTracker.SetPosition(0, 9);
             if (this._wristLeftPos.Equals(new CameraSpacePoint()))
                 message = "N/A, N/A, N/A";
             else
                 message = string.Format("{0}, {1}, {2}", this._wristLeftPos.X, this._wristLeftPos.Y, this._wristLeftPos.Z);
-            Console.SetCursorPosition(0, 9);
-            Console.WriteLine("Left Wrist position: {0}", message);
+            wristLeftTracker.Message = string.Format("Left Wrist position: {0}", message);
 
-
+            wristRightTracker.SetPosition(0, 10);
             if (this._wristRightPos.Equals(new CameraSpacePoint()))
                 message = "N/A, N/A, N/A";
             else
                 message = string.Format("{0}, {1}, {2}", this._wristRightPos.X, this._wristRightPos.Y, this._wristRightPos.Z);
-            Console.SetCursorPosition(0, 10);
-            Console.WriteLine("Right Wrist position: {0}", message);
+            wristRightTracker.Message = string.Format("Right Wrist position: {0}", message);
+
+            title.Write();
+            kinectStatus.Write();
+            websocketStatus.Write();
+            headTracker.Write();
+            wristLeftTracker.Write();
+            wristRightTracker.Write();
         }
 
         public async void SendToServer()
@@ -246,35 +253,59 @@
             }
             catch (Exception e)
             {
-                Console.SetCursorPosition(0, 15);
-                Console.WriteLine("Restarted websocket connection at {0}", DateTime.Now.ToString("h:mm:ss tt"));
-                Console.WriteLine("The error was: {0}", e.Message);
+                WritingObject reConn = new WritingObject();
 
                 await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                 this._heartbeat.Stop();
                 await ConnectToServer();
 
-
+                reConn.SetPosition(0, 15);
+                reConn.Message = 
+                    string.Format(
+                        "An error happened: {0}\r\nRestarted websocket connection at {1}",
+                        e.Message,
+                        DateTime.Now.ToString("h:mm:ss tt"));
+                reConn.Write();
             }
 
 
 
-}
+        }
 
         private void UpdateDataRate(object source, ElapsedEventArgs e)
         {
-            Console.SetCursorPosition(0, 12);
-            Console.WriteLine("Data rate: {0} bytes/s", this._dataLength);
+            WritingObject dataRate = new WritingObject();
+
+            dataRate.SetPosition(0, 11);
+            dataRate.Message = string.Format("Data rate: {0} bytes/s", this._dataLength);
+            dataRate.Write();
 
             this._dataLength = 0;
         }
 
         public Program()
         {
+            WritingObject kinect, websocket;
+
+            kinect = new WritingObject();
+            websocket = new WritingObject();
+
+
+            kinect.SetPosition(0, 0);
+            kinect.Message = "Initialising Kinect Sensor";
+            websocket.SetPosition(0, 1);
+            websocket.Message = "Initialising websocket connection";
+
+            kinect.Write();
             InitKinectSensor();
-            //InitWebSocket(new Uri("ws://127.0.0.1:3000/relay"));
-            InitWebSocket(new Uri("ws://137.154.151.239:3000/relay"));
+
+            websocket.Write();
+            InitWebSocket(new Uri("ws://127.0.0.1:3000/relay"));
+            //InitWebSocket(new Uri("ws://137.154.151.239:3000/relay"));
+
+
             ConnectToServer();
+
             DrawToScreen();
 
             this._dataRateTimer = new System.Timers.Timer();
@@ -294,5 +325,39 @@
 
             return;
         }
+    }
+
+    // A class to take care of writing to the console
+    class WritingObject
+    {
+        private string _message;
+        private PointF _pos;
+
+        public string Message
+        {
+            get { return this._message; }
+            set { this._message = value; }
+        }
+
+        public void SetPosition(int X, int Y)
+        {
+            this._pos.X = X;
+            this._pos.Y = Y;
+        }
+
+        public WritingObject()
+        {
+            this._message = string.Empty;
+            this._pos.X = 0;
+            this._pos.Y = 0;
+        }
+
+        public void Write()
+        {
+            Console.SetCursorPosition((int)this._pos.X, (int)this._pos.Y);
+            Console.WriteLine(this._message);
+        }
+
+
     }
 }

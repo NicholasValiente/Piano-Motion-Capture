@@ -9,7 +9,7 @@
     using Microsoft.Kinect;
     using System.Net.WebSockets;
     using System.Windows;
-
+    using System.Timers;
 
 
     class Program
@@ -24,9 +24,10 @@
         private Uri _serverURI;
         private ClientWebSocket _socket;
         private System.Timers.Timer _heartbeat;
+        private System.Timers.Timer _dataRateTimer; // timer for the data rate transmission
 
         private CameraSpacePoint _headPos, _wristLeftPos, _wristRightPos;
-        private int _dataRate = 0;
+        private int _dataLength = 0; // length of the transmission data stream in bytes
 
         void InitKinectSensor()
         {
@@ -210,13 +211,9 @@
                 message = string.Format("{0}, {1}, {2}", this._wristRightPos.X, this._wristRightPos.Y, this._wristRightPos.Z);
             Console.SetCursorPosition(0, 10);
             Console.WriteLine("Right Wrist position: {0}", message);
-
-            message = this._dataRate.ToString();
-            Console.SetCursorPosition(0, 12);
-            Console.WriteLine("Data rate: {0} bytes/s", message);
         }
 
-        public void SendToServer()
+        public async void SendToServer()
         {
             string message = string.Empty;
             string points = string.Empty;
@@ -233,10 +230,11 @@
             }
             message = string.Format("[\"kin2\"{0}]", points);
             sendbuf = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+            this._dataLength += Encoding.UTF8.GetByteCount(message);
 
-            //try
-            //{
-                
+            try
+            {
+
                 var sendResult =  _socket.SendAsync(
                     sendbuf,
                     WebSocketMessageType.Text,
@@ -244,27 +242,48 @@
                     cancellationToken: CancellationToken.None);
 
                 sendResult.Wait();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.SetCursorPosition(0, 15);
-            //    Console.WriteLine("Restarted websocket connection at {0}", DateTime.Now.ToString("h:mm:ss tt"));
+            }
+            catch (AggregateException ae)
+            {
+                foreach (Exception ex in ae.InnerExceptions)
+                {
+                    Console.SetCursorPosition(0, 15);
+                    Console.WriteLine("Restarted websocket connection at {0}", DateTime.Now.ToString("h:mm:ss tt"));
+                    Console.WriteLine("The error was: {0}", ex.Message);
 
-            //    await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-            //    this._heartbeat.Stop();
-            //    await ConnectToServer();
-            //};
+                    await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                    this._heartbeat.Stop();
+                    await ConnectToServer();
+
+                }
+
+            }
 
 
-            
+
+}
+
+        private void UpdateDataRate(object source, ElapsedEventArgs e)
+        {
+            Console.SetCursorPosition(0, 12);
+            Console.WriteLine("Data rate: {0} bytes/s", this._dataLength);
+
+            this._dataLength = 0;
         }
 
         public Program()
         {
             InitKinectSensor();
-            InitWebSocket(new Uri("ws://127.0.0.1:3000/relay"));
+            //InitWebSocket(new Uri("ws://127.0.0.1:3000/relay"));
+            InitWebSocket(new Uri("ws://137.154.151.239:3000/relay"));
             ConnectToServer();
             DrawToScreen();
+
+            this._dataRateTimer = new System.Timers.Timer();
+            this._dataRateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateDataRate);
+            this._dataRateTimer.Interval = 1000; /* set the time to 1 second */
+            this._dataRateTimer.Start();
+
         }
 
         static void Main(string[] args)

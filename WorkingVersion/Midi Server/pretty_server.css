@@ -1,0 +1,15 @@
+
+
+#left {
+  
+   padding-left: 80px;
+}
+#midiBox {
+ height:100px; 
+ width:400px; 
+ border:1px solid #ccc;
+ font:16px/26px Georgia, Garamond, Serif;
+ overflow:auto;
+  
+}
+

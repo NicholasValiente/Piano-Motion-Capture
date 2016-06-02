@@ -1,0 +1,1 @@
+{"groups": ["group1", "group2", "group3"], "samples":[{"time": 0.0, "frame": 1, "samples": []}], "OrigNumFrames":1, "DataRate": 120.0, "NumFrames": 1, "OrigDataRate": 120.0, "Units": "mm", "filename": "test.trc", "NumMarkers": 4, "CameraRate": 120.0, "OrigDataStartFrame": 1}

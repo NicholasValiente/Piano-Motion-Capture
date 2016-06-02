@@ -1,0 +1,6 @@
+1) Start up the perl script to run the server (we used strawberry perl to run ours in).
+2) Launch XAMPP and start a local server (only needed if the web pages are not being hosted already).
+3) Start up the Kinect Server via theshortcut in the same folder as these instructions(Windows 8, 8.1, or 10, as well as Kinect Studio V2 required).
+4) Open MoVis.html in the browser from the web server.
+5) In a seperate browser window, open leapServer.html from web server. Its window does not have to be on top, but do not minimise this window, and it has to be the focused tab in the window.
+6) In a seperate chrome browser window, open midiServer.html from web server. Its window does not have to be on top, but do not minimise this window, and it has to be the focused tab in the window. This server MUST be run in google chrome, unless ther is a compatable webMidi library isntalled in the browser.

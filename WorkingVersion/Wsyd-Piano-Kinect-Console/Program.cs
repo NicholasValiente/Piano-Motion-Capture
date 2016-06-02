@@ -134,6 +134,7 @@
                             position.Y = body.Joints[j].Position.Y;
                             position.Z = body.Joints[j].Position.Z;
 
+                            /* console log to track three joints */
                             switch(j)
                             {
                                 case JointType.Head:
@@ -146,6 +147,7 @@
                                     this._wristRightPos = position;
                                     break;
                             }
+
 
                             this._trackedPoints[ji] = position;
                             ji++;
@@ -256,7 +258,7 @@
                 WritingObject reConn = new WritingObject();
 
                 await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-                this._heartbeat.Stop();
+                //this._heartbeat.Stop();
                 await ConnectToServer();
 
                 reConn.SetPosition(0, 15);
@@ -308,6 +310,7 @@
 
             DrawToScreen();
 
+            /* timer for bit rate */
             this._dataRateTimer = new System.Timers.Timer();
             this._dataRateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateDataRate);
             this._dataRateTimer.Interval = 1000; /* set the time to 1 second */
